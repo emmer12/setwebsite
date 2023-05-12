@@ -1,113 +1,289 @@
-import Image from 'next/image'
+import { BackdropRentals, Backdrops } from "@/components/backdrops";
+import { Testimonies } from "@/components/testimonies";
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <div className="em__hero">
+        <div className="container">
+          <div className="em__body__wrapper">
+            <div className="em__flex">
+              <div className="em__hero__left">
+                <h2>
+                  <span className="em__fancy__text">We</span> are an <br />
+                  Events Company
+                  <br />
+                  <span className="em__fancy__text sp">Specializes</span>
+                </h2>
+                <p>
+                  We are an events company that specializes in designing <br />
+                  backdrops and renting them .
+                </p>
+                <button className="em__button primary">
+                  Subscribe
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                    width="19"
+                    height="5"
+                    viewBox="0 0 19 5"
+                  >
+                    <image
+                      id="right-arrow_35_copy_2"
+                      data-name="right-arrow (35) copy 2"
+                      width="19"
+                      height="5"
+                      xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="em__hero__right">
+                <img src="/assets/images/hero1.png" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="em__hero__bottom">
+        <div className="container">
+          <BackdropRentals />
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div className="em__about__section">
+        <div className="container">
+          <div className="em__inner">
+            <div className="em__header">
+              <h1>About</h1>
+              <span className="em__fancy__text">Set Events</span>
+            </div>
+
+            <p>
+              At vero eos et accusamus et iusto odio dignissimos ducimus qui
+              blanditiis praesentium voluptatum deleniti atque corrupti quos
+              dolores et quas molestias excepturi sint occaecati cupiditate non
+              provident, similique sunt in culpa qui officia deserunt mollitia
+              animi, id est laborum et dolorum fuga.
+            </p>
+            <div className="bottom__about">
+              <i>
+                At vero eos et accusamus et iusto odio dignissimos ducimus qui
+                blanditiis praesentium voluptatum deleniti atque qui officia
+                deserunt mollitia animi, id est laborum et dolorum fuga.
+              </i>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+      <div className="em__backdrop__section">
+        <div className="container">
+          <div className="em__body__wrapper">
+            <div className="em__inner">
+              <div className="em__header h-b">
+                <h1>Our</h1>
+                <span className="em__fancy__text">Backdrop</span>
+              </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+              <Backdrops />
+            </div>
+          </div>
+        </div>
       </div>
-    </main>
-  )
+
+      <div className="em__step__container">
+        <div className="container">
+          <div className="em__body__wrapper">
+            <div className="em__step__row">
+              <div className="step__item">
+                <div className="step__icon">
+                  <img src="/assets/images/fast-delivery.png" alt="" />
+                </div>
+                <div className="step__details">
+                  <h2>Free Shipping</h2>
+                  <p>
+                    It is a long established fact that a reader will be
+                    distracted by the readable content of a page when looking at
+                    its layout Lorem Ipsum .
+                  </p>
+                </div>
+              </div>
+              <div className="step__item">
+                <div className="step__icon">
+                  <img src="/assets/images/refund.png" alt="" />
+                </div>
+                <div className="step__details">
+                  <h2>100% Refund</h2>
+                  <p>
+                    It is a long established fact that a reader will be
+                    distracted by the readable content of a page when looking at
+                    its layout Lorem Ipsum .
+                  </p>
+                </div>
+              </div>
+              <div className="step__item">
+                <div className="step__icon">
+                  <img src="/assets/images/technical-support.png" alt="" />
+                </div>
+                <div className="step__details">
+                  <h2>Support 2/47</h2>
+                  <p>
+                    It is a long established fact that a reader will be
+                    distracted by the readable content of a page when looking at
+                    its layout Lorem Ipsum .
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="em__our__design">
+        <div className="container">
+          <div className="em__body__wrapper">
+            <div className="em__flex">
+              <div className="our__art">
+                <img src="/assets/images/designs.png" alt="" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  width="387.5px"
+                  height="596.5px"
+                >
+                  <path
+                    fillRule="evenodd"
+                    stroke="rgb(5, 5, 5)"
+                    stroke-width="1px"
+                    stroke-linecap="butt"
+                    stroke-linejoin="miter"
+                    fill="none"
+                    d="M69.549,0.992 C69.549,0.992 -62.455,153.959 39.888,308.337 C74.290,354.514 53.477,258.924 38.90,328.108 C22.704,397.291 71.299,478.198 149.544,469.198 C227.789,460.197 294.936,459.685 304.140,459.313 C313.345,458.938 353.575,459.313 353.575,459.313 C353.575,459.313 462.268,571.300 278.974,595.12 "
+                  />
+                </svg>
+                <div className="art_box"></div>
+              </div>
+              <div className="details">
+                <div className="em__header left">
+                  <h1>Our</h1>
+                  <span className="em__fancy__text">Design</span>
+                </div>
+
+                <div>
+                  <p>
+                    Don’t waste another day endlessly scrolling social media
+                    searching for a location for your event. The truth is,
+                    researching the vast amount of venue options in New
+                    Hampshire can be daunting!Choosing the right place can be
+                    the difference between simply having a ‘nice’ event or
+                    creating an unforgettable experience.waste another day
+                    endlessly scrolling social media searching for a location
+                    for your event. The truth is, researching the vast amount of
+                    venue options in New Hampshire can be daunting!Choosing the
+                    right place can be the difference between simply having a
+                    ‘nice’ event or creating an unforgettable experience.
+                  </p>
+                </div>
+                <div className="em__spacer" style={{ height: "20px" }}></div>
+                <div className="em__our__action">
+                  <button className="em__button primary">
+                    Design Invitation
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                      width="19"
+                      height="5"
+                      viewBox="0 0 19 5"
+                    >
+                      <image
+                        id="right-arrow_35_copy_2"
+                        data-name="right-arrow (35) copy 2"
+                        width="19"
+                        height="5"
+                        xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
+                      />
+                    </svg>
+                  </button>
+                  <button className="em__button primary">
+                    Design Acrylics
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                      width="19"
+                      height="5"
+                      viewBox="0 0 19 5"
+                    >
+                      <image
+                        id="right-arrow_35_copy_2"
+                        data-name="right-arrow (35) copy 2"
+                        width="19"
+                        height="5"
+                        xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="em__forget__section">
+        <div className="container">
+          <div className="wrapper">
+            <div className="em__header h-f">
+              <h1>Set &</h1>
+              <span className="em__fancy__text">Forget</span>
+            </div>
+
+            <p>
+              At vero eos et accusamus et iusto odio dignissimos ducimus qui
+              blanditiis praesentium voluptatum deleniti atque corrupti quos
+              dolores et quas molestias excepturi sint occaecati cupiditate non
+              provident, similique sunt in culpa qui officia deserunt mollitia
+              animi, id est laborum et dolorum fuga.
+            </p>
+
+            <button className="em__button primary">
+              Subscribe
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                width="19"
+                height="5"
+                viewBox="0 0 19 5"
+              >
+                <image
+                  id="right-arrow_35_copy_2"
+                  data-name="right-arrow (35) copy 2"
+                  width="19"
+                  height="5"
+                  xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="em__testimony__section">
+        <div className="container">
+          <div className="em__body__wrapper">
+            <div className="em__header center h-t">
+              <h1>Our</h1>
+              <span className="em__fancy__text">Testimonies</span>
+            </div>
+
+            <div className="em__inner">
+              <Testimonies />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
