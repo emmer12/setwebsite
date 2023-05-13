@@ -1,10 +1,16 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const path = usePathname();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [path]);
+
   return (
     <div className="em__main">
       <div className="em__nav">

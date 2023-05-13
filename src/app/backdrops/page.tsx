@@ -92,8 +92,8 @@ const Backdrops = () => {
                   </div>
                 </div>
 
-                <div className="em__main__body em__grid__3">
-                  <div className="em__backdrop_card">
+                <div className="em__main__body em_backdrop__grid">
+                  <div className="em__backdrop_card grid">
                     <div className="inner">
                       <div className="display">
                         <img src="./assets/images/b1.png" alt="" />
@@ -124,7 +124,7 @@ const Backdrops = () => {
                     </div>
                   </div>
 
-                  <div className="em__backdrop_card">
+                  <div className="em__backdrop_card grid">
                     <div className="inner">
                       <div className="display">
                         <img src="./assets/images/b1.png" alt="" />
@@ -155,7 +155,7 @@ const Backdrops = () => {
                     </div>
                   </div>
 
-                  <div className="em__backdrop_card">
+                  <div className="em__backdrop_card grid">
                     <div className="inner">
                       <div className="display">
                         <img src="./assets/images/b1.png" alt="" />

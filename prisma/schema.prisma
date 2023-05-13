@@ -4,12 +4,12 @@ generator client {
 
 datasource db {
     provider = "mongodb"
-    url      = env("DATABASE_URL")
+    url      = "mongodb://localhost:27017/setevents?authSource=admin"
 }
 
 model Account {
     id                 String    @id @default(auto()) @map("_id") @db.ObjectId
-    userId             String
+    userId             String    @db.ObjectId
     providerType       String
     providerId         String
     providerAccountId  String
@@ -25,7 +25,7 @@ model Account {
 
 model Session {
     id           String   @id @default(auto()) @map("_id") @db.ObjectId
-    userId       String
+    userId       String   @db.ObjectId
     expires      DateTime
     sessionToken String   @unique
     accessToken  String   @unique

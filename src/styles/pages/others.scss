@@ -266,6 +266,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   padding: 50px 0px;
+  position: relative;
 }
 
 .em__course__card {
@@ -579,5 +580,27 @@
       width: 100%;
       margin-top: 30px;
     }
+  }
+}
+
+.cake-btn-prev {
+  transform: translateY(70px);
+
+  @media (max-width: 600px) {
+    transform: translate(0px, 70px);
+  }
+  &:after {
+    display: none;
+  }
+}
+
+.cake-btn-next {
+  transform: translateY(70px);
+
+  @media (max-width: 600px) {
+    transform: translate(0px, 70px);
+  }
+  &:after {
+    display: none;
   }
 }

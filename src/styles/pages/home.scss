@@ -193,50 +193,6 @@
         display: none;
       }
     }
-
-    .em__backdrop_card {
-      //   width: 300px;
-      background-color: #fff;
-      padding: 10px;
-      border: 1px solid transparent;
-      transition: 0.4s;
-      cursor: pointer;
-      box-shadow: 0 2px 1px #ddd;
-      // width: 270px;
-
-      &:hover {
-        border: 1px solid #000;
-        background-color: $primary-color;
-      }
-
-      .display {
-        height: 250px;
-        margin-bottom: 32px;
-        img {
-          height: 100%;
-          width: 100%;
-        }
-      }
-      .details {
-        h4 {
-          margin: 0px;
-          color: $secondary-color;
-        }
-        > div {
-          margin-bottom: 10px;
-        }
-
-        .price {
-          color: #ee5200;
-          text-transform: uppercase;
-
-          span {
-            text-decoration: line-through;
-            color: #000;
-          }
-        }
-      }
-    }
   }
 }
 
@@ -265,6 +221,7 @@
       border-radius: 5px;
     }
   }
+
   .details {
     h4 {
       margin: 0px;
@@ -274,6 +231,9 @@
       margin-bottom: 10px;
     }
 
+    svg {
+      margin: auto;
+    }
     .price {
       color: #ee5200;
       text-transform: uppercase;
@@ -551,6 +511,12 @@
   }
 }
 
+.em_backdrop__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
 .em__backdrops {
   background-color: #fff;
 
@@ -658,6 +624,24 @@
     }
   }
 
+  .em__backdrops {
+    padding: 50px 0px;
+  }
+
+  .em_backdrop__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .em__backdrop_card {
+    width: 100%;
+  }
+
+  .em__backdrop_card.grid {
+    .display {
+      height: 130px;
+    }
+  }
+
   .em__hero__bottom {
     transform: translateY(-25px);
   }
@@ -669,7 +653,7 @@
   }
 
   .em__backdrop__section {
-    padding: 0px 0px;
+    padding: 0px 0px 50px;
 
     .em__inner {
       .b-btn-prev {

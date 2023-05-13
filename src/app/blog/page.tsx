@@ -1,3 +1,4 @@
+import { Courses } from "@/components/courses";
 import Link from "next/link";
 import React from "react";
 
@@ -310,53 +311,8 @@ const Blog = () => {
               <span className="em__fancy__text">Courses</span>
             </div>
 
-            <div className="em__grid__3">
-              <div className="em__course__card">
-                <div className="display">
-                  <img src="assets/images/c1.png" alt="Course Image" />
-                </div>
-                <div className="details">
-                  <div className="duration">
-                    <span>Duration: 8 Month</span>
-                  </div>
-                  <div className="title">
-                    <h4>Flower Design</h4>
-                  </div>
-
-                  <div className="read__more">Read More</div>
-                </div>
-              </div>
-              <div className="em__course__card">
-                <div className="display">
-                  <img src="assets/images/c2.png" alt="Course Image" />
-                </div>
-                <div className="details">
-                  <div className="duration">
-                    <span>Duration: 8 Month</span>
-                  </div>
-                  <div className="title">
-                    <h4>Flower Design</h4>
-                  </div>
-
-                  <div className="read">Read More</div>
-                </div>
-              </div>
-
-              <div className="em__course__card">
-                <div className="display">
-                  <img src="assets/images/c3.png" alt="Course Image" />
-                </div>
-                <div className="details">
-                  <div className="duration">
-                    <span>Duration: 8 Month</span>
-                  </div>
-                  <div className="title">
-                    <h4>Flower Design</h4>
-                  </div>
-
-                  <div className="read">Read More</div>
-                </div>
-              </div>
+            <div>
+              <Courses />
             </div>
           </div>
         </div>
