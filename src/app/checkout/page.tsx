@@ -2,16 +2,18 @@
 import CartItem from "@/components/CartItem";
 import { useCart } from "@/hooks/useCartProvider";
 import { ICartItem } from "@/types";
-import { useRouter } from "next/router";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 const Checkout = () => {
   const { cart, subTotal } = useCart();
   const router = useRouter();
 
-  if (cart.length < 1) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (cart.length < 1) {
+      router.push("/");
+    }
+  }, []);
 
   return (
     <div>
