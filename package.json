@@ -8,24 +8,34 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
-    "@next-auth/prisma-adapter": "^0.4.4-canary.81",
+    "@next-auth/prisma-adapter": "^1.0.6",
     "@prisma/client": "^4.14.0",
     "@types/node": "20.1.2",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
+    "formik": "^2.2.9",
     "next": "13.4.1",
+    "next-auth": "^4.22.1",
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "swiper": "^9.3.1",
+    "swr": "^2.1.5",
     "tailwindcss": "3.3.2",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "yup": "^1.1.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "prisma": "^4.14.0",
     "sass": "^1.62.1"
   }

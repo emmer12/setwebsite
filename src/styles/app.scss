@@ -52,6 +52,7 @@ $font-size: 14px;
 
 html {
   margin: 0px !important;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -86,6 +87,46 @@ ul {
   li {
     list-style: none;
   }
+}
+
+.field {
+  height: 45px;
+  margin: 20px 0px;
+  textarea,
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    border: none;
+    outline: none;
+    box-shadow: 0px 0px 2px #ddd;
+    padding: 10px 15px;
+    border-radius: 18px;
+    border-bottom-right-radius: 8px;
+  }
+
+  span.error {
+    font-size: 12px;
+    color: #dc3545;
+    margin-left: 15px;
+  }
+
+  textarea {
+    height: 100%;
+  }
+
+  input {
+    //   text-align: center;
+    height: 100%;
+  }
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 .em__fancy__text {
@@ -249,6 +290,7 @@ a {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   font-size: 16px;
   margin: 4px 2px;
@@ -286,6 +328,7 @@ a {
 
   &.block {
     width: 100%;
+    display: flex !important;
   }
 }
 

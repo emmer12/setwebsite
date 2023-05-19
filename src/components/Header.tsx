@@ -1,14 +1,17 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const [dropOpen, setDropOpen] = useState(false);
   const path = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     setOpen(false);
+    setDropOpen(false);
   }, [path]);
 
   return (
@@ -58,7 +61,10 @@ const Header = () => {
                     </svg>
                   </div>
                 </div>
-                <div className="left">
+                <div
+                  onClick={() => router.push("/auth/signin")}
+                  className="left"
+                >
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -105,10 +111,46 @@ const Header = () => {
                   <div className="em__right">
                     <ul>
                       <li>
-                        <a href="#">About Set</a>
+                        <a href="#about">About Set</a>
                       </li>
-                      <li>
-                        <a href="#">Event Essentials</a>
+                      <li className="relative">
+                        <div
+                          onClick={() => setDropOpen(!dropOpen)}
+                          className="flex items-center"
+                        >
+                          <span>Event Essentials </span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                            width="10"
+                            height="6"
+                            viewBox="0 0 10 6"
+                          >
+                            <image
+                              id="downward-arrow_1_"
+                              data-name="downward-arrow (1)"
+                              width="10"
+                              height="6"
+                              xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAAaUlEQVQImX3OIRKCYBiE4QeGYLF4CE5AsGkgGb2AcjSG6gyQTAaiweMYnXG+8DsE5E27s2/YrDw0N+zwtswGnwIdhj9S4ppjRLUi1WhDDF7YL0gnPCIkMXjiOOtn3FOJj3MmXLBF/xvwBd5MDQUMYfROAAAAAElFTkSuQmCC"
+                            />
+                          </svg>
+                        </div>
+                        {dropOpen && (
+                          <ul className="h__dropdown p-5 bg-white absolute flex-col inset-0 z-50 top-6 block w-80 h-60 rounded-tl-2xl rounded-br-3xl">
+                            <li className="py-3">
+                              <Link href="/backdrops">Backdrops</Link>
+                            </li>
+                            <li className="py-3">
+                              <a href="">Design Service </a>
+                            </li>
+                            <li className="py-3">
+                              <a href="">Events</a>
+                            </li>
+                            <li className="py-3">
+                              <a href="">Blog</a>
+                            </li>
+                          </ul>
+                        )}
                       </li>
                     </ul>
                   </div>
@@ -131,7 +173,7 @@ const Header = () => {
                   <div className="em__left">
                     <ul>
                       <li>
-                        <Link href="/designs">Designs and prints</Link>
+                        <Link href="/designs">Subscription</Link>
                       </li>
                       <li>
                         <Link href="/backdrops">Contact Set</Link>

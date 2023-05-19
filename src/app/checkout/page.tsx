@@ -1,7 +1,18 @@
+"use client";
 import CartItem from "@/components/CartItem";
+import { useCart } from "@/hooks/useCartProvider";
+import { ICartItem } from "@/types";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Checkout = () => {
+  const { cart, subTotal } = useCart();
+  const router = useRouter();
+
+  if (cart.length < 1) {
+    router.push("/");
+  }
+
   return (
     <div>
       <div className="em__banner checkout">
@@ -40,7 +51,9 @@ const Checkout = () => {
             <div className="em__flex">
               <div className="checkout__info">
                 <div className="cart">
-                  <CartItem />
+                  {cart.map((c: ICartItem, i: number) => (
+                    <CartItem cart={c} key={i} />
+                  ))}
                 </div>
                 <hr />
                 <br />
@@ -123,7 +136,7 @@ const Checkout = () => {
                 <div className="cart__total">
                   <div className="em__flex">
                     <h4>Subtotal</h4>
-                    <span>$100.00</span>
+                    <span>$ {subTotal()} </span>
                   </div>
 
                   <div className="em__flex">

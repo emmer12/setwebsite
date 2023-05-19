@@ -46,7 +46,8 @@
   .em__hb_items {
     .box {
       border: 4px solid #fff;
-      height: 300px;
+      height: 350px;
+      // height: 300px;
       overflow: hidden;
 
       img {
@@ -590,7 +591,34 @@
 }
 
 @media (max-width: 640px) {
-  // Hero Section
+  .em__hero__bottom {
+    .em__hb_items {
+      .box {
+        height: 130px;
+
+        &.box-bl {
+          border-bottom-left-radius: 40px;
+        }
+        &.box-br {
+          border-bottom-right-radius: 40px;
+        }
+        &.box-tl {
+          border-top-left-radius: 40px;
+        }
+        &.box-tr {
+          border-top-right-radius: 40px;
+        }
+      }
+
+      .em__content {
+        padding: 10px 0px;
+
+        h4 {
+          font-size: 13px;
+        }
+      }
+    }
+  }
 
   .em__hero {
     // height: auto;
@@ -758,5 +786,74 @@ hr {
 
   &.details {
     background-color: #efefef;
+  }
+}
+
+.em__pricing__card {
+  width: 350px !important;
+  max-width: 90%;
+  background: #fef7f1;
+  border-radius: 10px;
+
+  .inner {
+    padding-right: 40px;
+    padding: 26px 32px;
+  }
+
+  .inner2 {
+    padding-right: 40px;
+    padding: 20px 32px;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 24px;
+    color: $secondary-color;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 42px;
+    color: $secondary-color;
+  }
+
+  ul {
+    li {
+      background: #f7b69617;
+      margin: 4px 0px;
+      border-radius: 22px;
+      border-bottom-left-radius: 10px;
+      padding: 10px 10px;
+    }
+  }
+
+  .em__flex div:nth-child(1) {
+    align-self: end;
+  }
+  hr {
+    background-color: #f1e1cf;
+    height: 1px;
+    border: none;
+  }
+  .em__user {
+    display: flex;
+    align-items: center;
+
+    .em__avatar {
+      height: 53px;
+      width: 53px;
+      background-color: #fbd9bc;
+      margin-right: 10px;
+      border-radius: 100px;
+    }
+
+    .em__details {
+      margin-top: 5px;
+    }
+
+    h4,
+    p {
+      margin: 0px;
+    }
   }
 }

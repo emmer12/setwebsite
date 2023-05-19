@@ -1,10 +1,11 @@
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialActions"]
 }
 
 datasource db {
     provider = "mongodb"
-    url      = "mongodb://localhost:27017/setevents?authSource=admin"
+    url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -44,6 +45,7 @@ model User {
     updatedAt     DateTime  @updatedAt
     accounts      Account[]
     sessions      Session[]
+    password      String
 }
 
 model VerificationRequest {
@@ -55,4 +57,47 @@ model VerificationRequest {
     updatedAt  DateTime @updatedAt
 
     @@unique([identifier, token])
+}
+
+model BackdropCategory {
+    id          String      @id @default(auto()) @map("_id") @db.ObjectId
+    title       String
+    slug        String
+    description String?
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+    Backdrops   Backdrops[]
+}
+
+model Backdrops {
+    id          String           @id @default(auto()) @map("_id") @db.ObjectId
+    price       Float
+    title       String
+    slug        String
+    description String
+    stockStatus StockStatus      @default(IN_STOCK)
+    discount    Int              @default(0)
+    addOn       String[]
+    imageUrl    String?
+    categoryId  String           @db.ObjectId
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
+    category    BackdropCategory @relation(fields: [categoryId], references: [id])
+}
+
+enum StockStatus {
+    IN_STOCK
+    OUT_OF_STOCK
+    LIMITED_QUANTITY
+}
+
+model Blog {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    title     String
+    slug      String
+    content   String?
+    imageUrl  String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    eUrl      String?
 }

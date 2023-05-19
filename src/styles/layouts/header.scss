@@ -53,13 +53,19 @@
 
       .em__left,
       .em__right {
+        margin-top: 24px;
         ul {
           display: inline-flex;
 
           li {
-            a {
+            a,
+            span {
               padding: 0px 10px;
               text-transform: uppercase;
+              cursor: pointer;
+            }
+            svg {
+              cursor: pointer;
             }
           }
         }
@@ -67,6 +73,7 @@
     }
 
     .em__search {
+      margin-top: 16px;
       cursor: pointer;
     }
   }

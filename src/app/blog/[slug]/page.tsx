@@ -1,6 +1,15 @@
-import React from "react";
+"use client";
+import React, { FC } from "react";
+import { getBackdrop } from "@/lib/api/backdrop.api";
+import useSWR from "swr";
 
-const BlogDetails = () => {
+interface PageProps {
+  params: { slug: string };
+}
+
+const BlogDetails: FC<PageProps> = ({ params }) => {
+  const { data, error, isLoading } = useSWR(`${params.slug}`, getBackdrop);
+
   return (
     <div>
       <div className="em__banner blog">

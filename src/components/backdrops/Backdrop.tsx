@@ -1,8 +1,10 @@
+import { IBackdrop } from "@/types";
+import Link from "next/link";
 import React from "react";
 
-const Backdrop = () => {
+const Backdrop = ({ backdrop }: { backdrop: IBackdrop }) => {
   return (
-    <div>
+    <Link href={`/backdrops/${backdrop.slug}`}>
       <div className="em__backdrop_card">
         <div className="inner">
           <div className="display">
@@ -10,7 +12,7 @@ const Backdrop = () => {
           </div>
           <div className="details">
             <div>
-              <h4>Butterfly Winds</h4>
+              <h4>{backdrop.title}</h4>
               <h4>Backdrops</h4>
             </div>
             <div>
@@ -29,12 +31,12 @@ const Backdrop = () => {
               </svg>
             </div>
             <div className="price">
-              ADD 490 <span>$777</span>
+              ADD {backdrop.price} <span>$777</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

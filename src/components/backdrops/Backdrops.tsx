@@ -1,36 +1,27 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Navigation } from "swiper";
+import { A11y, Navigation, Grid } from "swiper";
+import useSWR from "swr";
 import Backdrop from "./Backdrop";
+import { getBackdrops } from "@/lib/api/backdrop.api";
 
 const Backdrops = () => {
-  const [backdrops] = useState<any[]>([1, 2, 3, 4, 5, 7, 8, 9, 10]);
-  const [swiper, setSwiper] = useState<any>(null);
+  // const [swiper, setSwiper] = useState<any>(null);
+  const { data, error, isLoading } = useSWR("/api/backdrops", getBackdrops);
 
   return (
-    <div>
-      <Swiper
-        spaceBetween={50}
-        slidesPerView={"auto"}
-        modules={[Navigation, A11y]}
-        // onSlideChange={() => console.log("slide change")}
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      {/* <Swiper
+        spaceBetween={20}
+        // slidesPerView={"auto"}
+        slidesPerView={4}
+        modules={[Navigation, Grid]}
+        grid={{
+          rows: 2,
+        }}
         onSwiper={(swiper) => {
           setSwiper(swiper);
-        }}
-        breakpoints={{
-          300: {
-            slidesPerView: 1,
-            spaceBetween: 10,
-          },
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 40,
-          },
         }}
       >
         {backdrops.map((_, i) => (
@@ -75,7 +66,17 @@ const Backdrops = () => {
             d="M9.646,10.465 L2.115,18.634 C1.636,19.153 0.859,19.153 0.380,18.634 C0.98,18.114 0.98,17.271 0.380,16.752 L7.44,9.525 L0.381,2.297 C0.97,1.778 0.97,0.936 0.381,0.416 C0.859,0.102 1.636,0.102 2.115,0.416 L9.646,8.584 C9.885,8.845 10.5,9.184 10.5,9.525 C10.5,9.865 9.885,10.206 9.646,10.465 Z"
           />
         </svg>
-      </div>
+      </div> */}
+
+      {isLoading ? (
+        <span>Loading..</span>
+      ) : (
+        data?.backdrops
+          .slice(0, 8)
+          .map((backdrop: any, i: any) => (
+            <Backdrop key={i} backdrop={backdrop} />
+          ))
+      )}
     </div>
   );
 };

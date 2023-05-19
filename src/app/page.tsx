@@ -53,7 +53,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="em__about__section">
+      <div className="em__about__section" id="about">
         <div className="container">
           <div className="em__inner">
             <div className="em__header">

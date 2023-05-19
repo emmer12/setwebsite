@@ -1,12 +1,15 @@
+"use client";
 import Footer from "@/components/Footer";
 import "./../styles/app.scss";
 import "./../styles/globals.css";
-import { Inter } from "next/font/google";
 import Header from "@/components/Header";
+import "swiper/css/grid";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import "swiper/css/free-mode";
+import { SessionProvider } from "next-auth/react";
+import { CartProvider } from "@/hooks/useCartProvider";
 // const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -22,9 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <SessionProvider>
+          <CartProvider>
+            <Header />
+            {children}
+            <Footer />
+          </CartProvider>
+        </SessionProvider>
       </body>
     </html>
   );

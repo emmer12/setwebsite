@@ -1,6 +1,21 @@
-import React from "react";
+"use client";
+import { useCart } from "@/hooks/useCartProvider";
+import { getDiscount } from "@/lib/utils";
+import { ICartItem } from "@/types";
+import React, { FC, useState } from "react";
 
-const CartItem = () => {
+interface ComponentProps {
+  cart: ICartItem;
+}
+
+const CartItem: FC<ComponentProps> = ({ cart }) => {
+  const { removeCart, updateCart } = useCart();
+  const [qty, setQty] = useState<number>(cart.qty || 0);
+
+  const update = () => {
+    updateCart({ ...cart, qty });
+  };
+
   return (
     <div className="cart__item">
       <div className="em__flex">
@@ -11,23 +26,40 @@ const CartItem = () => {
           <div className="d1">
             <div>
               <div className="title">
-                <h4>Lorem ipsum dolor, sit amet Amet, cupiditate.</h4>
+                <h4>{cart.title}</h4>
               </div>
               <div className="price">
-                <span className="old">AED 230</span>
-                <span className="new">$565</span>
+                <span className="old">
+                  AED {getDiscount(cart.price, cart.discount)}
+                </span>
+                <span className="new">$ {cart.price}</span>
               </div>
             </div>
             <div>
-              <button className="del">Delete</button>
-              <button className="up">Update</button>
+              <button className="del" onClick={() => removeCart(cart)}>
+                Delete
+              </button>
+              <button className="up" onClick={update}>
+                Update
+              </button>
             </div>
           </div>
           <div className="d2">
             <div>
-              <button className="button1">-</button>
-              <input type="number" />
-              <button className="button2">+</button>
+              <button
+                disabled={qty == 1}
+                className="button1"
+                onClick={() => setQty((prev) => prev - 1)}
+              >
+                -
+              </button>
+              <input type="number" value={qty} />
+              <button
+                className="button2"
+                onClick={() => setQty((prev) => prev + 1)}
+              >
+                +
+              </button>
             </div>
           </div>
         </div>
