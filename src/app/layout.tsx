@@ -12,7 +12,7 @@ import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "@/hooks/useCartProvider";
 // const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+const metadata = {
   title: "Set Events",
   description: "Set Event Description",
 };
