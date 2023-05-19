@@ -11,11 +11,11 @@ export default function Dashboard(): JSX.Element {
   const { data: session, status, update } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    if (status !== "authenticated") {
-      router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (status !== "authenticated") {
+  //     router.push("/");
+  //   }
+  // }, []);
 
   return (
     <div>

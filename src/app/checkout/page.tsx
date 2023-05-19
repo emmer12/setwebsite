@@ -9,11 +9,11 @@ const Checkout = () => {
   const { cart, subTotal } = useCart();
   const router = useRouter();
 
-  useEffect(() => {
-    if (cart.length < 1) {
-      router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (cart.length < 1) {
+  //     router.push("/");
+  //   }
+  // }, []);
 
   return (
     <div>
