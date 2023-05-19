@@ -1,10 +1,9 @@
 "use client";
 import Head from "next/head";
 import Router from "next/router";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 import { signOut, useSession } from "next-auth/react";
-import { PrismaClient } from "@prisma/client";
 
 export default function Dashboard(): JSX.Element {
   const { data: session, status, update } = useSession();

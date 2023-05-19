@@ -2,7 +2,7 @@
 import CartItem from "@/components/CartItem";
 import { useCart } from "@/hooks/useCartProvider";
 import { ICartItem } from "@/types";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import React from "react";
 
 const Checkout = () => {
