@@ -18,8 +18,9 @@ export default function Home() {
                   <span className="em__fancy__text sp">Specializes</span>
                 </h2>
                 <p>
-                  We are an events company that specializes in designing <br />
-                  backdrops and renting them .
+                  in both captivating backdrop rentals and purchases, offering a
+                  seamless blend of elegance and convenience. With our expertise
+                  in event designs and revolutionary AI design technologies...
                 </p>
                 <button className="em__button primary">
                   Subscribe
@@ -62,17 +63,16 @@ export default function Home() {
             </div>
 
             <p>
-              At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atque corrupti quos
-              dolores et quas molestias excepturi sint occaecati cupiditate non
-              provident, similique sunt in culpa qui officia deserunt mollitia
-              animi, id est laborum et dolorum fuga.
+              We intricately craft experiences that transform dreams into
+              reality. From stunning backdrop rentals to thoughtfully curated
+              event designs, we create captivating atmospheres that leave a
+              lasting impression. With the seamless fusion of artistry and
+              innovation, we redefine what&apos;s possible, ensuring that
+              extraordinary moments are born.
             </p>
             <div className="bottom__about">
               <i>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque qui officia
-                deserunt mollitia animi, id est laborum et dolorum fuga.
+                When artistry meets innovation, extraordinary moments unfold.
               </i>
             </div>
           </div>
@@ -105,9 +105,9 @@ export default function Home() {
                 <div className="step__details">
                   <h2>Free Shipping</h2>
                   <p>
-                    It is a long established fact that a reader will be
-                    distracted by the readable content of a page when looking at
-                    its layout Lorem Ipsum .
+                    Fast Service Experience our swift and efficient design
+                    solutions, ensuring quick turnaround times and timely
+                    delivery of your projects.
                   </p>
                 </div>
               </div>
@@ -118,9 +118,10 @@ export default function Home() {
                 <div className="step__details">
                   <h2>100% Refund</h2>
                   <p>
-                    It is a long established fact that a reader will be
-                    distracted by the readable content of a page when looking at
-                    its layout Lorem Ipsum .
+                    100% Quality Rest assured knowing that our designs are
+                    crafted with meticulous attention to detail and adhere to
+                    the highest standards of quality, guaranteeing exceptional
+                    results.
                   </p>
                 </div>
               </div>
@@ -131,9 +132,10 @@ export default function Home() {
                 <div className="step__details">
                   <h2>Support 2/47</h2>
                   <p>
-                    It is a long established fact that a reader will be
-                    distracted by the readable content of a page when looking at
-                    its layout Lorem Ipsum .
+                    24/7 Support We provide round-the-clock assistance and
+                    support, ensuring that you have access to our team whenever
+                    you need guidance, answers, or help with your design
+                    projects.
                   </p>
                 </div>
               </div>
@@ -174,41 +176,18 @@ export default function Home() {
 
                 <div>
                   <p>
-                    Don’t waste another day endlessly scrolling social media
-                    searching for a location for your event. The truth is,
-                    researching the vast amount of venue options in New
-                    Hampshire can be daunting!Choosing the right place can be
-                    the difference between simply having a ‘nice’ event or
-                    creating an unforgettable experience.waste another day
-                    endlessly scrolling social media searching for a location
-                    for your event. The truth is, researching the vast amount of
-                    venue options in New Hampshire can be daunting!Choosing the
-                    right place can be the difference between simply having a
-                    ‘nice’ event or creating an unforgettable experience.
+                    Explore our design services with three main categories:
+                    Silver, Gold, and Diamond. From cost-effective designs to
+                    premium craftsmanship, we offer custom options for
+                    backdrops, stands, booths, and exhibition stands. Make a
+                    lasting impact at your next event with our quality-focused
+                    approach and customer satisfaction guarantee.
                   </p>
                 </div>
                 <div className="em__spacer" style={{ height: "20px" }}></div>
                 <div className="em__our__action">
                   <button className="em__button primary">
-                    Design Invitation
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      width="19"
-                      height="5"
-                      viewBox="0 0 19 5"
-                    >
-                      <image
-                        id="right-arrow_35_copy_2"
-                        data-name="right-arrow (35) copy 2"
-                        width="19"
-                        height="5"
-                        xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
-                      />
-                    </svg>
-                  </button>
-                  <button className="em__button primary">
-                    Design Acrylics
+                    Order Now
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -241,11 +220,12 @@ export default function Home() {
             </div>
 
             <p>
-              At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atque corrupti quos
-              dolores et quas molestias excepturi sint occaecati cupiditate non
-              provident, similique sunt in culpa qui officia deserunt mollitia
-              animi, id est laborum et dolorum fuga.
+              Unlock the convenience of our Set and Forget Feature! Simply
+              subscribe to Dee and input your friends and family&apos;s details
+              to receive personalized event reminders and backdrop designs that
+              match their preferences. With Dee, enjoy efficient and affordable
+              solutions and create unforgettable events effortlessly. Subscribe
+              today and start designing your perfect event hassle-free.
             </p>
 
             <button className="em__button primary">

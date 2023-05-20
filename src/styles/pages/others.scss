@@ -1,4 +1,26 @@
 // Details Page style
+.p__tab {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid #efefef;
+  border-bottom: 1px solid #efefef;
+
+  .p__tab__item {
+    padding: 0px 15px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.4s;
+
+    &:hover,
+    &.active {
+      background-color: $primary-color;
+    }
+  }
+}
 
 .em__backdrops__details {
   background-color: #fff;

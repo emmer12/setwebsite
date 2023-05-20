@@ -1,3 +1,4 @@
+import { formattedMoney } from "@/lib/utils";
 import React from "react";
 
 interface IPackage {
@@ -15,7 +16,7 @@ const ServiceCard = ({ pack }: { pack: IPackage }) => {
         <p>{pack.description}</p>
         <div className="em__flex ">
           <div className="price mt-6">
-            <h2>${pack.price}</h2>
+            <h2>{formattedMoney(pack.price)}</h2>
           </div>
           <div>
             <svg

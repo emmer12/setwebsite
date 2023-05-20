@@ -26,10 +26,10 @@ const Footer = () => {
                   </svg>
                 </div>
                 <div>
-                  <p>
+                  {/* <p>
                     Quis ipsum suspendisse ultrice s gravida. Risus commodo vive
                     rra maecenas offer accumsan.lacus vel facilisis.
-                  </p>
+                  </p> */}
                 </div>
               </div>
               <div className="wrapper">
@@ -52,11 +52,11 @@ const Footer = () => {
                         xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABi0lEQVQ4jW3TTYjOURQG8J/XRxqfzZSFjxQbimZDs8FKCrFRykKzw0qJ7CxY2GIzKIUVO2VhR5ZmwUb5KEmWPsPM1Bjj1el93vr3fz11u/fce85zn3vOuQu6r55qYT/O4Si24RiuxuUmzmOyH9JpBd/AIzzGbxT7SbzEG3zAM1z6H8HDOH/H5RD1sQjXMB77Aq43Ce7hUNbFvh67WupOYzHuxD6Fi8W8FJvwJAf3sTHy5xsE5bcWE9iAhRirJK6OktnMv7CyFdzENJbFHioFD7A9G1+xJTL3DIRyN098jy6mimB35EjmS8UoRgbCexf9xXDskXKeazh8yjw7ENrDXG6eiT3VSYn6GM28YiC0hyUZQ7GXV/CRyKrxJ8kbT9bb+IJvKXn5dztpoPkkcDo5mIzdHNVgL6Luc/a7pWBVq+v25p3Vzm1sxmFcycG7uu1HStfHmUZTNVGlq3Eimz+xo9/Kb1P3aqKDWIPjLYLK1U5sxcfqwrq8/Z3X4XbW+/JHDuAWzuI1nkfFDPwDHAJhe0dprSAAAAAASUVORK5CYII="
                       />
                     </svg>
-                    <span>My company 4578 Marmora Road, Glasgow D0489R</span>
+                    <span>UAE DUBAI AL Wasl</span>
                   </li>
                   <li className="d-flex">
                     <img src="/assets/icons/phone.svg" alt="Phone Icon" />
-                    <a>0123-456-789</a>
+                    <a href="tel:+971558224410">+971558224410</a>
                   </li>
                   <li className="d-flex">
                     <img src="/assets/icons/envilop.svg" alt="Envelope Icon" />

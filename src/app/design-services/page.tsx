@@ -8,23 +8,33 @@ const Backdrops = () => {
       {
         title: "Silver",
         description:
-          "Quis ipsum suspendisse ultrice s gravida. Risus commodo vive rra maecenas accumsan lacus vel facilisis.",
-        price: 1000,
-        features: ["Feature 1", "Feature 2", "Feature 3"],
+          "Under the Silver category, you'll have access to an entry-level designer who will provide you with one design option for the price of ($953)",
+        price: 953,
+        features: ["Entry level designer", "One design option"],
       },
       {
         title: "Gold",
         description:
-          "Quis ipsum suspendisse ultrice s gravida. Risus commodo vive rra maecenas accumsan lacus vel facilisis.",
-        price: 3000,
-        features: ["Feature 1", "Feature 2", "Feature 3"],
+          "In the Gold category, our mid-level designer will offer you two design options, with one design provided for free, You'll select one final design from the options provided. all for the price of ($1,580)",
+        price: 1580,
+        features: [
+          "Mid level designer",
+          "Two design option",
+          "One design option provided for free",
+          "Only one final design to be selected",
+        ],
       },
       {
         title: "Diamond",
         description:
-          "Quis ipsum suspendisse ultrice s gravida. Risus commodo vive rra maecenas accumsan lacus vel facilisis.",
-        price: 5000,
-        features: ["Feature 1", "Feature 2", "Feature 3"],
+          "For our top-tier Diamond category, you'll work with a top-level designer who will present you with three design options and one additional free option , includes the selection of one final approved design. The package, priced at $2,445",
+        price: 2445,
+        features: [
+          "Top level designer",
+          "Three design options",
+          "One additional free option",
+          "Only one final design to be selected and approved",
+        ],
       },
     ],
     []
@@ -70,6 +80,29 @@ const Backdrops = () => {
               {packages.map((pack: any, i: number) => (
                 <ServiceCard pack={pack} key={i} />
               ))}
+            </div>
+
+            <div className="p__tab mt-8">
+              <div className="p__tab__item active">Product Information</div>
+            </div>
+
+            <div className="text-center p-7 w-full sm:w-1/2 mx-auto">
+              <h4 className="font-black py-4 text-xl">
+                About our Design Services
+              </h4>
+              <p>
+                Welcome to our design services, where we offer a wide range of
+                options to meet your specific needs. Choose from our three main
+                categories: Silver, Gold, and Diamond, which cater to different
+                budgets and requirements. Whether you&apos;re looking for
+                cost-effective designs, a balance between affordability and
+                premium features, or luxurious craftsmanship, we have you
+                covered. Our expert team specializes in creating custom designs
+                for backdrops, stands, booths, and exhibition stands, ensuring
+                your brand&apos;s identity shines through. With our commitment
+                to quality and customer satisfaction, your next event will leave
+                a lasting impact.
+              </p>
             </div>
           </div>
         </div>

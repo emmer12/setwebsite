@@ -1,13 +1,39 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { A11y, Navigation } from "swiper";
 import Backdrop from "./Testimony";
 import Testimony from "./Testimony";
 
 const Backdrops = () => {
-  const [testimonies] = useState<any[]>([1, 2, 3, 4, 5]);
+  // const [testimonies] = useState<any[]>([1, 2, 3, 4, 5]);
   const [swiper, setSwiper] = useState<any>(null);
+
+  const testimonies = useMemo(
+    () => [
+      {
+        text: "I just reached my moms house … the set up looks sooo amazing. Thaaaank you soo much 💚💚💚 I love it 💚💚",
+        location: "Dubai, UAE",
+        name: "Noora ",
+      },
+      {
+        text: "It went amazing thank you for this amazing stand we loved it so much!! 🤍",
+        location: "Dubai,UAE",
+        name: "Shahad ",
+      },
+      {
+        text: "Everything was perfect 💙",
+        location: "Sharjah, UAE",
+        name: "Fatima",
+      },
+      {
+        text: "it was such a lovely event, and one of reasons we were happy is your stunning set up🏼.I’m so glad I chose you, and hopefully i will arrange my next event with you.",
+        location: "Al Ain, UAE",
+        name: "Fatima ",
+      },
+    ],
+    []
+  );
 
   return (
     <div>
@@ -33,9 +59,9 @@ const Backdrops = () => {
           },
         }}
       >
-        {testimonies.map((_, i) => (
+        {testimonies.map((testimony, i) => (
           <SwiperSlide key={i}>
-            <Testimony />
+            <Testimony testimony={testimony} />
           </SwiperSlide>
         ))}
       </Swiper>

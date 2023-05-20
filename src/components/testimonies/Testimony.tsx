@@ -1,14 +1,11 @@
 import React from "react";
 
-const Testimony = () => {
+const Testimony = ({ testimony }: any) => {
   return (
     <div className="em__testimony_card">
       <div className="inner">
         <span className="date">14th March 2018</span>
-        <p>
-          Quis ipsum suspendisse ultrice s gravida. Risus commodo vive rra
-          maecenas accumsan lacus vel facilisis.
-        </p>
+        <p>{testimony.text}</p>
         <div className="em__flex em__justify__between">
           <div>
             <svg
@@ -45,11 +42,11 @@ const Testimony = () => {
       <div className="inner2">
         <div className="em__user">
           <div className="em__avatar">
-            <img src="" alt="" />
+            <img src="https://api.multiavatar.com/stefan.svg" alt="" />
           </div>
           <div className="em__details">
-            <h4>Stihen Jones</h4>
-            <p>Lorem, ipsum.</p>
+            <h4>{testimony.name}</h4>
+            <p>{testimony.location}</p>
           </div>
         </div>
       </div>
