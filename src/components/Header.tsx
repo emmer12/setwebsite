@@ -2,12 +2,14 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
   const path = usePathname();
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     setOpen(false);
@@ -61,11 +63,35 @@ const Header = () => {
                     </svg>
                   </div>
                 </div>
-                <div
-                  onClick={() => router.push("/auth/signin")}
-                  className="left"
-                >
-                  <div>
+                <div className="left">
+                  {status === "authenticated" && (
+                    <div onClick={() => signOut()} title="Logout">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                      </svg>
+                    </div>
+                  )}
+
+                  <div
+                    title="User"
+                    onClick={() =>
+                      status === "authenticated"
+                        ? router.push("/member/design")
+                        : router.push("/auth/signin")
+                    }
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -201,7 +227,7 @@ const Header = () => {
                   </svg>
                 </div>
 
-                <div className="bar" onClick={() => setOpen(!open)}>
+                <div className="bar mt-3" onClick={() => setOpen(!open)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={32}

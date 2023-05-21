@@ -200,6 +200,10 @@
         font-size: 74px;
         right: -132px;
         color: #d59878;
+
+        @media (max-width: 640px) {
+          right: -82px;
+        }
       }
     }
   }

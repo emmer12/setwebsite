@@ -1,6 +1,8 @@
 import { BackdropRentals, Backdrops } from "@/components/backdrops";
+import SBackdrops from "@/components/backdrops/BackdropSlide";
 import { Testimonies } from "@/components/testimonies";
 import Image from "next/image";
+import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function Home() {
@@ -88,7 +90,7 @@ export default function Home() {
                 <span className="em__fancy__text">Backdrop</span>
               </div>
 
-              <Backdrops />
+              <SBackdrops />
             </div>
           </div>
         </div>
@@ -228,24 +230,26 @@ export default function Home() {
               today and start designing your perfect event hassle-free.
             </p>
 
-            <button className="em__button primary">
-              Subscribe
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                width="19"
-                height="5"
-                viewBox="0 0 19 5"
-              >
-                <image
-                  id="right-arrow_35_copy_2"
-                  data-name="right-arrow (35) copy 2"
+            <Link href="/dee-digital-designer">
+              <button className="em__button primary">
+                Subscribe
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
                   width="19"
                   height="5"
-                  xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
-                />
-              </svg>
-            </button>
+                  viewBox="0 0 19 5"
+                >
+                  <image
+                    id="right-arrow_35_copy_2"
+                    data-name="right-arrow (35) copy 2"
+                    width="19"
+                    height="5"
+                    xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
+                  />
+                </svg>
+              </button>
+            </Link>
           </div>
         </div>
       </div>

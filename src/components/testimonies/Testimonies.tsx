@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo, useState } from "react";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
-import { A11y, Navigation } from "swiper";
+import { A11y, Navigation, Autoplay } from "swiper";
 import Backdrop from "./Testimony";
 import Testimony from "./Testimony";
 
@@ -40,7 +40,8 @@ const Backdrops = () => {
       <Swiper
         spaceBetween={20}
         slidesPerView="auto"
-        modules={[Navigation, A11y]}
+        modules={[Autoplay, Navigation, A11y]}
+        autoplay={{ delay: 2500 }}
         onSwiper={(swiper) => {
           setSwiper(swiper);
         }}

@@ -260,7 +260,7 @@ const Page: FC<PageProps> = ({ params }) => {
                   <div className="h__wrapper">
                     <div className="em__header">
                       <h1>Related</h1>
-                      <span className="em__fancy__text">Products</span>
+                      <span className="em__fancy__text  ">Products</span>
                     </div>
                   </div>
 

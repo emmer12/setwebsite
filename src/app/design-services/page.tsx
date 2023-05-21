@@ -76,7 +76,7 @@ const Backdrops = () => {
       <div className="em__backdrops">
         <div className="container">
           <div className="em__body__wrapper">
-            <div className="inner__wrapper">
+            <div className="s_inner__wrapper">
               {packages.map((pack: any, i: number) => (
                 <ServiceCard pack={pack} key={i} />
               ))}
@@ -86,7 +86,7 @@ const Backdrops = () => {
               <div className="p__tab__item active">Product Information</div>
             </div>
 
-            <div className="text-center p-7 w-full sm:w-1/2 mx-auto">
+            <div className="text-center p-3 sm:p-7 w-full sm:w-1/2 mx-auto">
               <h4 className="font-black py-4 text-xl">
                 About our Design Services
               </h4>

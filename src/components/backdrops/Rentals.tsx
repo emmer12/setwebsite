@@ -14,17 +14,17 @@ const Backdrops = () => {
     return [
       {
         title: "Backdrops",
-        display: "/assets/images/backdrops.jpg",
+        display: "/assets/images/Backdrops-2.jpg",
         href: "backdrops",
       },
       {
         title: "Design Service",
-        display: "/assets/images/designs.jpg",
+        display: "/assets/images/Design Services.jpg",
         href: "design-services",
       },
       {
         title: "Events",
-        display: "/assets/images/events.jpeg",
+        display: "/assets/images/Events.jpg",
         href: "events",
       },
     ];

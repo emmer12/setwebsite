@@ -11,12 +11,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const userData = JSON.parse(req.body);
 
+      const user = await prisma.user.findFirst({
+        where: { email: userData.email },
+      });
+
+      if (user) {
+        return res.status(400).json({ msg: `User with this email exist` });
+      }
+
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(myPlaintextPassword, salt);
 
-      console.log(userData);
-
-      const user = await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           name: userData.name,
           email: userData.email,
@@ -24,12 +30,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
-      res.status(201);
-      res.json({ user });
+      res.status(201).json({ user: newUser });
     } catch (error) {
-      console.log(error);
-      res.status(500);
-      res.json({ error });
+      res.status(500).json({ error });
     } finally {
       await prisma.$disconnect();
     }

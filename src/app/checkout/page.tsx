@@ -15,6 +15,10 @@ const Checkout = () => {
   //   }
   // }, []);
 
+  if (cart.length < 1) {
+    router.push("/");
+  }
+
   return (
     <div>
       <div className="em__banner checkout">
