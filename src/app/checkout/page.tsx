@@ -15,9 +15,9 @@ const Checkout = () => {
   //   }
   // }, []);
 
-  if (cart.length < 1) {
-    router.push("/");
-  }
+  // if (cart.length < 1) {
+  //   router.push("/");
+  // }
 
   return (
     <div>
