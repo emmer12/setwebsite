@@ -86,22 +86,22 @@ const Page: FC<PageProps> = ({ params }) => {
                         )}
                       </span>
                     </div>
-
+                    {/* 
                     <div className="date">
                       <h4>Date:</h4>
                       <input type="date" name="date" />
-                    </div>
-                    <div
+                    </div> */}
+                    {/* <div
                       className="em__spacer"
                       style={{ height: "30px" }}
-                    ></div>
+                    ></div> */}
 
                     <hr className="details" />
-
+                    {/* 
                     <div
                       className="em__spacer"
                       style={{ height: "30px" }}
-                    ></div>
+                    ></div> */}
 
                     <h4>Add-ons that go well this Backdrop</h4>
                     <div className="em__spacer" style={{ height: "4px" }}></div>

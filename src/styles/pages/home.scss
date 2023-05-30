@@ -48,7 +48,7 @@
   .em__hb_items {
     .box {
       border: 4px solid #fff;
-      background-color: #b3bdca;
+      // background-color: #b3bdca;
       height: 350px;
       // height: 300px;
       overflow: hidden;
@@ -56,7 +56,7 @@
       img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
       }
 
       &.box-bl {
