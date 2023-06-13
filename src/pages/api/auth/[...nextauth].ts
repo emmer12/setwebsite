@@ -24,22 +24,18 @@ export default NextAuth({
       // },
       credentials: {},
       async authorize(credentials: any, req) {
-        console.log("got here");
         const user: any = await prisma.user.findFirst({
           where: { email: credentials.email },
         });
 
         if (user) {
-          compare(
-            credentials.password,
-            user.password,
-            async function (err: any, result: any) {
-              if (!err && result) {
-                return true;
-              }
-            }
-          );
-          return Promise.resolve(user);
+          const isValid = await compare(credentials.password, user.password);
+          if (isValid) {
+            return Promise.resolve(user);
+          } else {
+            return Promise.resolve(null);
+          }
+          console.log(isValid);
         } else {
           return Promise.resolve(null);
         }
@@ -49,17 +45,25 @@ export default NextAuth({
   pages: {
     signIn: "/auth/signin",
   },
-  // callbacks: {
-  //   session: async ({ session, token, user }) => {
-  //     if (session?.user) {
-  //       session.user.id = user.id;
-  //     }
-  //     const userData = await fetch(
-  //       `${process.env.NEXTAUTH_URL}/api/user?userId=${user.id}`
-  //     ).then((response) => response.json());
-  //     session.user.subscriptionStatus = userData.subscriptionStatus;
-  //     return session;
-  //   },
-  // },
+  callbacks: {
+    session: async ({ session, token, user }) => {
+      if (session?.user) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
+      }
+      // const userData = await fetch(
+      //   `${process.env.NEXTAUTH_URL}/api/user?userId=${token.id}`
+      // ).then((response) => response.json());
+      // session.user.subscriptionStatus = userData.subscriptionStatus;
+      return Promise.resolve(session);
+    },
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
 });

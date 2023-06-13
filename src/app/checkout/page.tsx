@@ -1,5 +1,7 @@
 "use client";
+import Button from "@/components/Button";
 import CartItem from "@/components/CartItem";
+import { ArrowRight } from "@/components/icons";
 import { useCart } from "@/hooks/useCartProvider";
 import { ICartItem } from "@/types";
 import { useRouter } from "next/navigation";
@@ -113,24 +115,11 @@ const Checkout = () => {
                     </div>
                     <br />
 
-                    <button className="em__button primary">
-                      Place the order
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        xmlnsXlink="http://www.w3.org/1999/xlink"
-                        width="19"
-                        height="5"
-                        viewBox="0 0 19 5"
-                      >
-                        <image
-                          id="right-arrow_35_copy_2"
-                          data-name="right-arrow (35) copy 2"
-                          width="19"
-                          height="5"
-                          xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
-                        />
-                      </svg>
-                    </button>
+                    <Button
+                      classNames="em__button primary"
+                      text="Buy Production Files"
+                      RightIcon={<ArrowRight />}
+                    />
                   </form>
                 </div>
               </div>

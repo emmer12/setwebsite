@@ -7,6 +7,8 @@ import { IBackdrop } from "@/types";
 import { getDiscount } from "@/lib/utils";
 import { useCart } from "@/hooks/useCartProvider";
 import { useRouter } from "next/navigation";
+import Button from "@/components/Button";
+import { Basket } from "@/components/icons";
 
 interface PageProps {
   params: { slug: string };
@@ -36,7 +38,7 @@ const Page: FC<PageProps> = ({ params }) => {
     };
     addToCart(data);
 
-    router.push("/checkout");
+    router.push("/checkout/backdrop");
   };
 
   return (
@@ -178,27 +180,13 @@ const Page: FC<PageProps> = ({ params }) => {
                       style={{ height: "20px" }}
                     ></div>
 
-                    <button
+                    <Button
                       onClick={() => addCart(data?.backdrop)}
-                      className="em__button primary block"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        xmlnsXlink="http://www.w3.org/1999/xlink"
-                        width="24"
-                        height="22"
-                        viewBox="0 0 24 22"
-                      >
-                        <image
-                          id="shopping-cart-empty-side-view_1_copy_2"
-                          data-name="shopping-cart-empty-side-view (1) copy 2"
-                          width="24"
-                          height="22"
-                          xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAABtklEQVRIibXVO2tVQRDA8Z/xqvEJomlSqeAXEBEt1MJOCFqb2ipiLQqCIlhYGHxgJX4AwSLaKIKBEIgIGhRtggqKT7Tx+kLQhJWJHM+ee3JyQ/4w3Ls7s7M7szN74Bs+YAhrLQJn8QPTIRewdDE2GsCz2GRnpu2SVmHZTUziFXZgArtxOiL8gq8h7RjPSjtSXZZP5WO1IoIbMT5QSN185SeeLKkI/DN6sL4wl+yWYwVWYnVBVmFNFMi6kHTQM5nn4FacdKH8wXBPhZOJ+N2aaZpzPKK+UrViX0QwmGma8wa/RK7LPIrxrkzTjI3ox7U66xTBw2y2GUOxfnud9dO4pG54WSySqhQl7sYl9WaaetITswnXZ61aHczHcRQHcTs2m4t06sNhc3EO278l2m0H/y466hTBFI7gEh5jrCadRb7jTjbbgW0LuOh/1OX2BTbjZLwzabMtpajb0VStSM0G3MfVzFsFJ/C2lN/neB/yDh9L+vSCnspdVbMsHB2Lakqtv6dkORwR7Me9qL7G7I1T9cWK9P9yaXW61FQQifPzfYVTXkfxACN4HU1U5FB84VJjpXSd+0+LGX4Fg0q9zPoTAAAAAElFTkSuQmCC"
-                        />
-                      </svg>
-                      Add to Cart
-                    </button>
+                      classNames="em__button primary block"
+                      RightIcon={<Basket />}
+                      text="Add to Cart"
+                    />
+
                     <div style={{ textAlign: "center" }}>
                       <strong>100% secure online checkout</strong>
                     </div>

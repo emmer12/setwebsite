@@ -93,7 +93,8 @@ ul {
   height: 45px;
   margin: 20px 0px;
   textarea,
-  input {
+  input,
+  select {
     box-sizing: border-box;
     width: 100%;
     border: none;
@@ -301,9 +302,15 @@ a {
   font-weight: 700;
   font-family: "acaslonpro-regular";
   text-transform: uppercase;
+  position: relative;
 
   svg {
     margin-left: 4px;
+  }
+
+  .loading {
+    position: absolute;
+    right: 10px;
   }
 
   /* Button variations */
@@ -381,6 +388,10 @@ a {
 // Mobile
 
 @media (max-width: 640px) {
+  .checkout__info {
+    margin-right: 0px !important;
+  }
+
   .bar {
     display: block;
   }
@@ -758,5 +769,21 @@ input[type="radio"] {
         background: $primary-color;
       }
     }
+  }
+}
+
+.em__vpcard {
+  border: 1px solid transparent;
+
+  input {
+    height: 18px;
+    width: 18px;
+    accent-color: $secondary-color;
+  }
+
+  &:hover,
+  &.active {
+    background: #ffddc1;
+    border: 1px solid #8b5326;
   }
 }

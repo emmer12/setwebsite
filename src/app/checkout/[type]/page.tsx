@@ -88,15 +88,12 @@ const SubCheckout: FC<PageProps> = ({ params }) => {
                     <div className="agree__info">
                       <div className="form-radio flex">
                         <input
-                          type="radio"
+                          type="checkbox"
                           name="shipping"
                           id="free_shipping"
                           className="mr-3"
                         />
-                        <label htmlFor="free_shipping">
-                          Lorem ipsum dolor sit, amet consectetur adipisicing
-                          elit. Accusamus repudiandae, eveniet corporis dicta
-                        </label>
+                        <label htmlFor="free_shipping">Request Quote</label>
                       </div>
                     </div>
                     <br />

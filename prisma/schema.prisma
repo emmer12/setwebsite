@@ -35,17 +35,26 @@ model Session {
     user         User     @relation(fields: [userId], references: [id])
 }
 
+enum UserRole {
+    ADMIN
+    USER
+    VENDOR
+}
+
 model User {
-    id            String    @id @default(auto()) @map("_id") @db.ObjectId
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
-    accounts      Account[]
-    sessions      Session[]
-    password      String
+    id                String              @id @default(auto()) @map("_id") @db.ObjectId
+    name              String?
+    email             String?             @unique
+    emailVerified     DateTime?
+    image             String?
+    createdAt         DateTime            @default(now())
+    updatedAt         DateTime            @updatedAt
+    role              UserRole            @default(USER)
+    accounts          Account[]
+    sessions          Session[]
+    password          String
+    BackdropOrderItem BackdropOrderItem[]
+    Vendor            Vendor[]
 }
 
 model VerificationRequest {
@@ -70,19 +79,21 @@ model BackdropCategory {
 }
 
 model Backdrops {
-    id          String           @id @default(auto()) @map("_id") @db.ObjectId
-    price       Float
-    title       String
-    slug        String
-    description String
-    stockStatus StockStatus      @default(IN_STOCK)
-    discount    Int              @default(0)
-    addOn       String[]
-    imageUrl    String?
-    categoryId  String           @db.ObjectId
-    createdAt   DateTime         @default(now())
-    updatedAt   DateTime         @updatedAt
-    category    BackdropCategory @relation(fields: [categoryId], references: [id])
+    id                String              @id @default(auto()) @map("_id") @db.ObjectId
+    price             Float
+    title             String
+    slug              String
+    description       String
+    stockStatus       StockStatus         @default(IN_STOCK)
+    discount          Int                 @default(0)
+    addOn             String[]
+    imageUrl          String?
+    categoryId        String              @db.ObjectId
+    createdAt         DateTime            @default(now())
+    updatedAt         DateTime            @updatedAt
+    category          BackdropCategory    @relation(fields: [categoryId], references: [id])
+    BackdropOrderItem BackdropOrderItem[]
+    filePath          String?             @default("backdrops")
 }
 
 enum StockStatus {
@@ -100,4 +111,66 @@ model Blog {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     eUrl      String?
+}
+
+enum PaymentStatus {
+    PAID
+    UNPAID
+}
+
+model BackdropOrder {
+    id            String              @id @default(auto()) @map("_id") @db.ObjectId
+    code          String
+    paymentStatus PaymentStatus       @default(UNPAID)
+    userId        String?             @db.ObjectId
+    totalPrice    Float
+    fullName      String
+    email         String
+    address       String?
+    country       String
+    items         BackdropOrderItem[]
+}
+
+model BackdropOrderItem {
+    id         String        @id @default(auto()) @map("_id") @db.ObjectId
+    orderId    String        @db.ObjectId
+    price      Float
+    title      String
+    backdropId String        @db.ObjectId
+    backdrop   Backdrops     @relation(fields: [backdropId], references: [id])
+    order      BackdropOrder @relation(fields: [orderId], references: [id])
+    User       User?         @relation(fields: [userId], references: [id])
+    userId     String?       @db.ObjectId
+}
+
+enum TranstionType {
+    BACKDROP
+    DEE_DEGITAL
+}
+
+model transactionLog {
+    id            String        @id @default(auto()) @map("_id") @db.ObjectId
+    transactionId String
+    orderId       String        @db.ObjectId
+    type          TranstionType
+    description   String
+}
+
+model Vendor {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    userId          String    @db.ObjectId
+    company_name    String
+    overview        String
+    website         String?
+    services        String
+    phone           String
+    image_1_path    String
+    image_2_path    String?
+    video_path      String?
+    socials         String?
+    quote_sub       Boolean   @default(false)
+    profile_sub     Boolean   @default(false)
+    quote_sub_exp   DateTime?
+    profile_sub_exp DateTime?
+    user            User      @relation(fields: [userId], references: [id])
 }

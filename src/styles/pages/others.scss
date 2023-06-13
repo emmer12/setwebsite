@@ -571,6 +571,9 @@
 }
 
 @media (max-width: 640px) {
+  .comment__form {
+    width: 100%;
+  }
   .em__blog__content {
     padding: 42px 0px;
     .em__blog__body {

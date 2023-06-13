@@ -23,9 +23,9 @@ const Backdrops = () => {
         href: "design-services",
       },
       {
-        title: "Events",
+        title: "Vendor",
         display: "/assets/images/Events.jpg",
-        href: "events",
+        href: "vendor",
       },
     ];
   }, []);

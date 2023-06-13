@@ -161,9 +161,9 @@ export default function Home() {
                   <path
                     fillRule="evenodd"
                     stroke="rgb(5, 5, 5)"
-                    stroke-width="1px"
-                    stroke-linecap="butt"
-                    stroke-linejoin="miter"
+                    strokeWidth="1px"
+                    strokeLinecap="butt"
+                    strokeLinejoin="miter"
                     fill="none"
                     d="M69.549,0.992 C69.549,0.992 -62.455,153.959 39.888,308.337 C74.290,354.514 53.477,258.924 38.90,328.108 C22.704,397.291 71.299,478.198 149.544,469.198 C227.789,460.197 294.936,459.685 304.140,459.313 C313.345,458.938 353.575,459.313 353.575,459.313 C353.575,459.313 462.268,571.300 278.974,595.12 "
                   />

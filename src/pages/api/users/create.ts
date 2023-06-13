@@ -6,7 +6,6 @@ const saltRounds = 10;
 const myPlaintextPassword = "s0//P4$$w0rD";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(req.method);
   if (req.method === "POST") {
     try {
       const userData = JSON.parse(req.body);
@@ -20,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(myPlaintextPassword, salt);
+      const hash = bcrypt.hashSync(userData.password, salt);
 
       const newUser = await prisma.user.create({
         data: {
@@ -32,6 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       res.status(201).json({ user: newUser });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error });
     } finally {
       await prisma.$disconnect();
