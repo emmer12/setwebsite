@@ -25,7 +25,7 @@ const Backdrops = () => {
       {
         title: "Vendor",
         display: "/assets/images/Events.jpg",
-        href: "vendor",
+        href: "vendor/onboard",
       },
     ];
   }, []);
