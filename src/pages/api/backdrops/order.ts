@@ -49,7 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             request_type: "EVENT_PLANNING",
             orderId: newOrder.id,
             additional_request: data.additional_request,
-            event_date: new Date(data.event_date),
+            event_date: data.event_date,
             location: data.location,
             occasion: data.occasion,
             people_number: data.people_number,
