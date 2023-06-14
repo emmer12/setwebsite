@@ -129,6 +129,9 @@ model BackdropOrder {
     address       String?
     country       String
     items         BackdropOrderItem[]
+    Requests      Requests[]
+    ep_quote      Boolean             @default(false)
+    bp_quote      Boolean             @default(false)
 }
 
 model BackdropOrderItem {
@@ -173,4 +176,21 @@ model Vendor {
     quote_sub_exp   DateTime?
     profile_sub_exp DateTime?
     user            User      @relation(fields: [userId], references: [id])
+}
+
+enum RequestType {
+    EVENT_PLANNING
+    BACKDROP_PRODUCTION
+}
+
+model Requests {
+    id                 String        @id @default(auto()) @map("_id") @db.ObjectId
+    request_type       RequestType
+    orderId            String        @db.ObjectId
+    order              BackdropOrder @relation(fields: [orderId], references: [id])
+    people_number      String?
+    event_date         String?
+    occasion           String?
+    location           String?
+    additional_request String?
 }

@@ -16,6 +16,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           country: data.country,
           address: data.address,
           totalPrice: data.total,
+          bp_quote: data.bp_quote,
+          ep_quote: data.ep_quote,
         },
       });
 
@@ -31,6 +33,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         });
       });
+
+      if (data.bp_quote) {
+        await prisma.requests.create({
+          data: {
+            request_type: "BACKDROP_PRODUCTION",
+            orderId: newOrder.id,
+          },
+        });
+      }
+
+      if (data.ep_quote) {
+        await prisma.requests.create({
+          data: {
+            request_type: "EVENT_PLANNING",
+            orderId: newOrder.id,
+            additional_request: data.additional_request,
+            event_date: new Date(data.event_date),
+            location: data.location,
+            occasion: data.occasion,
+            people_number: data.people_number,
+          },
+        });
+      }
 
       res.status(201).json({ newOrder });
     } catch (error) {

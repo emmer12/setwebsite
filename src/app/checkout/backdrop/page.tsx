@@ -51,6 +51,11 @@ const Checkout = () => {
       address,
       ep_quote,
       bp_quote,
+      people_number,
+      event_date,
+      occasion,
+      location,
+      additional_request,
     }) => {
       setLoading(true);
       try {
@@ -64,6 +69,11 @@ const Checkout = () => {
           total: subTotal(),
           ep_quote,
           bp_quote,
+          people_number,
+          event_date,
+          occasion,
+          location,
+          additional_request,
         });
 
         NotificationManager.success("Order Created");
