@@ -133,6 +133,7 @@ input[type="number"] {
 .em__fancy__text {
   font-family: "infinity";
   color: #8b5326;
+  white-space: nowrap;
 }
 
 .em__body__wrapper {
@@ -210,9 +211,9 @@ a {
 
     span {
       color: #ffae8a;
-      font-size: 110px;
-      top: 20px;
-      right: -227px;
+      font-size: 92px;
+      top: 39px;
+      left: 62px;
     }
   }
   h1 {
@@ -589,6 +590,23 @@ input[type="radio"] {
   }
 }
 
+.em__badge {
+  padding: 10px 15px;
+  background-color: transparent;
+  border: 1px solid $primary-color;
+  color: #263f61;
+  border-radius: 100px;
+  margin: 0px 10px;
+  white-space: nowrap;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover,
+  &.active {
+    background-color: $primary-color;
+  }
+}
+
 .cart__item {
   height: 170px;
   .em__flex {
@@ -786,4 +804,8 @@ input[type="radio"] {
     background: #ffddc1;
     border: 1px solid #8b5326;
   }
+}
+
+.h__dropdown {
+  height: fit-content;
 }

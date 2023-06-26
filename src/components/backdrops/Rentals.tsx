@@ -13,18 +13,18 @@ const Backdrops = () => {
   const categories = useMemo(() => {
     return [
       {
-        title: "Backdrops",
-        display: "/assets/images/Backdrops-2.jpg",
+        title: "Design Downloads",
+        display: "/assets/images/hero/designs.png",
         href: "backdrops",
       },
       {
-        title: "Design Service",
-        display: "/assets/images/Design Services.jpg",
-        href: "design-services",
+        title: "Creative AI Studio",
+        display: "/assets/images/hero/ai-create.png",
+        href: "creative-ai-studio",
       },
       {
-        title: "Vendor",
-        display: "/assets/images/Events.jpg",
+        title: "Event Connections",
+        display: "/assets/images/hero/vendor.png",
         href: "vendor/onboard",
       },
     ];
@@ -37,21 +37,21 @@ const Backdrops = () => {
   return (
     <div className="em__categories grid grid-cols-3 gap-2">
       {categories.map((category, i) => (
-        <div className="em__hb_items" key={i}>
+        <Link href={category.href} className="em__hb_items" key={i}>
           <div className={"box " + getClass(i)}>
             <Image
               src={category.display}
-              height={300}
-              width={240}
+              height={712}
+              width={850}
               alt={category.title}
             />
           </div>
           <div className="em__content">
             <h4>{category.title}</h4>
-            <h5>AED</h5>
-            <Link href={category.href}>Book Now </Link>
+            {/* <h5>AED</h5> */}
+            {/* <Link href={category.href}>Book Now </Link> */}
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

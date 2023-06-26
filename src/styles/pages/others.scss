@@ -570,6 +570,53 @@
   }
 }
 
+.ai__images__grid {
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 2px solid transparent;
+
+  img {
+    transition: 0.3s ease;
+    border-radius: 3px;
+  }
+
+  &:hover {
+    border: 2px solid #8b5326;
+
+    img {
+      transform: scale(0.95);
+    }
+  }
+}
+
+.about__service {
+  width: 640px;
+  max-width: 100%;
+  margin: auto;
+  padding: 10px;
+}
+
+.ai__prompt {
+  width: 640px;
+  max-width: 100%;
+  margin: auto;
+  padding: 10px;
+
+  h4 {
+    font-weight: 600;
+    font-size: 20px;
+  }
+}
+.ai__box {
+  width: 640px;
+  height: 400px;
+  border: 10px solid $primary-color;
+  max-width: 100%;
+  margin: auto;
+  padding: 10px;
+}
+
 @media (max-width: 640px) {
   .comment__form {
     width: 100%;
@@ -614,6 +661,13 @@
       margin-top: 30px;
     }
   }
+}
+
+.f__items {
+  background: $primary-color;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 18px 18px 18px 8px;
 }
 
 .cake-btn-prev {

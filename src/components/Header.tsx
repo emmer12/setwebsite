@@ -137,7 +137,7 @@ const Header = () => {
                   <div className="em__right">
                     <ul>
                       <li>
-                        <a href="#about">About Set</a>
+                        <a href="#about">About</a>
                       </li>
                       <li className="relative">
                         <div
@@ -162,18 +162,25 @@ const Header = () => {
                           </svg>
                         </div>
                         {dropOpen && (
-                          <ul className="h__dropdown p-5 bg-white absolute flex-col inset-0 z-50 top-6 block w-80 h-60 rounded-tl-2xl rounded-br-3xl">
+                          <ul className="h__dropdown p-5 bg-white absolute flex-col inset-0 z-50 top-6 block w-80  rounded-tl-2xl rounded-br-3xl">
                             <li className="py-3">
-                              <Link href="/backdrops">Backdrops</Link>
+                              <Link href="/vendor/onboard">
+                                Vendor Registration
+                              </Link>
                             </li>
                             <li className="py-3">
-                              <a href="">Design Service </a>
+                              <Link href="/design-services">
+                                Dee Ultra Subscription system
+                              </Link>
                             </li>
                             <li className="py-3">
-                              <a href="">Events</a>
+                              <a href=""> Design Download </a>
                             </li>
                             <li className="py-3">
-                              <a href="">Blog</a>
+                              <a href="">Creative AI Studio</a>
+                            </li>
+                            <li className="py-3">
+                              <a href="">Event Connections</a>
                             </li>
                           </ul>
                         )}
@@ -199,7 +206,7 @@ const Header = () => {
                   <div className="em__left">
                     <ul>
                       <li>
-                        <Link href="/designs">Subscription</Link>
+                        <Link href="/login">Login</Link>
                       </li>
                       <li>
                         <Link href="/backdrops">Contact Set</Link>
@@ -250,7 +257,7 @@ const Header = () => {
             <div className="mobile__menu">
               <ul>
                 <li>
-                  <a href="#">About Set</a>
+                  <a href="#">About</a>
                 </li>
                 <li>
                   <a href="#">Event Essentials</a>

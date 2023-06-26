@@ -461,7 +461,8 @@
 
 // Banners
 
-.em__banner {
+.em__banner,
+.em__banner__2 {
   height: 300px;
   text-align: center;
   background: #fff;
@@ -510,6 +511,20 @@
           left: inherit;
           top: 0px;
         }
+      }
+    }
+  }
+}
+
+.em__banner__2 {
+  height: 150px;
+  background: #fff;
+  .inner {
+    h1 {
+      line-height: 25px;
+      margin-top: 0px;
+      span {
+        display: block;
       }
     }
   }

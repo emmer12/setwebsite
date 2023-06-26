@@ -1,8 +1,8 @@
 "use client";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import "./../styles/app.scss";
-import "./../styles/globals.css";
+import "@/styles/app.scss";
+import "@/styles/globals.css";
 import "react-notifications/lib/notifications.css";
 import { NotificationContainer } from "react-notifications";
 

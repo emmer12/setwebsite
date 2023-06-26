@@ -108,8 +108,13 @@ const Checkout = () => {
                           id="free_shipping"
                         />
                         <label htmlFor="free_shipping">
-                          Lorem ipsum dolor sit, amet consectetur adipisicing
-                          elit. Accusamus repudiandae, eveniet corporis dicta
+                          By ticking the confirmation box, you acknowledge and
+                          understand that our AI system is a continuously
+                          evolving platform that learns from daily requests.
+                          While the adapted designs it generates strive for
+                          originality, we cannot be held responsible if any
+                          similarity arises unintentionally with designs
+                          existing in the world of which we have no knowledge.
                         </label>
                       </div>
                     </div>

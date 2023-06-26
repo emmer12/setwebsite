@@ -20,12 +20,13 @@ export default function Home() {
                   <span className="em__fancy__text sp">Specializes</span>
                 </h2>
                 <p>
-                  in both captivating backdrop rentals and purchases, offering a
-                  seamless blend of elegance and convenience. With our expertise
-                  in event designs and revolutionary AI design technologies...
+                  Welcome to Set Events, where imagination meets elegance.
+                  Explore our Design Downloads for stunning design files,
+                  unleash the creativity of our Creative AI Studio, or discover
+                  a world of possibilities with our curated Event Connections
                 </p>
-                <button className="em__button primary">
-                  Subscribe
+                <a href="#about" className="em__button primary">
+                  Read More
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -41,10 +42,15 @@ export default function Home() {
                       xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
                     />
                   </svg>
-                </button>
+                </a>
               </div>
               <div className="em__hero__right">
-                <img src="/assets/images/hero1.png" />
+                <Image
+                  height={400}
+                  width={600}
+                  alt="Hero Image"
+                  src="/assets/images/hero/hero-bg.png"
+                />
               </div>
             </div>
           </div>
@@ -65,12 +71,18 @@ export default function Home() {
             </div>
 
             <p>
-              We intricately craft experiences that transform dreams into
-              reality. From stunning backdrop rentals to thoughtfully curated
-              event designs, we create captivating atmospheres that leave a
-              lasting impression. With the seamless fusion of artistry and
-              innovation, we redefine what&apos;s possible, ensuring that
-              extraordinary moments are born.
+              We are a premier event platform, offering a seamless and
+              unforgettable experience. With our diverse range of services,
+              including Design Downloads for breathtaking backdrops and stands,
+              a Creative AI Studio for personalized event designs, and Event
+              Connections to connect you with top-notch vendors and planners, we
+              have all you need to make your event exceptional. Experience the
+              convenience of our &apos;Set and Forget&apos; feature, where you
+              can subscribe and provide us with your family and friends&apos;
+              birthdays, and let our advanced AI technology generate a variety
+              of celebratory options, from captivating backdrops to delectable
+              cakes. Let Set Events transform your event into a cherished memory
+              that will last a lifetime.
             </p>
             <div className="bottom__about">
               <i>
@@ -87,7 +99,7 @@ export default function Home() {
             <div className="em__inner">
               <div className="em__header h-b">
                 <h1>Our</h1>
-                <span className="em__fancy__text">Backdrop</span>
+                <span className="em__fancy__text">Design Downloads</span>
               </div>
 
               <SBackdrops />
@@ -102,42 +114,56 @@ export default function Home() {
             <div className="em__step__row">
               <div className="step__item">
                 <div className="step__icon">
-                  <img src="/assets/images/fast-delivery.png" alt="" />
+                  <Image
+                    height={100}
+                    width={100}
+                    src="/assets/images/fast-delivery.png"
+                    alt=""
+                  />
                 </div>
                 <div className="step__details">
-                  <h2>Free Shipping</h2>
+                  <h2>Fast Service</h2>
                   <p>
-                    Fast Service Experience our swift and efficient design
-                    solutions, ensuring quick turnaround times and timely
-                    delivery of your projects.
+                    Experience our swift and efficient design solutions,
+                    ensuring quick turnaround times and timely delivery of your
+                    projects.
                   </p>
                 </div>
               </div>
               <div className="step__item">
                 <div className="step__icon">
-                  <img src="/assets/images/refund.png" alt="" />
+                  <Image
+                    height={100}
+                    width={100}
+                    src="/assets/images/refund.png"
+                    alt=""
+                  />
                 </div>
                 <div className="step__details">
-                  <h2>100% Refund</h2>
+                  <h2>100% Quality</h2>
                   <p>
-                    100% Quality Rest assured knowing that our designs are
-                    crafted with meticulous attention to detail and adhere to
-                    the highest standards of quality, guaranteeing exceptional
+                    Rest assured knowing that our design systems are crafted
+                    with meticulous attention to detail and adhere to the
+                    highest standards of quality, guaranteeing exceptional
                     results.
                   </p>
                 </div>
               </div>
               <div className="step__item">
                 <div className="step__icon">
-                  <img src="/assets/images/technical-support.png" alt="" />
+                  <Image
+                    height={100}
+                    width={100}
+                    src="/assets/images/technical-support.png"
+                    alt=""
+                  />
                 </div>
                 <div className="step__details">
-                  <h2>Support 2/47</h2>
+                  <h2>2/47 Support </h2>
                   <p>
-                    24/7 Support We provide round-the-clock assistance and
-                    support, ensuring that you have access to our team whenever
-                    you need guidance, answers, or help with your design
-                    projects.
+                    We provide round-the-clock assistance and support, ensuring
+                    that you have access to our team whenever you need guidance,
+                    answers, or help with your design projects
                   </p>
                 </div>
               </div>
@@ -173,17 +199,20 @@ export default function Home() {
               <div className="details">
                 <div className="em__header left">
                   <h1>Our</h1>
-                  <span className="em__fancy__text">Design</span>
+                  <span className="em__fancy__text">Creative AI studio</span>
                 </div>
 
                 <div>
                   <p>
-                    Explore our design services with three main categories:
-                    Silver, Gold, and Diamond. From cost-effective designs to
-                    premium craftsmanship, we offer custom options for
-                    backdrops, stands, booths, and exhibition stands. Make a
-                    lasting impact at your next event with our quality-focused
-                    approach and customer satisfaction guarantee.
+                    Experience the power of creativity. Meet Dee, your Digital
+                    Designer, who will amaze you with stunning event backdrops,
+                    exhibition stand concepts, and captivating wedding stage
+                    designs. Say goodbye to the hassle of searching for the
+                    perfect design and let Dee provide you with a variety of
+                    options at an affordable cost. Whether you&apos;re planning
+                    a birthday, engagement, baby shower, or any special event,
+                    Dee will bring your vision to life. Subscribe now and unlock
+                    a world of endless inspiration and remarkable design.
                   </p>
                 </div>
                 <div className="em__spacer" style={{ height: "20px" }}></div>
@@ -223,11 +252,14 @@ export default function Home() {
 
             <p>
               Unlock the convenience of our Set and Forget Feature! Simply
-              subscribe to Dee and input your friends and family&apos;s details
-              to receive personalized event reminders and backdrop designs that
-              match their preferences. With Dee, enjoy efficient and affordable
-              solutions and create unforgettable events effortlessly. Subscribe
-              today and start designing your perfect event hassle-free.
+              subscribe and input your friends and family&apos;s details to
+              receive personalized event reminders and backdrop designs that
+              match their preferences. Enjoy efficient and affordable design
+              solutions and create unforgettable events effortlessly.
+            </p>
+            <p>
+              Subscribe today and start designing your perfect event
+              hassle-free.
             </p>
 
             <Link href="/dee-digital-designer">

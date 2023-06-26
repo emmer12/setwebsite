@@ -15,16 +15,19 @@ const Backdrops = () => {
         text: "I just reached my moms house … the set up looks sooo amazing. Thaaaank you soo much 💚💚💚 I love it 💚💚",
         location: "Dubai, UAE",
         name: "Noora ",
+        date: "20 May 2018",
       },
       {
         text: "It went amazing thank you for this amazing stand we loved it so much!! 🤍",
         location: "Dubai,UAE",
         name: "Shahad ",
+        date: "17 February 2022",
       },
       {
         text: "Everything was perfect 💙",
         location: "Sharjah, UAE",
         name: "Fatima",
+        date: "10 October 2022 ",
       },
       {
         text: "it was such a lovely event, and one of reasons we were happy is your stunning set up🏼.I’m so glad I chose you, and hopefully i will arrange my next event with you.",

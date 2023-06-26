@@ -4,7 +4,7 @@ const Testimony = ({ testimony }: any) => {
   return (
     <div className="em__testimony_card">
       <div className="inner">
-        <span className="date">14th March 2018</span>
+        <span className="date">{testimony.date}</span>
         <p>{testimony.text}</p>
         <div className="em__flex em__justify__between">
           <div>

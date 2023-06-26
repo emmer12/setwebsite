@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { Instagram, LinkedIn, Twitter } from "./icons";
 
 const Footer = () => {
   return (
@@ -72,23 +73,18 @@ const Footer = () => {
                 </div>
 
                 <div className="em__footer__imgs">
-                  <div>
-                    <img src="/assets/images/s1.png" alt="Social Media Image" />
-                  </div>
-                  <div>
-                    <Image
-                      src="/assets/images/s2.png"
-                      alt="Social Media Image 1"
-                      width={120}
-                      height={120}
-                    />
-                  </div>
-                  <div>
-                    <img
-                      src="/assets/images/s3.png"
-                      alt="Social Media Image 1"
-                    />
-                  </div>
+                  <a href="https://www.instagram.com/setevents.co/">
+                    <Instagram />
+                  </a>
+                  <a
+                    href="https://twitter.com/seteventsco
+                  "
+                  >
+                    <Twitter />
+                  </a>
+                  <a href="https://emea01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fmariam-k-3aa5501b2&data=05%7C01%7C%7C130b96bf2c9d423667f608db6da41382%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C638224323681439500%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=TpFAIZSNCs8nd5F0nPrSEcglLwdQSlPoT4YUIU4OygA%3D&reserved=0">
+                    <LinkedIn />
+                  </a>
                 </div>
               </div>
             </div>
