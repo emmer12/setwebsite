@@ -299,8 +299,10 @@
   position: relative;
 }
 
-.em__course__card {
+.em__course__card,
+.em__v__category__card {
   width: 330px;
+  max-width: 100%;
   background-color: $primary-color;
   overflow: hidden;
   border-radius: 5px;
@@ -325,6 +327,60 @@
         font-weight: 600;
       }
     }
+  }
+}
+
+.em__v__category__card {
+  .display {
+    background: #fff;
+    height: 200px;
+
+    img {
+      object-fit: contain;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+.em__vendor__card {
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  background: #fff;
+
+  .details {
+    padding: 15px;
+    padding-bottom: 30px;
+    .title {
+      margin: 10px 0px;
+      h4 {
+        font-size: 20px;
+        font-weight: 700;
+      }
+    }
+    span {
+      color: #636c73;
+    }
+
+    svg {
+      stroke: #636c73;
+    }
+  }
+  .display {
+    height: 180px;
+    img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+.social__list {
+  padding: 10px;
+  margin: 0px 10px;
+  h4 {
+    // font-weight: bold;
+    font-size: 16px;
   }
 }
 

@@ -25,7 +25,7 @@ const Backdrops = () => {
       {
         title: "Event Connections",
         display: "/assets/images/hero/vendor.png",
-        href: "vendor/onboard",
+        href: "vendor",
       },
     ];
   }, []);
