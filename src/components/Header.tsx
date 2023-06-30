@@ -206,7 +206,7 @@ const Header = () => {
                   <div className="em__left">
                     <ul>
                       <li>
-                        <Link href="/signin">Login</Link>
+                        <Link href="/auth/signin">Login</Link>
                       </li>
                       <li>
                         <Link href="/backdrops">Contact Set</Link>
