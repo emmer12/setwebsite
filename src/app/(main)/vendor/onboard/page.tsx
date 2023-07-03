@@ -7,9 +7,20 @@ import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const OnboardPage = () => {
   const [category, setCategory] = useState("");
+  const router = useRouter();
+
+  const handleSub = () => {
+    try {
+      localStorage.setItem("vSub", JSON.stringify([{ vendor_sub: true }]));
+      router.push("/vendor/onboard/upgrade");
+    } catch (err: any) {
+      alert("Opps, Something went wrong");
+    }
+  };
 
   const features = useMemo(() => {
     return [
@@ -80,7 +91,11 @@ const OnboardPage = () => {
               </p>
 
               <div className="text-center">
-                <Button text="Subscribe" RightIcon={<ArrowRight />} />
+                <Button
+                  onClick={handleSub}
+                  text="Subscribe"
+                  RightIcon={<ArrowRight />}
+                />
               </div>
             </div>
           </div>

@@ -1,12 +1,9 @@
 "use client";
 import Button from "@/components/Button";
 import FeatureList from "@/components/FeatureList";
-import ServiceCard from "@/components/ServicePrice";
 import { ArrowRight } from "@/components/icons";
-import classNames from "classnames";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Backdrops = () => {
   const [categories] = useState<string[]>([
@@ -15,8 +12,21 @@ const Backdrops = () => {
     "Exhibition Stand Design",
     "Wedding Stage Design",
   ]);
+  const router = useRouter();
 
-  const [category, setCategory] = useState("");
+  const handleSub = (upgrade: boolean) => {
+    try {
+      if (upgrade) {
+        localStorage.setItem(
+          "vSub",
+          JSON.stringify([{ vendor_sub: true, quote_sub: true }])
+        );
+      }
+      router.push("/checkout/vendor");
+    } catch (err: any) {
+      alert("Opps, Something went wrong");
+    }
+  };
 
   const features = useMemo(() => {
     return [
@@ -91,8 +101,12 @@ const Backdrops = () => {
               </p>
 
               <div className="text-center">
-                <Button text="Upgrade" RightIcon={<ArrowRight />} />
-                <Button text="Skip" />
+                <Button
+                  onClick={() => handleSub(true)}
+                  text="Upgrade"
+                  RightIcon={<ArrowRight />}
+                />
+                <Button onClick={() => handleSub(false)} text="Skip" />
               </div>
             </div>
           </div>

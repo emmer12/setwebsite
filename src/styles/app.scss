@@ -89,6 +89,33 @@ ul {
   }
 }
 
+.field_wrapper {
+  margin: 20px 0px;
+  .hint {
+    margin: 10px 0px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .field {
+    margin: 10px 0px !important;
+  }
+
+  .add_input {
+    box-shadow: 0px 0px 2px #ddd;
+    flex: 1;
+    border-radius: 18px;
+    outline: none;
+  }
+
+  .add_button {
+    padding: 10px 19px;
+    background: linear-gradient(to left, #f8b79a, #eeab6f);
+    border-radius: 100px;
+    font-weight: 700;
+  }
+}
+
 .field {
   height: 45px;
   margin: 20px 0px;
@@ -112,6 +139,10 @@ ul {
   }
 
   textarea {
+    height: 100%;
+  }
+
+  &.multiple {
     height: 100%;
   }
 
