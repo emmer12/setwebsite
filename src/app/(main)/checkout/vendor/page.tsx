@@ -12,8 +12,18 @@ import { createBackdropOrder } from "@/lib/api/backdrop.api";
 import * as Yup from "yup";
 import { NotificationManager } from "react-notifications";
 import FileUploader from "@/components/FileUploader";
+import { createVendorOrder } from "@/lib/api/vendor.api";
+import { signIn } from "next-auth/react";
 
 const countries = [{ name: "United Arab Emirates", code: "AE" }];
+
+const vendorCategories = [
+  "Production Company",
+  "Event Planning",
+  "Venue",
+  "Florist",
+  "Cake Baker",
+];
 
 const citiesUAE = [
   { name: "Abu Dhabi" },
@@ -46,6 +56,7 @@ const Checkout = () => {
   const router = useRouter();
   const [services, setServices] = useState<string[]>([]);
   const [sinput, setSInput] = useState("");
+  const [sub] = useState<any>(JSON.parse(localStorage.getItem("vSub") as any));
 
   const [files, setFiles] = useState({
     image_1: null,
@@ -53,6 +64,14 @@ const Checkout = () => {
     image_3: null,
   });
 
+  let total = 0;
+
+  if (sub && sub.quote_sub) {
+    total += 290;
+  }
+  if (sub && sub.vendor_sub) {
+    total += 100;
+  }
   // useEffect(() => {
   //   if (cart.length < 1) {
   //     router.push("/");
@@ -81,34 +100,48 @@ const Checkout = () => {
       office_number: "",
       website: "",
       instagram: "",
+      vendor_category: "",
     },
-    onSubmit: async ({
-      full_name,
-      email,
-      country,
-      city,
-      company_email,
-      company_location,
-      company_name,
-      company_overview,
-      coverage_cities,
-      instagram,
-      license_number,
-      office_number,
-      password,
-      website,
-      whatsapp_number,
-    }) => {
+    onSubmit: async (data) => {
+      const userData: any = { ...data };
+      userData.services = JSON.stringify(services);
+      userData.coverage_cities = JSON.stringify(data.coverage_cities);
+
+      let formData = new FormData();
+
+      for (var key in userData) {
+        formData.append(key, userData[key]);
+      }
+
+      if (files.image_1) {
+        formData.append("image_1", files.image_1);
+      }
+      if (files.image_2) {
+        formData.append("image_2", files.image_2);
+      }
+      if (files.image_3) {
+        formData.append("image_3", files.image_3);
+      }
+      if (sub && sub.quote_sub) {
+        formData.append("quote_sub", sub.quote_sub);
+      }
+      if (sub && sub.vendor_sub) {
+        formData.append("profile_sub", sub.vendor_sub);
+      }
+
       setLoading(true);
       try {
-        const res = await createBackdropOrder({
-          full_name,
-          email,
+        const res = await createVendorOrder(formData);
+
+        await signIn("credentials", {
+          email: userData.email,
+          password: userData.password,
+          redirect: false,
         });
 
         NotificationManager.success("Order Created");
-        const id = res.data.newOrder.id;
-        router.push(`/checkout/backdrop/payment/${id}`);
+        const id = res.data.record.id;
+        router.push(`/checkout/vendor/payment/${id}`);
       } catch (error: any) {
         if (error?.response?.status == 400) {
           NotificationManager.error(
@@ -128,6 +161,7 @@ const Checkout = () => {
       full_name: Yup.string().required("Name is Required"),
       company_name: Yup.string().required("Company Name Required"),
       company_overview: Yup.string().required("Company Brief Required"),
+      vendor_category: Yup.string().required("Category is Required"),
       email: Yup.string().email("Invalid email").required("Required"),
       password: Yup.string().required("Required"),
       password_confirmation: Yup.string().oneOf(
@@ -270,6 +304,27 @@ const Checkout = () => {
                           </span>
                         )}
                       </div>
+                    </div>
+
+                    <div className="field">
+                      <select
+                        onChange={formik.handleChange}
+                        value={formik.values.vendor_category}
+                        name="vendor_category"
+                      >
+                        <option value="">Select category</option>
+
+                        {vendorCategories.map((category, i) => (
+                          <option key={i} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
+                      {formik.touched && formik.errors.vendor_category && (
+                        <span className="error">
+                          {formik.errors.vendor_category}
+                        </span>
+                      )}
                     </div>
 
                     <div className="field">
@@ -439,7 +494,7 @@ const Checkout = () => {
                         onChange={formik.handleChange}
                         value={formik.values.website}
                         placeholder="Website"
-                        type="text"
+                        type="url"
                         name="website"
                       />
                       {formik.touched && formik.errors.website && (
@@ -467,6 +522,19 @@ const Checkout = () => {
 
                     <div className="title ">
                       <h4>Account Details</h4>
+                    </div>
+
+                    <div className="field">
+                      <input
+                        onChange={formik.handleChange}
+                        value={formik.values.full_name}
+                        placeholder="Full name *"
+                        type="text"
+                        name="full_name"
+                      />
+                      {formik.touched && formik.errors.full_name && (
+                        <span className="error">{formik.errors.full_name}</span>
+                      )}
                     </div>
 
                     <div className="field">
@@ -500,7 +568,7 @@ const Checkout = () => {
                         onChange={formik.handleChange}
                         value={formik.values.password_confirmation}
                         placeholder="Password Confirmation*"
-                        type="password_confirmation"
+                        type="password"
                         name="password_confirmation"
                       />
                       {formik.touched &&
@@ -575,7 +643,7 @@ const Checkout = () => {
 
                     <Button
                       classNames="em__button primary"
-                      text="Buy Production Files"
+                      text="Checkout"
                       RightIcon={<ArrowRight />}
                       loading={loading}
                     />
@@ -588,15 +656,24 @@ const Checkout = () => {
                 </div>
 
                 <div className="cart__total">
-                  <div className="em__flex">
-                    <h4>Subtotal</h4>
-                    <span>$ {subTotal()} </span>
-                  </div>
+                  {sub.vendor_sub && (
+                    <div className="em__flex">
+                      <h4>Vendor Subscription</h4>
+                      <span>$100 </span>
+                    </div>
+                  )}
+
+                  {sub.quote_sub && (
+                    <div className="em__flex">
+                      <h4>Quote Subscription</h4>
+                      <span>$290</span>
+                    </div>
+                  )}
                   <hr />
 
                   <div className="em__flex">
                     <h4>Total</h4>
-                    <span>$100.00</span>
+                    <span>${total}</span>
                   </div>
                 </div>
               </div>

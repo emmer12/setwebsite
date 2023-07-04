@@ -9,6 +9,10 @@ const constants = {
     PAID: "PAID",
     UNPAID: "UNPAID",
   },
+  vendor_subscriptions: {
+    BASIC: 100,
+    QUOTE: 190,
+  },
 };
 
 export default constants;

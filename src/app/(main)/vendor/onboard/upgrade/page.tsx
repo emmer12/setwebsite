@@ -19,7 +19,7 @@ const Backdrops = () => {
       if (upgrade) {
         localStorage.setItem(
           "vSub",
-          JSON.stringify([{ vendor_sub: true, quote_sub: true }])
+          JSON.stringify({ vendor_sub: true, quote_sub: true })
         );
       }
       router.push("/checkout/vendor");

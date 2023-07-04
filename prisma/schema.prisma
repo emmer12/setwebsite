@@ -53,8 +53,8 @@ model User {
     accounts          Account[]
     sessions          Session[]
     password          String
-    BackdropOrderItem BackdropOrderItem[]
     Vendor            Vendor[]
+    BackdropOrderItem BackdropOrderItem[]
 }
 
 model VerificationRequest {
@@ -160,22 +160,32 @@ model transactionLog {
 }
 
 model Vendor {
-    id              String    @id @default(auto()) @map("_id") @db.ObjectId
-    userId          String    @db.ObjectId
-    company_name    String
-    overview        String
-    website         String?
-    services        String
-    phone           String
-    image_1_path    String
-    image_2_path    String?
-    video_path      String?
-    socials         String?
-    quote_sub       Boolean   @default(false)
-    profile_sub     Boolean   @default(false)
-    quote_sub_exp   DateTime?
-    profile_sub_exp DateTime?
-    user            User      @relation(fields: [userId], references: [id])
+    id               String    @id @default(auto()) @map("_id") @db.ObjectId
+    userId           String    @db.ObjectId
+    company_name     String
+    company_overview String
+    website          String?
+    services         String
+    company_email    String
+    company_location String
+    image_1_path     String
+    image_2_path     String?
+    image_3_path     String?
+    video_path       String?
+    socials          String?
+    country          String
+    city             String?
+    license_number   String?
+    coverage_cities  String
+    whatsapp_number  String?
+    office_number    String
+    instagram        String?
+    vendor_category  String
+    quote_sub        Boolean   @default(false)
+    profile_sub      Boolean   @default(false)
+    quote_sub_exp    DateTime?
+    profile_sub_exp  DateTime?
+    user             User      @relation(fields: [userId], references: [id])
 }
 
 enum RequestType {

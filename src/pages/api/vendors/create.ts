@@ -6,7 +6,7 @@ import path from "path";
 import fs from "fs/promises";
 import { createVendor, getVendors } from "@/lib/prisma/vendors";
 import { getServerSession } from "next-auth";
-import authOptions from "./../auth/[...nextauth]";
+import authOptions from "../auth/[...nextauth]";
 import { getToken } from "next-auth/jwt";
 
 export const config = {
@@ -77,7 +77,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(201).json({ record: record.vendor });
         }
       } catch (error: any) {
-        console.log(error);
         res.status(500).json({ error, msg: error.message });
       } finally {
         await prisma.$disconnect();

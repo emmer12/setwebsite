@@ -19,13 +19,28 @@ export async function createVendor(vendor: any) {
   }
 }
 
+export async function getVendor(userId: any) {
+  try {
+    const vendor = await prisma.vendor.findFirst({
+      where: { userId: userId },
+    });
+
+    return { vendor };
+  } catch (error) {
+    return { error };
+  }
+}
+
 export async function getVendorById(id: string) {
   try {
-    const user = await prisma.user.findUnique({
+    const vendor = await prisma.vendor.findUnique({
       where: { id },
-      //   include: { des: true },
+      include: { user: true },
     });
-    return { user };
+
+    console.log(vendor);
+
+    return { vendor };
   } catch (error) {
     return { error };
   }

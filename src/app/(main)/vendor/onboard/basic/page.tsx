@@ -52,7 +52,7 @@ const VendorOnboard = () => {
       }
 
       try {
-        const res = await Api.post("/api/vendor/create", formData, {
+        const res = await Api.post("/api/vendors/create", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

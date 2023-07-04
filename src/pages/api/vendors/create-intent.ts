@@ -16,9 +16,7 @@ const sub = {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    const { id, profile_sub, quote_sub, paymentMethod }: any = JSON.parse(
-      req.body
-    );
+    const { id, paymentMethod }: any = JSON.parse(req.body);
 
     try {
       const vendor = await prisma.vendor.findUnique({
@@ -44,10 +42,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
-      total += profile_sub && sub.profile_sub.name;
-      total += quote_sub && sub.quote_sub.name;
+      if (vendor.profile_sub) {
+        total += constants.vendor_subscriptions.BASIC;
+      }
+      if (vendor.quote_sub) {
+        total += constants.vendor_subscriptions.QUOTE;
+      }
 
-      if (profile_sub) {
+      if (vendor.profile_sub) {
         items.push({
           price_data: {
             currency: "USD",
@@ -55,11 +57,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               interval: "year",
             },
             product: "prod_O4fy7jjGv1y7Yy",
-            unit_amount: sub.profile_sub.price * 100,
+            unit_amount: constants.vendor_subscriptions.BASIC * 100,
           },
         });
       }
-      if (quote_sub) {
+      if (vendor.quote_sub) {
         items.push({
           price_data: {
             currency: "USD",
@@ -68,7 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
             product: "prod_O4fzeKPqL1SlC1",
 
-            unit_amount: sub.quote_sub.price * 100,
+            unit_amount: constants.vendor_subscriptions.QUOTE * 100,
           },
         });
       }
@@ -85,7 +87,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           vendor_id: vendor.id,
           email: vendor.user.email,
           payment_type: constants.payment_type.VENDOR_SUB,
-          sub: JSON.stringify({ profile_sub, quote_sub }),
+          sub: JSON.stringify({
+            profile_sub: vendor.profile_sub,
+            quote_sub: vendor.quote_sub,
+          }),
         },
       });
       res.status(200).json({
