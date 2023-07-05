@@ -6,9 +6,12 @@ import { ArrowRight } from "@/components/icons";
 import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 
 const Backdrops = () => {
+  const router = useRouter();
+
   const designs = useMemo(() => {
     return [
       "/assets/images/ai-designs.png",
@@ -16,6 +19,23 @@ const Backdrops = () => {
       "/assets/images/ai-designs.png",
     ];
   }, []);
+
+  const handleSub = (upgrade: boolean) => {
+    try {
+      if (upgrade) {
+        localStorage.setItem(
+          "safSub",
+          JSON.stringify({
+            set_and_forget_sub: true,
+            set_and_forget_sub_upgrade: true,
+          })
+        );
+      }
+      router.push("/checkout/set-and-forget");
+    } catch (err: any) {
+      alert("Opps, Something went wrong");
+    }
+  };
 
   const features = useMemo(() => {
     return [
@@ -98,8 +118,12 @@ const Backdrops = () => {
               </p>
 
               <div className="text-center">
-                <Button text="Upgrade" RightIcon={<ArrowRight />} />
-                <Button text="Skip" />
+                <Button
+                  onClick={() => handleSub(true)}
+                  text="Upgrade"
+                  RightIcon={<ArrowRight />}
+                />
+                <Button onClick={() => handleSub(false)} text="Skip" />
               </div>
             </div>
           </div>

@@ -2,15 +2,22 @@
 import Button from "@/components/Button";
 import FeatureList from "@/components/FeatureList";
 import ServiceCard from "@/components/ServicePrice";
-import { ArrowRight } from "@/components/icons";
+import { AngleLeft, AngleRight, ArrowRight } from "@/components/icons";
 import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { A11y, Navigation, Grid, Autoplay } from "swiper";
+import { useRouter } from "next/navigation";
 
-const Backdrops = () => {
+const SetAndForget = () => {
+  const [swiper, setSwiper] = useState<any>(null);
+  const router = useRouter();
+
   const designs = useMemo(() => {
     return [
+      "/assets/images/ai-designs.png",
       "/assets/images/ai-designs.png",
       "/assets/images/ai-designs.png",
       "/assets/images/ai-designs.png",
@@ -25,6 +32,19 @@ const Backdrops = () => {
       "A free guide on opening a home-based event business",
     ];
   }, []);
+
+  const handleSub = () => {
+    try {
+      localStorage.setItem(
+        "safSub",
+        JSON.stringify({ set_and_forget_sub: true })
+      );
+      router.push("/set-and-forget/upgrade");
+    } catch (err: any) {
+      alert("Opps, Something went wrong");
+    }
+  };
+
   return (
     <div>
       {" "}
@@ -39,12 +59,58 @@ const Backdrops = () => {
       <div className="em__dee bg-white">
         <div className="container">
           <div className="em__body__wrapper">
-            <div className="grid grid-cols-2 sm:grid-cols-3">
-              {designs.map((url, i) => (
-                <div key={i} className="ai__images__grid">
-                  <Image height={200} width={360} alt="Ai Designs" src={url} />
-                </div>
-              ))}
+            <div className="relative">
+              <Swiper
+                spaceBetween={10}
+                //   slidesPerView={"auto"}
+                slidesPerView={4}
+                slidesPerGroup={1}
+                modules={[Autoplay, Navigation]}
+                onSwiper={(swiper) => {
+                  setSwiper(swiper);
+                }}
+                autoplay={{ delay: 2500 }}
+                breakpoints={{
+                  300: {
+                    slidesPerView: 1,
+                    spaceBetween: 5,
+                  },
+                  768: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 10,
+                  },
+                }}
+              >
+                {designs.map((url, i) => (
+                  <SwiperSlide key={i}>
+                    <div key={i} className="ai__images__grid">
+                      <Image
+                        height={200}
+                        width={360}
+                        alt="Ai Designs"
+                        src={url}
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+              <div
+                onClick={() => swiper.slidePrev()}
+                className="swiper-button-prev ai-btn-prev"
+              >
+                <AngleLeft />
+              </div>
+              <div
+                onClick={() => swiper.slideNext()}
+                className="swiper-button-next ai-btn-next"
+              >
+                <AngleRight />
+              </div>
             </div>
 
             <div className="about__service my-5">
@@ -93,7 +159,11 @@ const Backdrops = () => {
               </p>
 
               <div className="text-center">
-                <Button text="Subscribe" RightIcon={<ArrowRight />} />
+                <Button
+                  onClick={handleSub}
+                  text="Subscribe"
+                  RightIcon={<ArrowRight />}
+                />
               </div>
             </div>
           </div>
@@ -103,4 +173,4 @@ const Backdrops = () => {
   );
 };
 
-export default Backdrops;
+export default SetAndForget;

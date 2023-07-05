@@ -7,14 +7,27 @@ import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Backdrops = () => {
-  const [categories] = useState<string[]>([
-    "Cake Design",
-    "Backdrop Design",
-    "Exhibition Stand Design",
-    "Wedding Stage Design",
-  ]);
+  const router = useRouter();
+
+  const handleSub = (upgrade: boolean) => {
+    try {
+      if (upgrade) {
+        localStorage.setItem(
+          "aiSub",
+          JSON.stringify({
+            creative_ai_sub: true,
+            creative_ai_sub_upgrade: true,
+          })
+        );
+      }
+      router.push("/checkout/creative-ai");
+    } catch (err: any) {
+      alert("Opps, Something went wrong");
+    }
+  };
 
   const [category, setCategory] = useState("");
 
@@ -94,8 +107,12 @@ const Backdrops = () => {
               </p>
 
               <div className="text-center">
-                <Button text="Upgrade" RightIcon={<ArrowRight />} />
-                <Button text="Skip" />
+                <Button
+                  onClick={() => handleSub(true)}
+                  text="Upgrade"
+                  RightIcon={<ArrowRight />}
+                />
+                <Button onClick={() => handleSub(true)} text="Skip" />
               </div>
             </div>
           </div>

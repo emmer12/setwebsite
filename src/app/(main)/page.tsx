@@ -115,8 +115,8 @@ export default function Home() {
               <div className="step__item">
                 <div className="step__icon">
                   <Image
-                    height={100}
-                    width={100}
+                    height={60}
+                    width={60}
                     src="/assets/images/fast-delivery.png"
                     alt=""
                   />
@@ -133,8 +133,8 @@ export default function Home() {
               <div className="step__item">
                 <div className="step__icon">
                   <Image
-                    height={100}
-                    width={100}
+                    height={60}
+                    width={60}
                     src="/assets/images/refund.png"
                     alt=""
                   />
@@ -152,8 +152,8 @@ export default function Home() {
               <div className="step__item">
                 <div className="step__icon">
                   <Image
-                    height={100}
-                    width={100}
+                    height={60}
+                    width={60}
                     src="/assets/images/technical-support.png"
                     alt=""
                   />
@@ -262,7 +262,7 @@ export default function Home() {
               hassle-free.
             </p>
 
-            <Link href="/dee-digital-designer">
+            <Link href="/set-and-forget">
               <button className="em__button primary">
                 Subscribe
                 <svg

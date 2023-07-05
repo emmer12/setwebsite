@@ -14,6 +14,8 @@ import { NotificationManager } from "react-notifications";
 import FileUploader from "@/components/FileUploader";
 import { createVendorOrder } from "@/lib/api/vendor.api";
 import { signIn } from "next-auth/react";
+import constants from "@/lib/utils/constants";
+import { formattedMoney } from "@/lib/utils";
 
 const countries = [{ name: "United Arab Emirates", code: "AE" }];
 
@@ -67,10 +69,10 @@ const Checkout = () => {
   let total = 0;
 
   if (sub && sub.quote_sub) {
-    total += 290;
+    total += constants.vendor_subscriptions.QUOTE;
   }
   if (sub && sub.vendor_sub) {
-    total += 100;
+    total += constants.vendor_subscriptions.BASIC;
   }
   // useEffect(() => {
   //   if (cart.length < 1) {
@@ -141,6 +143,7 @@ const Checkout = () => {
 
         NotificationManager.success("Order Created");
         const id = res.data.record.id;
+        localStorage.removeItem("vSub");
         router.push(`/checkout/vendor/payment/${id}`);
       } catch (error: any) {
         if (error?.response?.status == 400) {
@@ -659,14 +662,18 @@ const Checkout = () => {
                   {sub.vendor_sub && (
                     <div className="em__flex">
                       <h4>Vendor Subscription</h4>
-                      <span>$100 </span>
+                      <span>
+                        {formattedMoney(constants.vendor_subscriptions.BASIC)}{" "}
+                      </span>
                     </div>
                   )}
 
                   {sub.quote_sub && (
                     <div className="em__flex">
                       <h4>Quote Subscription</h4>
-                      <span>$290</span>
+                      <span>
+                        {formattedMoney(constants.vendor_subscriptions.QUOTE)}
+                      </span>
                     </div>
                   )}
                   <hr />

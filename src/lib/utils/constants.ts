@@ -13,6 +13,14 @@ const constants = {
     BASIC: 100,
     QUOTE: 190,
   },
+  creative_ai_subscriptions: {
+    BASIC: 100,
+    PRO: 190,
+  },
+  saf_subscriptions: {
+    BASIC: 100,
+    PRO: 190,
+  },
 };
 
 export default constants;
