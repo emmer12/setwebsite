@@ -22,7 +22,11 @@ const Backdrops = () => {
 
   const handleSub = () => {
     try {
-      localStorage.setItem("aiSub", JSON.stringify({ creative_ai_sub: true }));
+      typeof window !== "undefined" &&
+        localStorage.setItem(
+          "aiSub",
+          JSON.stringify({ creative_ai_sub: true })
+        );
       router.push("/creative-ai-studio/upgrade");
     } catch (err: any) {
       alert("Opps, Something went wrong");

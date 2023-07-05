@@ -15,13 +15,14 @@ const Backdrops = () => {
   const handleSub = (upgrade: boolean) => {
     try {
       if (upgrade) {
-        localStorage.setItem(
-          "aiSub",
-          JSON.stringify({
-            creative_ai_sub: true,
-            creative_ai_sub_upgrade: true,
-          })
-        );
+        typeof window !== "undefined" &&
+          localStorage.setItem(
+            "aiSub",
+            JSON.stringify({
+              creative_ai_sub: true,
+              creative_ai_sub_upgrade: true,
+            })
+          );
       }
       router.push("/checkout/creative-ai");
     } catch (err: any) {

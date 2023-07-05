@@ -17,10 +17,11 @@ const Backdrops = () => {
   const handleSub = (upgrade: boolean) => {
     try {
       if (upgrade) {
-        localStorage.setItem(
-          "vSub",
-          JSON.stringify({ vendor_sub: true, quote_sub: true })
-        );
+        typeof window !== "undefined" &&
+          localStorage.setItem(
+            "vSub",
+            JSON.stringify({ vendor_sub: true, quote_sub: true })
+          );
       }
       router.push("/checkout/vendor");
     } catch (err: any) {

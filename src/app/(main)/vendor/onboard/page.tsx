@@ -15,7 +15,8 @@ const OnboardPage = () => {
 
   const handleSub = () => {
     try {
-      localStorage.setItem("vSub", JSON.stringify({ vendor_sub: true }));
+      typeof window !== "undefined" &&
+        localStorage.setItem("vSub", JSON.stringify({ vendor_sub: true }));
       router.push("/vendor/onboard/upgrade");
     } catch (err: any) {
       alert("Opps, Something went wrong");

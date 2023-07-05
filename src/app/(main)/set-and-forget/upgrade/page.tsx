@@ -23,13 +23,14 @@ const Backdrops = () => {
   const handleSub = (upgrade: boolean) => {
     try {
       if (upgrade) {
-        localStorage.setItem(
-          "safSub",
-          JSON.stringify({
-            set_and_forget_sub: true,
-            set_and_forget_sub_upgrade: true,
-          })
-        );
+        typeof window !== "undefined" &&
+          localStorage.setItem(
+            "safSub",
+            JSON.stringify({
+              set_and_forget_sub: true,
+              set_and_forget_sub_upgrade: true,
+            })
+          );
       }
       router.push("/checkout/set-and-forget");
     } catch (err: any) {

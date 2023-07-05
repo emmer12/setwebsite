@@ -18,7 +18,8 @@ const SubCheckout: FC<PageProps> = ({ params }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const [sub] = useState<any>(
-    JSON.parse(localStorage.getItem("safSub") as any)
+    typeof window !== "undefined" &&
+      JSON.parse(localStorage.getItem("safSub") as any)
   );
   const [event_countries] = useState(["United Arab Emirates", "Nigeria"]);
 

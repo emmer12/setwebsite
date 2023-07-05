@@ -35,10 +35,11 @@ const SetAndForget = () => {
 
   const handleSub = () => {
     try {
-      localStorage.setItem(
-        "safSub",
-        JSON.stringify({ set_and_forget_sub: true })
-      );
+      typeof window !== "undefined" &&
+        localStorage.setItem(
+          "safSub",
+          JSON.stringify({ set_and_forget_sub: true })
+        );
       router.push("/set-and-forget/upgrade");
     } catch (err: any) {
       alert("Opps, Something went wrong");

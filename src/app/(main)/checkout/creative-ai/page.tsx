@@ -17,7 +17,11 @@ interface PageProps {
 const SubCheckout: FC<PageProps> = ({ params }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  const [sub] = useState<any>(JSON.parse(localStorage.getItem("aiSub") as any));
+  const [sub] = useState<any>(
+    JSON.parse(
+      typeof window !== "undefined" && (localStorage.getItem("aiSub") as any)
+    )
+  );
   const [event_countries] = useState(["United Arab Emirates", "Nigeria"]);
 
   let total = 0;

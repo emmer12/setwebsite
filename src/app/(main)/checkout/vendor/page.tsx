@@ -58,7 +58,10 @@ const Checkout = () => {
   const router = useRouter();
   const [services, setServices] = useState<string[]>([]);
   const [sinput, setSInput] = useState("");
-  const [sub] = useState<any>(JSON.parse(localStorage.getItem("vSub") as any));
+  const [sub] = useState<any>(
+    typeof window !== "undefined" &&
+      JSON.parse(localStorage.getItem("vSub") as any)
+  );
 
   const [files, setFiles] = useState({
     image_1: null,
@@ -143,7 +146,7 @@ const Checkout = () => {
 
         NotificationManager.success("Order Created");
         const id = res.data.record.id;
-        localStorage.removeItem("vSub");
+        if (typeof window !== "undefined") localStorage.removeItem("vSub");
         router.push(`/checkout/vendor/payment/${id}`);
       } catch (error: any) {
         if (error?.response?.status == 400) {
