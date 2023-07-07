@@ -1,4 +1,5 @@
 import { IBackdrop } from "@/types";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -8,7 +9,12 @@ const Backdrop = ({ backdrop }: { backdrop: IBackdrop }) => {
       <div className="em__backdrop_card">
         <div className="inner">
           <div className="display">
-            <img src="/assets/images/b1.png" alt="" />
+            <Image
+              height={300}
+              width={240}
+              src="/assets/images/b1.png"
+              alt=""
+            />
           </div>
           <div className="details">
             <div>

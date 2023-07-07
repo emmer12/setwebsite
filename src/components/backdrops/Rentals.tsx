@@ -14,8 +14,8 @@ const Backdrops = () => {
     return [
       {
         title: "Design Downloads",
-        display: "/assets/images/hero/designs.png",
-        href: "backdrops",
+        display: "/assets/images/hero/designs-n.png",
+        href: "backdrops/overview",
       },
       {
         title: "Creative AI Studio",
@@ -35,7 +35,7 @@ const Backdrops = () => {
   };
 
   return (
-    <div className="em__categories grid grid-cols-3 gap-2">
+    <div className="em__categories grid grid-cols-3 gap-4">
       {categories.map((category, i) => (
         <Link href={category.href} className="em__hb_items" key={i}>
           <div className={"box " + getClass(i)}>

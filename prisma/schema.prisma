@@ -55,6 +55,7 @@ model User {
     password          String
     Vendor            Vendor[]
     BackdropOrderItem BackdropOrderItem[]
+    Subscription      Subscription[]
 }
 
 model VerificationRequest {
@@ -203,4 +204,28 @@ model Requests {
     occasion           String?
     location           String?
     additional_request String?
+}
+
+enum SubType {
+    SAF_BASIC
+    SAF_PRO
+    DEE_AI_BASIC
+    DEE_AI_PRO
+    VENDOR_BASIC
+    VENDOR_PRO
+}
+
+model Subscription {
+    id            String        @id @default(auto()) @map("_id") @db.ObjectId
+    userId        String        @db.ObjectId
+    city          String?
+    state         String?
+    zip           String?
+    service       SubType
+    description   String?
+    paymentStatus PaymentStatus @default(UNPAID)
+    price         Float
+    start_date    DateTime?
+    end_date      DateTime?
+    user          User          @relation(fields: [userId], references: [id])
 }

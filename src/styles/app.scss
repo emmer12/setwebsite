@@ -1,4 +1,5 @@
-$primary-color: #ffddc1;
+// $primary-color: #ffddc1;
+$primary-color: #ffe3cd;
 $secondary-color: #263f61;
 $success-color: #28a745;
 $danger-color: #dc3545;
@@ -163,7 +164,7 @@ input[type="number"] {
 
 .em__fancy__text {
   font-family: "infinity";
-  color: #8b5326;
+  color: #986a47;
   white-space: nowrap;
 }
 
@@ -707,7 +708,7 @@ input[type="radio"] {
           }
 
           &.up {
-            color: #8b5326;
+            color: #986a47;
             position: relative;
 
             &:after {
@@ -715,7 +716,7 @@ input[type="radio"] {
               position: absolute;
               height: 1px;
               width: 100%;
-              background-color: #8b5326;
+              background-color: #986a47;
               left: 0px;
               bottom: 0px;
             }
@@ -836,7 +837,7 @@ input[type="radio"] {
 
       &:hover,
       &:active {
-        border: 1px solid #8b5326;
+        border: 1px solid #986a47;
         background: $primary-color;
       }
     }
@@ -854,11 +855,75 @@ input[type="radio"] {
 
   &:hover,
   &.active {
-    background: #ffddc1;
-    border: 1px solid #8b5326;
+    background: #ffe3cd;
+    border: 1px solid #986a47;
   }
 }
 
 .h__dropdown {
   height: fit-content;
+}
+
+.backdrop__image {
+  border: 4px solid transparent;
+  cursor: pointer;
+
+  img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+
+  &:hover {
+    border: 4px solid $primary-color;
+  }
+}
+
+// Modal
+
+.m__container {
+  position: fixed;
+  width: 90%;
+  height: 100vh;
+  max-width: 100%;
+  background: #fff;
+  inset: 0;
+  padding: 40px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #170728;
+  border-radius: 20px;
+  flex-direction: column;
+  z-index: 999;
+}
+
+.m__overlay {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 998;
+}
+
+.m__header {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.saf_form {
+  height: calc(100vh - 100px);
+
+  .form-con {
+    padding: 20px 0px;
+    border-bottom: 1px solid #ddd;
+
+    &:last-child {
+      border-bottom: none !important;
+    }
+  }
 }

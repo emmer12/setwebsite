@@ -27,7 +27,7 @@ const Backdrops = () => {
           localStorage.setItem(
             "safSub",
             JSON.stringify({
-              set_and_forget_sub: true,
+              set_and_forget_sub: false,
               set_and_forget_sub_upgrade: true,
             })
           );

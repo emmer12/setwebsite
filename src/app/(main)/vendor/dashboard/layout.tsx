@@ -25,7 +25,7 @@ export default function RootLayout({
 
   return (
     <div>
-      <div className="h-7 sm:h-32 flex items-center bg-[#ffddc1]">
+      <div className="h-7 sm:h-32 flex items-center bg-[#ffe3cd]">
         <div className="container">
           <h2 className="text-[#263f61] text-2xl sm:text-3xl text-center">
             Your Work ({session?.user?.name})

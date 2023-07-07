@@ -150,7 +150,7 @@ const VendorPayment = ({ id, total, order }: any) => {
                 className={`active transition-all block p-3 em__vpcard shadow rounded-[18px] rounded-br-lg bg-white my-3 `}
               >
                 <h4>Vendor Yearly</h4>
-                <h2 className="text-2xl font-bold text-[#8b5326]">
+                <h2 className="text-2xl font-bold text-[#986a47]">
                   {formattedMoney(100)}
                 </h2>
               </label>
@@ -163,7 +163,7 @@ const VendorPayment = ({ id, total, order }: any) => {
                 className={`active transition-all block p-3 em__vpcard shadow rounded-[18px] rounded-br-lg bg-white my-3 `}
               >
                 <h4>Quote Yearly Subscription </h4>
-                <h2 className="text-2xl font-bold text-[#8b5326]">
+                <h2 className="text-2xl font-bold text-[#986a47]">
                   {formattedMoney(190)}
                 </h2>
               </label>

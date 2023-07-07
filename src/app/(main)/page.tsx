@@ -58,7 +58,9 @@ export default function Home() {
       </div>
       <div className="em__hero__bottom">
         <div className="container">
-          <BackdropRentals />
+          <div className="em__body__wrapper">
+            <BackdropRentals />
+          </div>
         </div>
       </div>
 

@@ -19,7 +19,7 @@ const Backdrops = () => {
           localStorage.setItem(
             "aiSub",
             JSON.stringify({
-              creative_ai_sub: true,
+              creative_ai_sub: false,
               creative_ai_sub_upgrade: true,
             })
           );
