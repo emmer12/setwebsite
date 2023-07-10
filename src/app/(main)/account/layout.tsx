@@ -122,8 +122,9 @@ export default function RootLayout({
             >
               {({ values }) => (
                 <Form>
-                  <FieldArray name="users">
-                    {({ insert, remove, push }) => (
+                  {/* <FieldArray
+                    name="users"
+                    render={({ insert, remove, push }) => (
                       <div>
                         <div>
                           {values.users.length > 0 &&
@@ -260,7 +261,7 @@ export default function RootLayout({
                         </div>
                       </div>
                     )}
-                  </FieldArray>
+                  /> */}
                 </Form>
               )}
             </Formik>
