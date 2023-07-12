@@ -10,6 +10,7 @@ import Link from "next/link";
 import React, { useMemo, useState } from "react";
 
 const Backdrops = () => {
+  const [state, setState] = useState<string>("United Arab Emirates");
   const [categories] = useState<any>([
     {
       title: "Production Companies",
@@ -95,11 +96,14 @@ const Backdrops = () => {
               </div>
 
               <div className="field">
-                <select onChange={() => null} value={""} name="country">
+                <select
+                  onChange={(e) => setState(e.target.value)}
+                  name="country"
+                >
                   <option value="">Select country</option>
 
                   {countries.map((country, i) => (
-                    <option key={i} value={country.name}>
+                    <option key={i} selected value={country.name}>
                       {country.name}
                     </option>
                   ))}

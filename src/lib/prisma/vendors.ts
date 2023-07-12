@@ -1,9 +1,28 @@
 import prisma from ".";
 
-export async function getVendors() {
+export async function getVendors(page: any, limit: number) {
+  const offset = (page - 1) * limit;
+  const today = new Date();
   try {
-    const users = await prisma.user.findMany();
-    return { users };
+    const vendors = await prisma.vendor.findMany({
+      skip: offset,
+      take: limit,
+      where: {
+        profile_sub_exp: {
+          not: null,
+          gte: today,
+        },
+      },
+    });
+
+    const totalCount = await prisma.vendor.count();
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const nextPage = page < totalPages ? parseInt(page) + 1 : null;
+    const prevPage = page > 1 ? parseInt(page) - 1 : null;
+
+    return { vendors, nextPage, prevPage, totalPages };
   } catch (error) {
     return { error };
   }

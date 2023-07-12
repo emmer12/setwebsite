@@ -7,6 +7,10 @@ import { useRouter } from "next/navigation";
 import { NotificationManager } from "react-notifications";
 import { useState } from "react";
 import * as Yup from "yup";
+import useSWR from "swr";
+import { getSubscriptions } from "@/lib/api/subscriptions.api";
+
+import constants from "@/lib/utils/constants";
 
 const initialValues = {
   users: [
@@ -30,6 +34,32 @@ export default function RootLayout({
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const { data, error, isLoading } = useSWR("/api/backdrops", getSubscriptions);
+
+  const safSub =
+    data?.subscriptions.filter(
+      (sub: any) => sub.service == constants.subscription_type.SAF_BASIC
+    ) || [];
+  const safProSub =
+    data?.subscriptions.filter(
+      (sub: any) => sub.service == constants.subscription_type.SAF_PRO
+    ) || [];
+  const vendorSub =
+    data?.subscriptions.filter(
+      (sub: any) => sub.service == constants.subscription_type.VENDOR_BASIC
+    ) || [];
+  const vendorQuoteSub =
+    data?.subscriptions.filter(
+      (sub: any) => sub.service == constants.subscription_type.VENDOR_PRO
+    ) || [];
+  const aiSub =
+    data?.subscriptions.filter(
+      (sub: any) => sub.service == constants.subscription_type.DEE_AI_BASIC
+    ) || [];
+  const aiProSub =
+    data?.subscriptions.filter(
+      (sub: any) => sub.service == constants.subscription_type.DEE_AI_PRO
+    ) || [];
 
   const formik = useFormik({
     initialValues: {},
@@ -82,9 +112,17 @@ export default function RootLayout({
               <div className="member-side hidden sm:block">
                 <ul>
                   <li className="active">Profile</li>
-                  <li onClick={() => setOpen(true)}>Set and Forget</li>
-                  <li>Developed designs</li>
-                  <li>Upgrade to DEE Ultra </li>
+                  {safSub.length || safProSub.length ? (
+                    <li onClick={() => setOpen(true)}>Set and Forget</li>
+                  ) : (
+                    <></>
+                  )}
+                  {vendorSub.length > 0 && <li>Vendor Profile</li>}
+                  {vendorQuoteSub.length > 0 && <li>Vendor Quotes</li>}
+                  {(aiSub.length > 0 || aiProSub.length > 0) && (
+                    <li>Developed designs</li>
+                  )}
+                  {/* <li>Upgrade to DEE Ultra </li> */}
                   <li>Guide</li>
                 </ul>
               </div>

@@ -88,7 +88,7 @@ const Header = () => {
                     title="User"
                     onClick={() =>
                       status === "authenticated"
-                        ? router.push("/member/design")
+                        ? router.push("/account")
                         : router.push("/auth/signin")
                     }
                   >

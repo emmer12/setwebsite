@@ -181,7 +181,7 @@ model Vendor {
     whatsapp_number  String?
     office_number    String
     instagram        String?
-    vendor_category  String
+    vendor_category  String?
     quote_sub        Boolean   @default(false)
     profile_sub      Boolean   @default(false)
     quote_sub_exp    DateTime?

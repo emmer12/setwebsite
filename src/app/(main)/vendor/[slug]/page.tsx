@@ -4,13 +4,18 @@ import Backdrop from "@/components/backdrops/Backdrop";
 import { CaretRight } from "@/components/icons";
 import VendorCard from "@/components/vendor/VendorCard";
 import { getBackdrops } from "@/lib/api/backdrop.api";
+import { getVendorById } from "@/lib/api/vendor.api";
 import { IBackdrop } from "@/types";
 import Image from "next/image";
 import React, { useState } from "react";
 import useSWR from "swr";
 
-const Backdrops = () => {
-  const { data, error, isLoading } = useSWR("/api/backdrops", getBackdrops);
+interface PageProps {
+  params: { slug: string };
+}
+
+const VendorDetailsPage = ({ params }: PageProps) => {
+  const { data, error, isLoading } = useSWR(`/${params.slug}`, getVendorById);
 
   const [reviews] = useState([
     {
@@ -29,13 +34,13 @@ const Backdrops = () => {
       name: "Joe Stone",
     },
   ]);
-  const [vendor] = useState({
-    name: "Production Companies",
-    imageUrl: "/assets/images/d1.png",
-    link: "vendor/category/production-companies",
-    location: "United Arab Emirates",
-    services: "Service1 1,Service 2",
-  });
+  // const [vendor] = useState({
+  //   name: "Production Companies",
+  //   imageUrl: "/assets/images/d1.png",
+  //   link: "vendor/category/production-companies",
+  //   location: "United Arab Emirates",
+  //   services: "Service1 1,Service 2",
+  // });
 
   return (
     <div>
@@ -43,7 +48,7 @@ const Backdrops = () => {
       <div className="em__banner">
         <div className="inner">
           <h1>
-            <span>Company Name</span>
+            <span>{data?.vendor?.company_name}</span>
           </h1>
         </div>
       </div>
@@ -55,7 +60,9 @@ const Backdrops = () => {
                 <div className="flex">
                   <div className="display flex-1 sm:w-full/2 w-full">
                     <Image
-                      src="/assets/images/d1.png"
+                      src={
+                        data?.vendor?.image_1_path || "/assets/images/d1.png"
+                      }
                       height={400}
                       width={400}
                       className="w-full h-full"
@@ -67,21 +74,7 @@ const Backdrops = () => {
                       <h2 className="text-2xl font-bold">About</h2>
                     </div>
                     <div>
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Laboriosam quos sapiente nisi earum? Possimus,
-                        cupiditate magnam maxime deserunt nihil ipsa fuga
-                        aperiam saepe qui. Voluptatum nihil provident ratione
-                        sit cupiditate?
-                      </p>
-
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Laboriosam quos sapiente nisi earum? Possimus,
-                        cupiditate magnam maxime deserunt nihil ipsa fuga
-                        aperiam saepe qui. Voluptatum nihil provident ratione
-                        sit cupiditate?
-                      </p>
+                      <p>{data?.vendor?.company_overview}</p>
                     </div>
                   </div>
                 </div>
@@ -97,17 +90,17 @@ const Backdrops = () => {
               </div>
 
               <div className="grid grid-cols-3 gap-3 my-4">
-                {[1, 2, 4].map((_, i) => (
-                  <div className="bg-white p-4" key={i + "services"}>
-                    <h1 className="text-center text-4xl font-bold">{i + 1}</h1>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Hic, impedit ut aspernatur consequuntur adipisci accusamus
-                      nesciunt autem dignissimos voluptate illo, facere eaque
-                      laboriosam suscipit eius obcaecati aperi
-                    </p>
-                  </div>
-                ))}
+                {!isLoading &&
+                  JSON.parse(data?.vendor?.services).map(
+                    (service: string, i: number) => (
+                      <div className="bg-white p-4" key={i + "services"}>
+                        <h1 className="text-center text-4xl font-bold">
+                          {i + 1}
+                        </h1>
+                        <p>{service}</p>
+                      </div>
+                    )
+                  )}
               </div>
             </div>
           </div>
@@ -121,16 +114,28 @@ const Backdrops = () => {
               </div>
 
               <div className="grid grid-cols-3 gap-3 my-4">
-                {[1, 2, 4].map((_, i) => (
-                  <div className=" p-4" key={i + "services"}>
-                    <Image
-                      height={200}
-                      width={300}
-                      src="/assets/images/d1.png"
-                      alt="Works images"
-                    />
-                  </div>
-                ))}
+                <Image
+                  src={data?.vendor?.image_1_path || "/assets/images/d1.png"}
+                  height={200}
+                  width={300}
+                  alt="Works images 1"
+                />
+                {data?.vendor?.image_2_path && (
+                  <Image
+                    src={data?.vendor?.image_2_path || "/assets/images/d1.png"}
+                    height={200}
+                    width={300}
+                    alt="Works images 2"
+                  />
+                )}
+                {data?.vendor?.image_3_path && (
+                  <Image
+                    src={data?.vendor?.image_3_path || "/assets/images/d1.png"}
+                    height={200}
+                    width={300}
+                    alt="Works images 3"
+                  />
+                )}
               </div>
             </section>
 
@@ -143,27 +148,29 @@ const Backdrops = () => {
                   <div className="social__list">
                     <h4>Website</h4>
                     <a href="" target="_blank">
-                      example.com
+                      {data?.vendor?.website}
                     </a>
                   </div>
 
                   <div className="social__list">
                     <h4>Instagram</h4>
                     <a href="" target="_blank">
-                      example.com
+                      {data?.vendor?.instagram}
                     </a>
                   </div>
 
                   <div className="social__list">
                     <h4>WhatApp</h4>
                     <a href="" target="_blank">
-                      example.com
+                      {data?.vendor?.whatsapp_number}{" "}
                     </a>
                   </div>
 
                   <div className="social__list">
                     <h4>Email</h4>
-                    <a href="mailto:example@mail.com">mail@example.com</a>
+                    <a href={`mailto:${data?.vendor?.company_email}`}>
+                      {data?.vendor?.company_email}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -235,4 +242,4 @@ const Backdrops = () => {
   );
 };
 
-export default Backdrops;
+export default VendorDetailsPage;

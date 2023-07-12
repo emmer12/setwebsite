@@ -21,3 +21,32 @@ export async function getSubById(id: string) {
     return { error };
   }
 }
+
+export const getSubscriptions = async (id: any) => {
+  const today = new Date();
+
+  const vendor = await prisma.vendor.findFirst({
+    where: { userId: id },
+  });
+
+  const subscriptions = await prisma.subscription.findMany({
+    where: {
+      paymentStatus: "PAID",
+      end_date: { gte: today },
+      userId: id,
+    },
+    select: {
+      end_date: true,
+      start_date: true,
+      service: true,
+    },
+  });
+
+  console.log(vendor, "this");
+  console.log(id, "id");
+
+  return {
+    subscriptions,
+    vendor,
+  };
+};

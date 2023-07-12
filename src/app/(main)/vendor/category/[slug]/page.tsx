@@ -2,13 +2,13 @@
 import Backdrop from "@/components/backdrops/Backdrop";
 import { CaretRight } from "@/components/icons";
 import VendorCard from "@/components/vendor/VendorCard";
-import { getBackdrops } from "@/lib/api/backdrop.api";
+import { getVendors } from "@/lib/api/vendor.api";
 import { IBackdrop } from "@/types";
 import React, { useState } from "react";
 import useSWR from "swr";
 
 const Backdrops = () => {
-  const { data, error, isLoading } = useSWR("/api/backdrops", getBackdrops);
+  const { data, error, isLoading } = useSWR("/api/vendors", getVendors);
   const [vendors] = useState([
     {
       name: "Production Companies",
@@ -54,9 +54,15 @@ const Backdrops = () => {
           <div className="em__body__wrapper">
             <div className="">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                {vendors.map((vendor: any, i: number) => (
-                  <VendorCard vendor={vendor} key={i + "vendors"} />
-                ))}
+                {isLoading ? (
+                  <>Loading..</>
+                ) : data?.vendors.length < 1 ? (
+                  <>No Data</>
+                ) : (
+                  data?.vendors.map((vendor: any, i: number) => (
+                    <VendorCard vendor={vendor} key={i + "vendors"} />
+                  ))
+                )}
               </div>
             </div>
           </div>
