@@ -1,6 +1,6 @@
 "use client";
 import React, { FormEventHandler, useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
@@ -10,8 +10,13 @@ import Button from "@/components/Button";
 import { ArrowRight } from "@/components/icons";
 const SignIn = () => {
   const router = useRouter();
+  const { status } = useSession();
 
   const [loading, setLoading] = useState<boolean>(false);
+
+  if (status === "authenticated") {
+    router.push("/account");
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -29,7 +34,7 @@ const SignIn = () => {
 
         if (res.status == 200) {
           NotificationManager.success("Welcome back!");
-          router.push("/member/design");
+          router.push("/account");
         } else {
           throw new Error("Invalid credentials");
         }

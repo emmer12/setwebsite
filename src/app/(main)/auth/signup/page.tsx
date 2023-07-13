@@ -5,10 +5,16 @@ import Api from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { NotificationManager } from "react-notifications";
 import * as Yup from "yup";
+import { useSession } from "next-auth/react";
 
-const SignIn = () => {
+const SignUp = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const { status } = useSession();
   const router = useRouter();
+
+  if (status === "authenticated") {
+    router.push("/account");
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -137,4 +143,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

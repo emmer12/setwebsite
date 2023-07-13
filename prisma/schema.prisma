@@ -149,7 +149,9 @@ model BackdropOrderItem {
 
 enum TranstionType {
     BACKDROP
-    DEE_DEGITAL
+    DEE_DIGITAL
+    SAF
+    VENDOR
 }
 
 model transactionLog {

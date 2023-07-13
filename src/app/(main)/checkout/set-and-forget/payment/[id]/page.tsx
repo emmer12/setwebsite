@@ -14,6 +14,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { getSubById } from "@/lib/api/saf.api";
+import { useSession } from "next-auth/react";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -118,7 +119,7 @@ const PaymentC = ({ id, sub }: any) => {
         setErrorMessage(error.message);
       } else {
         NotificationManager.success("Subscription successful!");
-        router.push("/member");
+        router.push("/account");
       }
     } catch (error: any) {
       setLoading(false);

@@ -5,6 +5,7 @@ import constants from "@/lib/utils/constants";
 import {
   logBackdropPayment,
   logVendorSubscription,
+  logSubscription,
 } from "@/lib/prisma/payments";
 // import getRawBody from 'raw-body';
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -56,10 +57,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             let paymentIntentSucceeded2 = event.data.object;
 
             // http://localhost:3000/vendor/onboard/payment/64887ace050573a2ab08b49b
-            let { payment_type, vendor_id, sub } =
+            let { payment_type, vendor_id, sub, sub_id } =
               paymentIntentSucceeded2.metadata;
             if (payment_type == constants.payment_type.VENDOR_SUB) {
-              await logVendorSubscription(vendor_id, sub);
+              await logVendorSubscription(
+                vendor_id,
+                sub,
+                paymentIntentSucceeded2.id
+              );
+            } else if (payment_type == constants.payment_type.SAF_SUB) {
+              await logSubscription(sub_id, paymentIntentSucceeded2.id);
+            } else if (payment_type == constants.payment_type.DEE_DIGITAL_SUB) {
+              await logSubscription(sub_id, paymentIntentSucceeded2.id);
             }
           }
 

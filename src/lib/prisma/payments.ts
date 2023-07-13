@@ -63,8 +63,17 @@ export async function logBackdropPayment(
   }
 }
 
-export async function logVendorSubscription(vendor_id: string, sub: string) {
+export async function logVendorSubscription(
+  vendor_id: string,
+  sub: string,
+  transactionId: string
+) {
   const subscription = JSON.parse(sub);
+  const today = new Date();
+  // Add one year to today's date
+  let endingDate = new Date();
+  endingDate.setFullYear(today.getFullYear() + 1);
+
   console.log("THis is it");
   try {
     const vendor = await prisma.vendor.findFirst({
@@ -76,8 +85,6 @@ export async function logVendorSubscription(vendor_id: string, sub: string) {
       },
     });
 
-    console.log(vendor);
-
     if (vendor) {
       await prisma.vendor.update({
         where: {
@@ -86,6 +93,41 @@ export async function logVendorSubscription(vendor_id: string, sub: string) {
         data: {
           profile_sub: true,
           quote_sub: subscription.quote_sub,
+        },
+      });
+
+      await prisma.subscription.create({
+        data: {
+          price: constants.vendor_subscriptions.QUOTE,
+          service: constants.subscription_type.VENDOR_BASIC as any,
+          description: "Vendor Quote subscription",
+          userId: vendor.user.id,
+          start_date: today,
+          end_date: endingDate,
+          paymentStatus: constants.payment_status.PAID as any,
+        },
+      });
+
+      if (subscription.quote_sub) {
+        await prisma.subscription.create({
+          data: {
+            price: constants.vendor_subscriptions.QUOTE,
+            service: constants.subscription_type.VENDOR_PRO as any,
+            description: "Vendor Quote subscription",
+            userId: vendor.user.id,
+            start_date: today,
+            end_date: endingDate,
+            paymentStatus: constants.payment_status.PAID as any,
+          },
+        });
+      }
+
+      await prisma.transactionLog.create({
+        data: {
+          description: `Vendor Subscription`,
+          orderId: subscription.id,
+          type: "VENDOR",
+          transactionId,
         },
       });
 
@@ -103,6 +145,57 @@ export async function logVendorSubscription(vendor_id: string, sub: string) {
       return false;
     }
   } catch (error) {
+    console.log(error);
+    return { error };
+  }
+}
+
+export async function logSubscription(sub_id: string, transactionId: string) {
+  const today = new Date();
+  // Add one year to today's date
+  let endingDate = new Date();
+  endingDate.setFullYear(today.getFullYear() + 1);
+
+  try {
+    const subscription = await prisma.subscription.findFirst({
+      where: {
+        id: sub_id,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (subscription) {
+      await prisma.subscription.update({
+        where: {
+          id: sub_id,
+        },
+        data: {
+          start_date: today,
+          end_date: endingDate,
+          paymentStatus: constants.payment_status.PAID as any,
+        },
+      });
+
+      await prisma.transactionLog.create({
+        data: {
+          description: `${subscription.service} Subscription`,
+          orderId: subscription.id,
+          type:
+            subscription.service == "SAF_BASIC" || "SAF_PRO"
+              ? "SAF"
+              : "DEE_DIGITAL",
+          transactionId,
+        },
+      });
+
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
     return { error };
   }
 }

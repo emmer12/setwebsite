@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import { createSafOrder } from "@/lib/api/saf.api";
 import Button from "@/components/Button";
 import { ArrowRight } from "@/components/icons";
+import { useSession } from "next-auth/react";
 
 interface PageProps {
   params: { type: string };
@@ -20,6 +21,7 @@ interface PageProps {
 const SubCheckout: FC<PageProps> = ({ params }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const { status, data } = useSession();
   const [sub] = useState<any>(
     typeof window !== "undefined" &&
       JSON.parse(localStorage.getItem("safSub") as any)
@@ -79,16 +81,22 @@ const SubCheckout: FC<PageProps> = ({ params }) => {
 
       setLoading(false);
     },
-    validationSchema: Yup.object().shape({
-      full_name: Yup.string().required("Name is Required"),
-      country: Yup.string().required("Country Required"),
-      email: Yup.string().email("Invalid email").required("Required"),
-      password: Yup.string().required("Required"),
-      password_confirmation: Yup.string().oneOf(
-        [Yup.ref("password"), ""],
-        "Passwords must match"
-      ),
-    }),
+    validationSchema:
+      status == "authenticated"
+        ? Yup.object().shape({
+            full_name: Yup.string().required("Name is Required"),
+            country: Yup.string().required("Country Required"),
+          })
+        : Yup.object().shape({
+            full_name: Yup.string().required("Name is Required"),
+            country: Yup.string().required("Country Required"),
+            email: Yup.string().email("Invalid email").required("Required"),
+            password: Yup.string().required("Required"),
+            password_confirmation: Yup.string().oneOf(
+              [Yup.ref("password"), ""],
+              "Passwords must match"
+            ),
+          }),
   });
 
   return (
@@ -203,51 +211,61 @@ const SubCheckout: FC<PageProps> = ({ params }) => {
                       style={{ height: "10px" }}
                     ></div>
 
-                    <div className="title ">
-                      <h4>Account Details</h4>
-                    </div>
+                    {formik.touched && formik.errors.email && (
+                      <span className="error">{formik.errors.email}</span>
+                    )}
 
-                    <div className="field">
-                      <input
-                        onChange={formik.handleChange}
-                        value={formik.values.email}
-                        placeholder="Email Address*"
-                        type="email"
-                        name="email"
-                      />
-                      {formik.touched && formik.errors.email && (
-                        <span className="error">{formik.errors.email}</span>
-                      )}
-                    </div>
+                    {status === "unauthenticated" && (
+                      <>
+                        <div className="title ">
+                          <h4>Account Details</h4>
+                        </div>
 
-                    <div className="field">
-                      <input
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
-                        placeholder="Password*"
-                        type="password"
-                        name="password"
-                      />
-                      {formik.touched && formik.errors.password && (
-                        <span className="error">{formik.errors.password}</span>
-                      )}
-                    </div>
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.email}
+                            placeholder="Email Address*"
+                            type="email"
+                            name="email"
+                          />
+                          {formik.touched && formik.errors.email && (
+                            <span className="error">{formik.errors.email}</span>
+                          )}
+                        </div>
 
-                    <div className="field">
-                      <input
-                        onChange={formik.handleChange}
-                        value={formik.values.password_confirmation}
-                        placeholder="Password Confirmation*"
-                        type="password"
-                        name="password_confirmation"
-                      />
-                      {formik.touched &&
-                        formik.errors.password_confirmation && (
-                          <span className="error">
-                            {formik.errors.password_confirmation}
-                          </span>
-                        )}
-                    </div>
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.password}
+                            placeholder="Password*"
+                            type="password"
+                            name="password"
+                          />
+                          {formik.touched && formik.errors.password && (
+                            <span className="error">
+                              {formik.errors.password}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.password_confirmation}
+                            placeholder="Password Confirmation*"
+                            type="password"
+                            name="password_confirmation"
+                          />
+                          {formik.touched &&
+                            formik.errors.password_confirmation && (
+                              <span className="error">
+                                {formik.errors.password_confirmation}
+                              </span>
+                            )}
+                        </div>
+                      </>
+                    )}
 
                     <div className="agree__info">
                       <div className="form-radio flex">
@@ -365,7 +383,11 @@ const SubCheckout: FC<PageProps> = ({ params }) => {
                     <br />
                     <br />
 
-                    <Button text="Checkout" RightIcon={<ArrowRight />} />
+                    <Button
+                      text="Checkout"
+                      loading={loading}
+                      RightIcon={<ArrowRight />}
+                    />
                   </form>
                 </div>
               </div>

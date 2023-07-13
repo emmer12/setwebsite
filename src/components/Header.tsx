@@ -205,9 +205,12 @@ const Header = () => {
                   </Link>
                   <div className="em__left">
                     <ul>
-                      <li>
-                        <Link href="/auth/signin">Login</Link>
-                      </li>
+                      {status === "unauthenticated" && (
+                        <li>
+                          <Link href="/auth/signin">Login</Link>
+                        </li>
+                      )}
+
                       <li>
                         <Link href="/backdrops">Contact Set</Link>
                       </li>

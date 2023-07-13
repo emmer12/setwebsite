@@ -5,7 +5,7 @@ import { Formik, useFormik, Form, FieldArray, Field } from "formik";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { NotificationManager } from "react-notifications";
-import { useState } from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import useSWR from "swr";
 import { getSubscriptions } from "@/lib/api/subscriptions.api";
@@ -34,7 +34,10 @@ export default function RootLayout({
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const { data, error, isLoading } = useSWR("/api/backdrops", getSubscriptions);
+  const { data, error, isLoading } = useSWR(
+    "/api/subsription",
+    getSubscriptions
+  );
 
   const safSub =
     data?.subscriptions.filter(
@@ -62,7 +65,7 @@ export default function RootLayout({
     ) || [];
 
   const formik = useFormik({
-    initialValues: {},
+    initialValues,
     onSubmit: async (data) => {
       setLoading(true);
       try {
@@ -157,151 +160,170 @@ export default function RootLayout({
                 await new Promise((r) => setTimeout(r, 500));
                 alert(JSON.stringify(values, null, 2));
               }}
+              validationSchema={Yup.object({
+                users: Yup.array(
+                  Yup.object({
+                    name: Yup.string().required().min(3).max(20),
+                    gender: Yup.string().required(),
+                    relation: Yup.string().required(),
+                    dob: Yup.string().required(),
+                  })
+                )
+                  .min(1)
+                  .max(5),
+              })}
             >
-              {({ values }) => (
-                <Form>
-                  {/* <FieldArray
-                    name="users"
-                    render={({ insert, remove, push }) => (
+              {({ values, setFieldValue }) => {
+                const addField = (val: any) => {
+                  const newVal = [...values.users, val];
+                  setFieldValue("users", newVal);
+                };
+
+                const remove = (index: number) => {
+                  const newVal = values.users.filter((_, i) => i != index);
+                  setFieldValue("users", newVal);
+                };
+
+                return (
+                  <Form>
+                    <React.Fragment>
                       <div>
-                        <div>
-                          {values.users.length > 0 &&
-                            values.users.map((user, index) => (
-                              <div className="form-con" key={index}>
-                                <Field name={`users.${index}.name`}>
-                                  {({
-                                    field,
-                                    form: { touched, errors },
-                                    meta,
-                                  }: any) => (
-                                    <div className="field">
-                                      <input
-                                        type="text"
-                                        placeholder="Name"
-                                        {...field}
-                                      />
-                                      {meta.touched && meta.error && (
-                                        <div className="error">
-                                          {meta.error}
-                                        </div>
-                                      )}
-                                    </div>
-                                  )}
-                                </Field>
-
-                                <Field name={`users.${index}.gender`}>
-                                  {({
-                                    field,
-                                    form: { touched, errors },
-                                    meta,
-                                  }: any) => (
-                                    <div className="field">
-                                      <input
-                                        type="text"
-                                        placeholder="Gender"
-                                        {...field}
-                                      />
-                                      {meta.touched && meta.error && (
-                                        <div className="error">
-                                          {meta.error}
-                                        </div>
-                                      )}
-                                    </div>
-                                  )}
-                                </Field>
-
-                                <Field name={`users.${index}.location`}>
-                                  {({
-                                    field,
-                                    form: { touched, errors },
-                                    meta,
-                                  }: any) => (
-                                    <div className="field">
-                                      <input
-                                        type="text"
-                                        placeholder="Location"
-                                        {...field}
-                                      />
-                                      {meta.touched && meta.error && (
-                                        <div className="error">
-                                          {meta.error}
-                                        </div>
-                                      )}
-                                    </div>
-                                  )}
-                                </Field>
-
-                                <Field name={`users.${index}.relation`}>
-                                  {({
-                                    field,
-                                    form: { touched, errors },
-                                    meta,
-                                  }: any) => (
-                                    <div className="field">
-                                      <input
-                                        type="text"
-                                        placeholder="Relation"
-                                        {...field}
-                                      />
-                                      {meta.touched && meta.error && (
-                                        <div className="error">
-                                          {meta.error}
-                                        </div>
-                                      )}
-                                    </div>
-                                  )}
-                                </Field>
-
-                                <Field name={`users.${index}.dob`}>
-                                  {({
-                                    field,
-                                    form: { touched, errors },
-                                    meta,
-                                  }: any) => (
-                                    <div className="field">
-                                      <input
-                                        type="date"
-                                        placeholder="Date of Birth"
-                                        {...field}
-                                      />
-                                      {meta.touched && meta.error && (
-                                        <div className="error">
-                                          {meta.error}
-                                        </div>
-                                      )}
-                                    </div>
-                                  )}
-                                </Field>
-
-                                {values.users.length > 1 && index !== 0 && (
-                                  <button
-                                    onClick={() => remove(index)}
-                                    type="button"
-                                    className="bg-red-600 px-2 py-1 rounded text-white"
-                                  >
-                                    Remove
-                                  </button>
+                        {values.users.length > 0 &&
+                          values.users.map((user, index) => (
+                            <div className="form-con" key={index}>
+                              <Field name={`users.${index}.name`}>
+                                {({
+                                  field,
+                                  form: { touched, errors },
+                                  meta,
+                                }: any) => (
+                                  <div className="field">
+                                    <input
+                                      type="text"
+                                      placeholder="Name"
+                                      {...field}
+                                    />
+                                    {meta.touched && meta.error && (
+                                      <span className="error">
+                                        {meta.error}
+                                      </span>
+                                    )}
+                                  </div>
                                 )}
-                              </div>
-                            ))}
-                        </div>
+                              </Field>
 
-                        <div className="flex justify-between">
-                          <Button text="Register" />
+                              <Field name={`users.${index}.gender`}>
+                                {({
+                                  field,
+                                  form: { touched, errors },
+                                  meta,
+                                }: any) => (
+                                  <div className="field">
+                                    <input
+                                      type="text"
+                                      placeholder="Gender"
+                                      {...field}
+                                    />
+                                    {meta.touched && meta.error && (
+                                      <span className="error">
+                                        {meta.error}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                              </Field>
 
-                          <button
-                            className="em__button primary"
-                            onClick={() => push(init)}
-                            type="button"
-                          >
-                            Add more
-                          </button>
-                        </div>
+                              <Field name={`users.${index}.location`}>
+                                {({
+                                  field,
+                                  form: { touched, errors },
+                                  meta,
+                                }: any) => (
+                                  <div className="field">
+                                    <input
+                                      type="text"
+                                      placeholder="Location"
+                                      {...field}
+                                    />
+                                    {meta.touched && meta.error && (
+                                      <span className="error">
+                                        {meta.error}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                              </Field>
+
+                              <Field name={`users.${index}.relation`}>
+                                {({
+                                  field,
+                                  form: { touched, errors },
+                                  meta,
+                                }: any) => (
+                                  <div className="field">
+                                    <input
+                                      type="text"
+                                      placeholder="Relation"
+                                      {...field}
+                                    />
+                                    {meta.touched && meta.error && (
+                                      <span className="error">
+                                        {meta.error}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                              </Field>
+
+                              <Field name={`users.${index}.dob`}>
+                                {({
+                                  field,
+                                  form: { touched, errors },
+                                  meta,
+                                }: any) => (
+                                  <div className="field">
+                                    <input
+                                      type="date"
+                                      placeholder="Date of Birth"
+                                      {...field}
+                                    />
+                                    {meta.touched && meta.error && (
+                                      <span className="error">
+                                        {meta.error}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                              </Field>
+
+                              {values.users.length > 1 && index !== 0 && (
+                                <button
+                                  onClick={() => remove(index)}
+                                  type="button"
+                                  className="bg-red-600 px-2 py-1 rounded text-white"
+                                >
+                                  Remove
+                                </button>
+                              )}
+                            </div>
+                          ))}
                       </div>
-                    )}
-                  /> */}
-                </Form>
-              )}
+
+                      <div className="flex justify-between">
+                        <Button text="Register" />
+
+                        <button
+                          className="em__button primary"
+                          onClick={() => addField(init)}
+                          type="button"
+                        >
+                          Add more
+                        </button>
+                      </div>
+                    </React.Fragment>
+                  </Form>
+                );
+              }}
             </Formik>
           </div>
         </div>
