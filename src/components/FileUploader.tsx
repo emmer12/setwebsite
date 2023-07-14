@@ -39,7 +39,7 @@ const FileUploader: FC<FileUI> = ({
               height="100"
               className="rounded-[18px]"
               width="130"
-              src={URL.createObjectURL(file)}
+              src={file || URL.createObjectURL(file)}
               alt="port"
             />
           )}

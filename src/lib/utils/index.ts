@@ -257,3 +257,35 @@ export const countries  = [
 {"name": "Zambia", "code": "ZM"},
 {"name": "Zimbabw","code": "ZN"}
 ]
+
+export const vendorCategories = [
+  "Production Company",
+  "Event Planning",
+  "Venue",
+  "Florist",
+  "Cake Baker",
+];
+
+export const citiesUAE = [
+  { name: "Abu Dhabi" },
+  { name: "Dubai" },
+  { name: "Sharjah" },
+  { name: "Al Ain" },
+  { name: "Ajman" },
+  { name: "Ras Al Khaimah" },
+  { name: "Fujairah" },
+  { name: "Umm Al Quwain" },
+  { name: "Khor Fakkan" },
+  { name: "Dibba Al-Fujairah" },
+  { name: "Dibba Al-Hisn" },
+  { name: "Al-Madam" },
+  { name: "Al Hamriyah" },
+  { name: "Al-Jazirah Al-Hamra" },
+  { name: "Masafi" },
+  { name: "Al-Dhaid" },
+  { name: "Al-Madam" },
+  { name: "Hatta" },
+  {
+    name: "All Cities",
+  },
+];
