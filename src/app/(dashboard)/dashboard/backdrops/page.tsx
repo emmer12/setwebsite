@@ -1,9 +1,19 @@
+"use client";
 import Button from "@/components/Button";
 import { EditIcon, Trash } from "@/components/icons";
+import { getAllBackdrops } from "@/lib/api/backdrop.api";
+import { formattedMoney } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import useSWR from "swr";
 
-const Backdrops = () => {
+const Page = () => {
+  const { data, error, isLoading } = useSWR(
+    "/api/backdrops/admin",
+    getAllBackdrops
+  );
+
   return (
     <div className="bg-white p-3">
       {/*Page Header */}
@@ -29,24 +39,44 @@ const Backdrops = () => {
                 <td className="px-4 py-3">Actions</td>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800 text-gray-700 dark:text-gray-400">
-              <tr className="">
-                <td className="px-4 py-3"></td>
-                <td className="px-4 py-3">Backdrop 1</td>
-                <td className="px-4 py-3">200</td>
-                <td className="px-4 py-3">20/2/2022</td>
-                <td className="px-4 py-3">
-                  <div className="flex">
-                    <button className="px-4 ">
-                      <Trash />
-                    </button>
-                    <Link className="px-4 " href="">
-                      <EditIcon />
-                    </Link>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
+            {isLoading ? (
+              <div>Loading..</div>
+            ) : data?.length < 0 ? (
+              <div>Empty</div>
+            ) : (
+              <>
+                <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800 text-gray-700 dark:text-gray-400">
+                  {data?.backdrops.map((backdrop: any, i: number) => (
+                    <tr className="" key={i}>
+                      <td className="px-4 py-3">
+                        <Image
+                          src={backdrop.imageUrl || ""}
+                          height={100}
+                          width={100}
+                          alt="Backdrop Image"
+                          className="rounded-[8px]"
+                        />
+                      </td>
+                      <td className="px-4 py-3">{backdrop.title}</td>
+                      <td className="px-4 py-3">
+                        {formattedMoney(backdrop.price)}
+                      </td>
+                      <td className="px-4 py-3">{backdrop.createdAt}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex">
+                          <button className="px-4 ">
+                            <Trash />
+                          </button>
+                          <Link className="px-4 " href="">
+                            <EditIcon />
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </>
+            )}
           </table>
         </div>
       </div>
@@ -54,4 +84,4 @@ const Backdrops = () => {
   );
 };
 
-export default Backdrops;
+export default Page;

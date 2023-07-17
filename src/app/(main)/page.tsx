@@ -14,16 +14,18 @@ export default function Home() {
             <div className="em__flex">
               <div className="em__hero__left">
                 <h2>
-                  <span className="em__fancy__text">We</span> are an <br />
-                  Events Company
+                  <span className="em__fancy__text">Welcome</span> to
                   <br />
-                  <span className="em__fancy__text sp">Specializes</span>
+                  <span className="em__fancy__text sp">
+                    Set Events{" "}
+                    <span className="font-['acaslonpro-regular']">,</span>
+                  </span>{" "}
                 </h2>
                 <p>
-                  Welcome to Set Events, where imagination meets elegance.
-                  Explore our Design Downloads for stunning design files,
-                  unleash the creativity of our Creative AI Studio, or discover
-                  a world of possibilities with our curated Event Connections
+                  where imagination meets elegance. Explore our Design Downloads
+                  for stunning design files, unleash the creativity of our
+                  Creative AI Studio, or discover a world of possibilities with
+                  our curated Event Connections
                 </p>
                 <a href="#about" className="em__button primary">
                   Read More
@@ -199,9 +201,9 @@ export default function Home() {
                 <div className="art_box"></div>
               </div>
               <div className="details">
-                <div className="em__header left">
+                <div className="em__header left mb-[40px]">
                   <h1>Our</h1>
-                  <span className="em__fancy__text">Creative AI studio</span>
+                  <span className="em__fancy__text ai">Creative AI studio</span>
                 </div>
 
                 <div>

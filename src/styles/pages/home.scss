@@ -619,7 +619,8 @@
   .em__hero__bottom {
     .em__hb_items {
       .box {
-        height: 130px;
+        // height: 130px;
+        height: 95px;
 
         &.box-bl {
           border-bottom-left-radius: 40px;
@@ -700,6 +701,7 @@
   }
   // Forget Sections
   .em__forget__section {
+    height: 560px;
     .wrapper {
       width: 100%;
     }
@@ -747,6 +749,7 @@
 
         img {
           height: 50%;
+          object-fit: contain;
         }
       }
       .step__details {
@@ -822,6 +825,22 @@
           font-size: 58px;
           top: 26px;
           left: -24px;
+        }
+      }
+    }
+  }
+
+  .em__banner__2 {
+    .inner {
+      h1 {
+        font-size: 38px;
+        margin-top: 0px;
+        line-height: 25px;
+        span {
+          font-size: 36px;
+          top: 26px;
+          line-height: 36px;
+          left: 0px;
         }
       }
     }

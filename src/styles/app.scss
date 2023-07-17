@@ -477,6 +477,7 @@ a {
     &.h-b {
       span {
         top: 34px;
+        font-size: 52px;
       }
     }
 
@@ -508,6 +509,10 @@ a {
         font-size: 60px;
         top: 40px;
         right: -107px;
+
+        &.ai {
+          left: 0px;
+        }
       }
     }
     h1 {
@@ -523,6 +528,18 @@ a {
       top: 41px;
       right: -115px;
       font-size: 63px;
+    }
+  }
+
+  .em__checkout_body {
+    .checkout__total {
+      margin-top: 36px;
+
+      .title {
+        h4 {
+          font-size: 16px;
+        }
+      }
     }
   }
 }

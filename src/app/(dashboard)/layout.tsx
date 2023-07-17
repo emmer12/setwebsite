@@ -5,6 +5,8 @@ import "@/styles/app.scss";
 import "@/styles/globals.css";
 import "react-notifications/lib/notifications.css";
 import { NotificationContainer } from "react-notifications";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import "swiper/css/bundle";
 
@@ -22,6 +24,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+
   return (
     <html lang="en">
       <body>

@@ -22,6 +22,9 @@ const constants = {
     BASIC: 100,
     PRO: 190,
   },
+  limit: {
+    SAF: 30,
+  },
   subscription_type: {
     SAF_BASIC: "SAF_BASIC",
     SAF_PRO: "SAF_PRO",

@@ -10,10 +10,6 @@ const DesignPage = () => {
     return <p>Loading...</p>;
   }
 
-  if (status === "unauthenticated") {
-    router.push("/");
-  }
-
   return (
     <div>
       <div className="bg-white">

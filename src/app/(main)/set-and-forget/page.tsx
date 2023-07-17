@@ -53,7 +53,9 @@ const SetAndForget = () => {
         <div className="inner">
           <h1>
             Set and Forget
-            <span>Streamline Your Event Planning with Effortless Elegance</span>
+            <span className="leading-6 sm:leading-normal">
+              Streamline Your Event Planning with Effortless Elegance
+            </span>
           </h1>
         </div>
       </div>
@@ -145,7 +147,7 @@ const SetAndForget = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 ">
+            <div className="grid grid-cols-1 sm:grid-cols-3 ">
               {features.map((feature, i) => (
                 <FeatureList key={feature} text={feature} />
               ))}

@@ -8,6 +8,7 @@ import Api from "@/lib/api";
 import { signIn } from "next-auth/react";
 import Button from "@/components/Button";
 import FileUploader from "@/components/FileUploader";
+import { createBackdrop } from "@/lib/api/backdrop.api";
 const CreateBackdrop = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [files, setFiles] = useState({
@@ -37,18 +38,28 @@ const CreateBackdrop = () => {
       description: "",
       price: "",
     },
-    onSubmit: async ({ title, description, price }) => {
+    onSubmit: async (data) => {
+      const userData: any = { ...data };
       setLoading(true);
 
       try {
-        const res = await Api.post("/api/users/create", {
-          title,
-          description,
-          price,
-        });
+        let formData = new FormData();
+
+        for (var key in data) {
+          formData.append(key, userData[key]);
+        }
+        if (files.preview) {
+          formData.append("preview", files.preview);
+        }
+
+        if (files.file) {
+          formData.append("file", files.file);
+        }
+
+        const res = await createBackdrop(formData);
         NotificationManager.success("Your account was successfully created!");
 
-        router.push("/vendor/onboard/basic");
+        router.push("/dashboard/backdrops");
       } catch (error: any) {
         if (error?.response?.status == 400) {
           NotificationManager.error(
@@ -106,7 +117,7 @@ const CreateBackdrop = () => {
 
           <div className="field">
             <input
-              type="type"
+              type="number"
               onChange={formik.handleChange}
               value={formik.values.price}
               name="price"
@@ -137,7 +148,8 @@ const CreateBackdrop = () => {
               <input
                 type="file"
                 placeholder="Backdrop Files"
-                onChange={() => handleRemove}
+                onChange={(e) => handleChange(e)}
+                accept="application/pdf"
                 name="file"
               />
             </div>

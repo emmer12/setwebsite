@@ -92,7 +92,7 @@ model Backdrops {
     categoryId        String              @db.ObjectId
     createdAt         DateTime            @default(now())
     updatedAt         DateTime            @updatedAt
-    category          BackdropCategory    @relation(fields: [categoryId], references: [id])
+    category          BackdropCategory?   @relation(fields: [categoryId], references: [id])
     BackdropOrderItem BackdropOrderItem[]
     filePath          String?             @default("backdrops")
 }

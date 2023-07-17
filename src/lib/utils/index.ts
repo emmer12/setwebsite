@@ -289,3 +289,12 @@ export const citiesUAE = [
     name: "All Cities",
   },
 ];
+
+export const  generateSlug= (str:string) =>{
+  return str
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove non-word characters
+    .replace(/\s+/g, '-') // Replace whitespace with hyphens
+    .replace(/--+/g, '-') // Replace consecutive hyphens with a single hyphen
+    .trim(); // Trim leading and trailing whitespace
+}
