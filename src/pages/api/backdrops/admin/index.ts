@@ -110,26 +110,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).json({ error: error.message });
       }
     }
-
-    if (req.method === "PATCH") {
-      //   try {
-      //     const { backdrops, error }: any = await getAllBackdrops();
-      //     if (error) throw new Error(error);
-      //     return res.status(200).json({ backdrops });
-      //   } catch (error: any) {
-      //     return res.status(500).json({ error: error.message });
-      //   }
-    }
-
-    if (req.method === "DELETE") {
-      //   try {
-      //     const { backdrops, error }: any = await getAllBackdrops();
-      //     if (error) throw new Error(error);
-      //     return res.status(200).json({ backdrops });
-      //   } catch (error: any) {
-      //     return res.status(500).json({ error: error.message });
-      //   }
-    }
   } else {
     return res.status(401).json({ msg: "UnAuthorized" });
   }

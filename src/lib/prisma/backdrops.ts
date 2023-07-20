@@ -49,7 +49,7 @@ export async function getAllBackdrops(page: any, limit: number) {
       },
     });
 
-    const totalCount = await prisma.vendor.count();
+    const totalCount = await prisma.backdrops.count();
 
     const totalPages = Math.ceil(totalCount / limit);
 
@@ -57,6 +57,15 @@ export async function getAllBackdrops(page: any, limit: number) {
     const prevPage = page > 1 ? parseInt(page) - 1 : null;
 
     return { backdrops, nextPage, prevPage, totalPages };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function deleteBackdrop(id: string) {
+  try {
+    await prisma.backdrops.delete({ where: { id: id } });
+    return { success: true };
   } catch (error) {
     return { error };
   }

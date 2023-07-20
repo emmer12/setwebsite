@@ -18,3 +18,6 @@ export const createBackdrop = (data: any) =>
 
 export const getAllBackdrops = () =>
   api.get("/api/backdrops/admin").then((res) => res.data);
+
+export const deleteBackdrop = (id: string) =>
+  api.delete(`/api/backdrops/admin/${id}`).then((res) => res.data);

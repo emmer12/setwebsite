@@ -1,18 +1,31 @@
 "use client";
 import Button from "@/components/Button";
 import { EditIcon, Trash } from "@/components/icons";
-import { getAllBackdrops } from "@/lib/api/backdrop.api";
+import { deleteBackdrop, getAllBackdrops } from "@/lib/api/backdrop.api";
 import { formattedMoney } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
+import { NotificationManager } from "react-notifications";
 
 const Page = () => {
   const { data, error, isLoading } = useSWR(
     "/api/backdrops/admin",
     getAllBackdrops
   );
+
+  const handleDelete = async (id: string) => {
+    try {
+      const conf = confirm("Are you sure?");
+      if (conf) {
+        await deleteBackdrop(id);
+        NotificationManager.success("Post Deleted!");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="bg-white p-3">
@@ -64,7 +77,10 @@ const Page = () => {
                       <td className="px-4 py-3">{backdrop.createdAt}</td>
                       <td className="px-4 py-3">
                         <div className="flex">
-                          <button className="px-4 ">
+                          <button
+                            onClick={() => handleDelete(backdrop.id)}
+                            className="px-4 "
+                          >
                             <Trash />
                           </button>
                           <Link className="px-4 " href="">

@@ -49,9 +49,11 @@
     .box {
       border: 4px solid #fff;
       // background-color: #b3bdca;
-      height: 350px;
+      height: 300px;
       // height: 300px;
       overflow: hidden;
+      max-width: 100%;
+      width: 300px;
 
       img {
         width: 100%;
