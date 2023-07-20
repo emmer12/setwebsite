@@ -203,7 +203,9 @@ export default function Home() {
               <div className="details">
                 <div className="em__header left mb-[40px]">
                   <h1>Our</h1>
-                  <span className="em__fancy__text ai">Creative AI studio</span>
+                  <span className="em__fancy__text ai" style={{ top: "-10px" }}>
+                    Creative AI studio
+                  </span>
                 </div>
 
                 <div>
