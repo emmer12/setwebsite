@@ -107,7 +107,6 @@ export async function logVendorSubscription(
         data: {
           profile_sub: true,
           quote_sub: subscription.quote_sub,
-          
         },
       });
 
@@ -141,7 +140,6 @@ export async function logVendorSubscription(
             id: vendor_id,
           },
           data: {
-            profile_sub: true,
             quote_sub_exp: endingDate,
           },
         });
