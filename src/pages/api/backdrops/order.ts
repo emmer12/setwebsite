@@ -1,13 +1,39 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
+import { backdropOrderSchema } from "@/lib/utils/validations";
+import { processUserRegistration } from "@/lib/prisma/users";
+import { getToken } from "next-auth/jwt";
 const shortid = require("shortid");
 const ObjectId = require("mongodb").ObjectId;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const data: any = JSON.parse(req.body);
+    const validate = backdropOrderSchema.safeParse(data);
+    const token = await getToken({ req });
+    let user;
+
+    if (!validate.success) {
+      const { errors } = validate.error;
+      return res.status(400).json({
+        error: { message: "Invalid request", errors },
+      });
+    }
 
     try {
+      if (token) {
+        user = token;
+        data.userId = token.id;
+      } else {
+        const userData = {
+          email: data.email,
+          name: data.full_name,
+          password: data.password,
+        };
+        user = await processUserRegistration(userData, res);
+        data.userId = user.id;
+      }
+
       const newOrder = await prisma.backdropOrder.create({
         data: {
           fullName: data.full_name,
@@ -39,6 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           data: {
             request_type: "BACKDROP_PRODUCTION",
             orderId: newOrder.id,
+            userId: user.id,
           },
         });
       }
@@ -53,6 +80,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             location: data.location,
             occasion: data.occasion,
             people_number: data.people_number,
+            userId: user.id,
           },
         });
       }

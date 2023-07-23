@@ -6,12 +6,14 @@ import { useCart } from "@/hooks/useCartProvider";
 // import { countries } from "@/lib/utils";
 import { ICartItem } from "@/types";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import useSWR from "swr";
+import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NotificationManager } from "react-notifications";
 import FileUploader from "@/components/FileUploader";
-import { createVendorOrder } from "@/lib/api/vendor.api";
+import { createVendorOrder, getFormData } from "@/lib/api/vendor.api";
 import { signIn } from "next-auth/react";
 import constants from "@/lib/utils/constants";
 import { formattedMoney } from "@/lib/utils";
@@ -56,12 +58,17 @@ const Checkout = () => {
   const { cart, subTotal } = useCart();
   const router = useRouter();
   const [services, setServices] = useState<string[]>([]);
+  const { status, data } = useSession();
   const [sinput, setSInput] = useState("");
   const [sub] = useState<any>(
     typeof window !== "undefined" &&
       JSON.parse(localStorage.getItem("vSub") as any)
   );
 
+  const { isLoading, data: formData } = useSWR(
+    "/api/vendors/checkout/form-data",
+    getFormData
+  );
   const [files, setFiles] = useState({
     image_1: null,
     image_2: null,
@@ -104,7 +111,7 @@ const Checkout = () => {
       office_number: "",
       website: "",
       instagram: "",
-      vendor_category: "",
+      vendorCategoryId: "",
     },
     onSubmit: async (data) => {
       const userData: any = { ...data };
@@ -115,6 +122,14 @@ const Checkout = () => {
 
       for (var key in userData) {
         formData.append(key, userData[key]);
+      }
+
+      if (!files.image_1) {
+        NotificationManager.error(
+          "Error message",
+          "At least one image is required"
+        );
+        return;
       }
 
       if (files.image_1) {
@@ -148,13 +163,17 @@ const Checkout = () => {
         if (typeof window !== "undefined") localStorage.removeItem("vSub");
         router.push(`/checkout/vendor/payment/${id}`);
       } catch (error: any) {
+        const err = error?.response?.data;
         if (error?.response?.status == 400) {
           NotificationManager.error(
             "Error message",
-            error?.response?.data?.msg
+            err?.msg || err.error.message || err?.error.errors[0].message
           );
         } else {
-          NotificationManager.error("Error message", "Something went wrong");
+          NotificationManager.error(
+            "Error message",
+            "Opps,Something went wrong"
+          );
         }
       } finally {
         setLoading(false);
@@ -162,18 +181,27 @@ const Checkout = () => {
 
       setLoading(false);
     },
-    validationSchema: Yup.object().shape({
-      full_name: Yup.string().required("Name is Required"),
-      company_name: Yup.string().required("Company Name Required"),
-      company_overview: Yup.string().required("Company Brief Required"),
-      vendor_category: Yup.string().required("Category is Required"),
-      email: Yup.string().email("Invalid email").required("Required"),
-      password: Yup.string().required("Required"),
-      password_confirmation: Yup.string().oneOf(
-        [Yup.ref("password"), ""],
-        "Passwords must match"
-      ),
-    }),
+    validationSchema:
+      status == "authenticated"
+        ? Yup.object().shape({
+            full_name: Yup.string().required("Name is Required"),
+            email: Yup.string().email("Invalid email").required("Required"),
+            company_name: Yup.string().required("Company Name Required"),
+            company_overview: Yup.string().required("Company Brief Required"),
+            vendorCategoryId: Yup.string().required("Category is Required"),
+          })
+        : Yup.object().shape({
+            full_name: Yup.string().required("Name is Required"),
+            company_name: Yup.string().required("Company Name Required"),
+            company_overview: Yup.string().required("Company Brief Required"),
+            vendorCategoryId: Yup.string().required("Category is Required"),
+            email: Yup.string().email("Invalid email").required("Required"),
+            password: Yup.string().required("Required"),
+            password_confirmation: Yup.string().oneOf(
+              [Yup.ref("password"), ""],
+              "Passwords must match"
+            ),
+          }),
   });
 
   const handleChange = (e: any) => {
@@ -201,6 +229,13 @@ const Checkout = () => {
   const removeService = (i: number) => {
     setServices((prev) => prev.filter((s, idx) => idx !== i));
   };
+
+  useEffect(() => {
+    if (status == "authenticated") {
+      formik.setFieldValue("full_name", data.user.name);
+      formik.setFieldValue("email", data.user.email);
+    }
+  }, [status]);
 
   return (
     <div>
@@ -314,22 +349,28 @@ const Checkout = () => {
                     <div className="field">
                       <select
                         onChange={formik.handleChange}
-                        value={formik.values.vendor_category}
-                        name="vendor_category"
+                        value={formik.values.vendorCategoryId}
+                        name="vendorCategoryId"
                       >
-                        <option value="">Select category</option>
+                        <option value="">Select Vendor category *</option>
 
-                        {vendorCategories.map((category, i) => (
-                          <option key={i} value={category}>
-                            {category}
-                          </option>
-                        ))}
+                        {formData?.categories.map((category: any) => {
+                          const key = Object.keys(category)[0];
+                          const value = category[key];
+
+                          return (
+                            <option key={key} value={key}>
+                              {value}
+                            </option>
+                          );
+                        })}
+
+                        {formik.touched && formik.errors.vendorCategoryId && (
+                          <span className="error">
+                            {formik.errors.vendorCategoryId}
+                          </span>
+                        )}
                       </select>
-                      {formik.touched && formik.errors.vendor_category && (
-                        <span className="error">
-                          {formik.errors.vendor_category}
-                        </span>
-                      )}
                     </div>
 
                     <div className="field">
@@ -525,64 +566,72 @@ const Checkout = () => {
                       style={{ height: "10px" }}
                     ></div>
 
-                    <div className="title ">
-                      <h4>Account Details</h4>
-                    </div>
+                    {status === "unauthenticated" && (
+                      <div>
+                        <div className="title ">
+                          <h4>Account Details</h4>
+                        </div>
 
-                    <div className="field">
-                      <input
-                        onChange={formik.handleChange}
-                        value={formik.values.full_name}
-                        placeholder="Full name *"
-                        type="text"
-                        name="full_name"
-                      />
-                      {formik.touched && formik.errors.full_name && (
-                        <span className="error">{formik.errors.full_name}</span>
-                      )}
-                    </div>
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.full_name}
+                            placeholder="Full name *"
+                            type="text"
+                            name="full_name"
+                          />
+                          {formik.touched && formik.errors.full_name && (
+                            <span className="error">
+                              {formik.errors.full_name}
+                            </span>
+                          )}
+                        </div>
 
-                    <div className="field">
-                      <input
-                        onChange={formik.handleChange}
-                        value={formik.values.email}
-                        placeholder="Email Address*"
-                        type="email"
-                        name="email"
-                      />
-                      {formik.touched && formik.errors.email && (
-                        <span className="error">{formik.errors.email}</span>
-                      )}
-                    </div>
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.email}
+                            placeholder="Email Address*"
+                            type="email"
+                            name="email"
+                          />
+                          {formik.touched && formik.errors.email && (
+                            <span className="error">{formik.errors.email}</span>
+                          )}
+                        </div>
 
-                    <div className="field">
-                      <input
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
-                        placeholder="Password*"
-                        type="password"
-                        name="password"
-                      />
-                      {formik.touched && formik.errors.password && (
-                        <span className="error">{formik.errors.password}</span>
-                      )}
-                    </div>
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.password}
+                            placeholder="Password*"
+                            type="password"
+                            name="password"
+                          />
+                          {formik.touched && formik.errors.password && (
+                            <span className="error">
+                              {formik.errors.password}
+                            </span>
+                          )}
+                        </div>
 
-                    <div className="field">
-                      <input
-                        onChange={formik.handleChange}
-                        value={formik.values.password_confirmation}
-                        placeholder="Password Confirmation*"
-                        type="password"
-                        name="password_confirmation"
-                      />
-                      {formik.touched &&
-                        formik.errors.password_confirmation && (
-                          <span className="error">
-                            {formik.errors.password_confirmation}
-                          </span>
-                        )}
-                    </div>
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.password_confirmation}
+                            placeholder="Password Confirmation*"
+                            type="password"
+                            name="password_confirmation"
+                          />
+                          {formik.touched &&
+                            formik.errors.password_confirmation && (
+                              <span className="error">
+                                {formik.errors.password_confirmation}
+                              </span>
+                            )}
+                        </div>
+                      </div>
+                    )}
 
                     <div>
                       <h4>Upload Your Work Images</h4>

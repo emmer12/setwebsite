@@ -1,16 +1,6 @@
 "use client";
-
-import Button from "@/components/Button";
-import { ArrowRight, TimesCircle } from "@/components/icons";
 import { getLoggedInVendor } from "@/lib/api/vendor.api";
-import { useFormik } from "formik";
-import Image from "next/image";
-import * as Yup from "yup";
-import React, { useEffect, useState } from "react";
-import { NotificationManager } from "react-notifications";
-import { citiesUAE, countries, vendorCategories } from "@/lib/utils";
-import FileUploader from "@/components/FileUploader";
-import DesignCard from "@/components/designs/DesignCard";
+import { useEffect, useState } from "react";
 import RequestCard from "@/components/designs/RequestsCard";
 
 const Page = () => {

@@ -162,6 +162,17 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+.badge {
+  font-size: 12px;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+
+  &.badge-secondary {
+    background: #ffc107;
+  }
+}
+
 .em__fancy__text {
   font-family: "infinity";
   color: #986a47;
@@ -879,6 +890,15 @@ input[type="radio"] {
 
 .h__dropdown {
   height: fit-content;
+  li {
+    a {
+      text-transform: capitalize !important;
+      transition: 0.4s;
+      &:hover {
+        margin-left: 10px;
+      }
+    }
+  }
 }
 
 .backdrop__image {

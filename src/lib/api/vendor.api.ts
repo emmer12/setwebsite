@@ -3,7 +3,10 @@ import api from ".";
 export const getVendors = () => api.get("/api/vendors").then((res) => res.data);
 export const getBackdrop = (slug: string) =>
   api.get(`/api/vendors/${slug}`).then((res) => res.data);
-export const getVendorCategories = () => api.get(`/api/vendors/categories`);
+export const getVendorCategories = (url: string) =>
+  api.get(url).then((res) => res.data);
+export const getFormData = (url: string) =>
+  api.get(url).then((res) => res.data);
 
 export const getVendorById = (id: string) =>
   api.get(`/api/vendors/${id}`).then((res) => res.data);

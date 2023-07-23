@@ -1,6 +1,5 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["referentialActions"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -56,6 +55,8 @@ model User {
     Vendor            Vendor[]
     BackdropOrderItem BackdropOrderItem[]
     Subscription      Subscription[]
+    Requests          Requests[]
+    BackdropOrder     BackdropOrder[]
 }
 
 model VerificationRequest {
@@ -74,14 +75,27 @@ model BackdropCategory {
     title       String
     slug        String
     description String?
+    icon        String?
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
     Backdrops   Backdrops[]
 }
 
+model VendorCategory {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    title       String
+    slug        String
+    description String?
+    icon        String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    Vendor      Vendor[]
+}
+
 model Backdrops {
     id                String              @id @default(auto()) @map("_id") @db.ObjectId
-    price             Float
+    personal_price    Float
+    commercial_price  Float
     title             String
     slug              String
     description       String
@@ -133,6 +147,7 @@ model BackdropOrder {
     Requests      Requests[]
     ep_quote      Boolean             @default(false)
     bp_quote      Boolean             @default(false)
+    User          User?               @relation(fields: [userId], references: [id])
 }
 
 model BackdropOrderItem {
@@ -163,8 +178,8 @@ model transactionLog {
 }
 
 model Vendor {
-    id               String    @id @default(auto()) @map("_id") @db.ObjectId
-    userId           String    @db.ObjectId
+    id               String          @id @default(auto()) @map("_id") @db.ObjectId
+    userId           String          @db.ObjectId
     company_name     String
     company_overview String
     website          String?
@@ -183,12 +198,13 @@ model Vendor {
     whatsapp_number  String?
     office_number    String
     instagram        String?
-    vendor_category  String?
-    quote_sub        Boolean   @default(false)
-    profile_sub      Boolean   @default(false)
+    quote_sub        Boolean         @default(false)
+    profile_sub      Boolean         @default(false)
     quote_sub_exp    DateTime?
     profile_sub_exp  DateTime?
-    user             User      @relation(fields: [userId], references: [id])
+    user             User            @relation(fields: [userId], references: [id])
+    VendorCategory   VendorCategory? @relation(fields: [vendorCategoryId], references: [id])
+    vendorCategoryId String?         @db.ObjectId
 }
 
 enum RequestType {
@@ -201,11 +217,14 @@ model Requests {
     request_type       RequestType
     orderId            String        @db.ObjectId
     order              BackdropOrder @relation(fields: [orderId], references: [id])
-    people_number      String?
+    people_number      Int?
     event_date         String?
     occasion           String?
     location           String?
     additional_request String?
+    imageUrl           String?
+    userId             String        @db.ObjectId
+    user               User          @relation(fields: [userId], references: [id])
 }
 
 enum SubType {

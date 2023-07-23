@@ -47,7 +47,7 @@ const Page = () => {
               <tr>
                 <td className="px-4 py-3">Display</td>
                 <td className="px-4 py-3">Title</td>
-                <td className="px-4 py-3">Price</td>
+                <td className="px-4 py-3"> Price</td>
                 <td className="px-4 py-3">Created At</td>
                 <td className="px-4 py-3">Actions</td>
               </tr>
@@ -71,8 +71,19 @@ const Page = () => {
                         />
                       </td>
                       <td className="px-4 py-3">{backdrop.title}</td>
+
                       <td className="px-4 py-3">
-                        {formattedMoney(backdrop.price)}
+                        <div>
+                          <div className="badge badge-secondary">
+                            <strong className="mr-2">Personal:</strong>
+                            {formattedMoney(backdrop.personal_price)}
+                          </div>
+                          <div />
+                          <div className="badge badge-secondary">
+                            <strong className="mr-2">Commercial:</strong>
+                            {formattedMoney(backdrop.commercial_price)}
+                          </div>
+                        </div>
                       </td>
                       <td className="px-4 py-3">{backdrop.createdAt}</td>
                       <td className="px-4 py-3">

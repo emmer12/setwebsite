@@ -6,6 +6,7 @@ import fs from "fs/promises";
 import { createVendor } from "@/lib/prisma/vendors";
 import { getToken } from "next-auth/jwt";
 import { processUserRegistration } from "@/lib/prisma/users";
+import { vendorOrderSchema } from "@/lib/utils/validations";
 
 export const config = {
   api: {
@@ -49,6 +50,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const { fields, files }: any = await readFile(req, true);
       let data = { ...fields };
+      let copyData = { ...data };
+
+      if (!files.image_1) {
+        return res.status(400).json({
+          error: { message: "At least one image is required" },
+        });
+      }
+
+      copyData.services = JSON.parse(data.services);
+      copyData.coverage_cities = JSON.parse(data.coverage_cities);
+
+      const validate = vendorOrderSchema.safeParse(copyData);
+
+      if (!validate.success) {
+        const { errors } = validate.error;
+        return res.status(400).json({
+          error: { message: "Invalid request", errors },
+        });
+      }
 
       if (token) {
         user = token;
@@ -102,7 +122,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         whatsapp_number: data.whatsapp_number,
         office_number: data.office_number,
         instagram: data.instagram,
-        vendor_category: data.vendor_category,
+        vendorCategoryId: data.vendorCategoryId,
         quote_sub: data.quote_sub ? true : false,
         profile_sub: data.profile_sub ? true : false,
       });

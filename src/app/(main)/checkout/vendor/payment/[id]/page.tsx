@@ -119,7 +119,7 @@ const VendorPayment = ({ id, total, order }: any) => {
         setErrorMessage(error.message);
       } else {
         NotificationManager.success("Subscription successful!");
-        router.push("/vendor/dashboard/profile");
+        router.push("/vendor/dashboard");
       }
     } catch (error: any) {
       setLoading(false);

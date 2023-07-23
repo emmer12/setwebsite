@@ -2,6 +2,7 @@ import path from "path";
 import prisma from ".";
 import { sendBackdropPurchaseEmail } from "../mailer";
 import constants from "../utils/constants";
+import { sendAllVendorsQuotes } from "./vendors";
 
 export async function logBackdropPayment(
   order_id: string,
@@ -38,10 +39,8 @@ export async function logBackdropPayment(
       },
     });
 
-    // Send Email
-
+    // Send Email to Buyer
     let att = order?.items.map((item) => {
-      console.log(item.backdrop);
       return {
         filename: "backdrop-files.pdf",
         path: path.resolve(`./src/assets/${item.backdrop.filePath}`),
@@ -55,6 +54,20 @@ export async function logBackdropPayment(
     };
 
     await sendBackdropPurchaseEmail(data);
+
+    const request: any = await prisma.requests.findFirst({
+      where: {
+        orderId: order?.id,
+      },
+    });
+    // Send Email to Vendor
+    if (order?.bp_quote) {
+      await sendAllVendorsQuotes(request.id);
+    }
+
+    if (order?.ep_quote) {
+      await sendAllVendorsQuotes(request.id, "64bbebce9b72b64fc88a2576");
+    }
 
     return true;
   } catch (error) {
@@ -70,6 +83,7 @@ export async function logVendorSubscription(
 ) {
   const subscription = JSON.parse(sub);
   const today = new Date();
+  let newSub;
   // Add one year to today's date
   let endingDate = new Date();
   endingDate.setFullYear(today.getFullYear() + 1);
@@ -93,10 +107,11 @@ export async function logVendorSubscription(
         data: {
           profile_sub: true,
           quote_sub: subscription.quote_sub,
+          
         },
       });
 
-      await prisma.subscription.create({
+      newSub = await prisma.subscription.create({
         data: {
           price: constants.vendor_subscriptions.QUOTE,
           service: constants.subscription_type.VENDOR_BASIC as any,
@@ -109,7 +124,7 @@ export async function logVendorSubscription(
       });
 
       if (subscription.quote_sub) {
-        await prisma.subscription.create({
+        newSub = await prisma.subscription.create({
           data: {
             price: constants.vendor_subscriptions.QUOTE,
             service: constants.subscription_type.VENDOR_PRO as any,
@@ -120,12 +135,22 @@ export async function logVendorSubscription(
             paymentStatus: constants.payment_status.PAID as any,
           },
         });
+
+        await prisma.vendor.update({
+          where: {
+            id: vendor_id,
+          },
+          data: {
+            profile_sub: true,
+            quote_sub_exp: endingDate,
+          },
+        });
       }
 
       await prisma.transactionLog.create({
         data: {
           description: `Vendor Subscription`,
-          orderId: subscription.id,
+          orderId: newSub.id,
           type: "VENDOR",
           transactionId,
         },

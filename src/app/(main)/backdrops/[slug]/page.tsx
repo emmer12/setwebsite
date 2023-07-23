@@ -1,164 +1,169 @@
-"use client";
 import React, { FC, useState } from "react";
 import { Backdrops, DetailsSlide } from "@/components/backdrops";
-import { getBackdrop } from "@/lib/api/backdrop.api";
+// import { getBackdrop } from "@/lib/api/backdrop.api";
 import useSWR from "swr";
-import { IBackdrop } from "@/types";
-import { getDiscount } from "@/lib/utils";
+import { IBackdrop, IBackdropDetails } from "@/types";
+import { formattedMoney, getDiscount } from "@/lib/utils";
 import { useCart } from "@/hooks/useCartProvider";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
-import { Basket } from "@/components/icons";
+import {
+  Basket,
+  Facebook,
+  Instagram,
+  LinkedIn,
+  Twitter,
+} from "@/components/icons";
+import BackdropDetails from "@/components/backdrops/clients/BackdropDetails";
+import AddCardComponent from "@/components/backdrops/clients/AddCardComponent";
+import Image from "next/image";
+import Backdrop from "@/components/backdrops/Backdrop";
 
 interface PageProps {
   params: { slug: string };
 }
 
-enum ITab {
-  "DESCRIPTION" = "description",
-  "REVIEW" = "review",
-  "O_DESCRIPTION" = "other_description",
-}
+const getBackdrop = async (slug: string): Promise<IBackdropDetails> => {
+  const data = await fetch(`${process.env.BASE_URL}/api/backdrops/${slug}`);
+  const backdrops = await data.json();
 
-const Page: FC<PageProps> = ({ params }) => {
-  const { data, error, isLoading } = useSWR(`${params.slug}`, getBackdrop);
-  const [tab, setTab] = useState<ITab>(ITab.DESCRIPTION);
-  const { addToCart } = useCart();
-  const router = useRouter();
-  const addCart = (product: IBackdrop) => {
-    const { id, title, imageUrl, price, discount } = product;
+  return backdrops;
+};
 
-    const data = {
-      id,
-      title,
-      imageUrl,
-      price,
-      qty: 1,
-      discount,
-    };
-    addToCart(data);
+const Page = async ({ params }: PageProps) => {
+  // const { data, error, isLoading } = useSWR(`${params.slug}`, getBackdrop);
 
-    router.push("/checkout/backdrop");
-  };
+  const data = await getBackdrop(params.slug);
 
   return (
     <div>
       <div className="em__backdrops__details">
         <div className="container">
           <div className="em__body__wrapper">
-            {isLoading ? (
-              <span>Loading..</span>
-            ) : (
-              <div className="em__d__top">
-                <div className="em__display">
-                  <div className="contain">
-                    <DetailsSlide />
-                  </div>
+            <div className="em__d__top">
+              <div className="em__display">
+                <div className="contain">
+                  <DetailsSlide images={[data.backdrop.imageUrl]} />
                 </div>
-                <div className="em__content">
-                  <div className="inner">
-                    <h2>{data?.backdrop?.title}</h2>
-                    <div className="reviews">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        xmlnsXlink="http://www.w3.org/1999/xlink"
+              </div>
+              <div className="em__content">
+                <div className="inner">
+                  <h2>{data?.backdrop?.title}</h2>
+                  <div className="reviews">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                      width="73px"
+                      height="15px"
+                    >
+                      <image
+                        x="0px"
+                        y="0px"
                         width="73px"
                         height="15px"
-                      >
-                        <image
-                          x="0px"
-                          y="0px"
-                          width="73px"
-                          height="15px"
-                          xlinkHref="data:img/png;base64,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"
-                        />
-                      </svg>
-                      <span>5 reviews</span>
+                        xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEkAAAAPCAYAAACocuKtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH5wUEFyUIf1Z0nQAAB+NJREFUWMOVl3lsVNcVh7+3zHi3Z7yMPaaAwRACYWkhFS0gSNQUEJRNULEEESKWFoZEEU0gBVwQTZsmIU0VE2hLMGVpCEshIAKtQyEKcZMSIqBhqWsbzGCP7fE6ns2zvdc/3ng2bEOOdKU3597zvnt/55yrN4LasAM6TkLKSCjcSpz5aiYgZTQDVXH+6gWQtwICdnBegoHvkWAjcH1mIPvZf8V5bdvAcxXMW6HuZRhxOTFOxHtrHLqCBqAubua/k8D8KgQ7of0oDHg3MXY0rn9nkL24Is7bUALuG9D/Dbi7DIZ/nRgn4/vfZPzWasAaN+M4A8kjEendjLQcWIO/fhj+RvA3QlclNL374Ep7KSge8FzXhu/Od/FcXw6k0pfVvwohT3QEGvNo3rOegK0owvR8A/UlD8a27IVgB6SM0UZXzTi8N5YBKX0y6zaA+zKgdA8DzWUv4rk+FMNcMMwFQYa2wzGZi7X766DlIMgm8N4aR/2epXR+OgNI5tEtnY6zC7EfWkXg/ijaT4DrM6h9/mFxAt7bE7DuXUTH+RmA7lsws2g/uoiW/asJ2EbhOA3Ocqhd1ntExwkgBF23x1C3bw5d95b3JnBvlSTT+OZGdEDDW2vouj0I/71H2GsQ/NZimg/ORgBaDq4FpD5DrBZo/QCkFB0Nr28mGWjY9kuCTWb8lQ9Hth0Cv3UwreemogCtByyA8IjiJlG3+XckAa1HluK//xj1Wx9Y1JNIejzXJtBe/gySCCrgvvwmYATkPoAikIXn2k4EQBLA/qdl+GpG8rAWAB2uL+bR+eU4JAlCCjg/LQGy+0gkYTEMWNfvRgBkAZp2LqOreix9V78IZOK8uAjnF08iiZrH9tp2oJCEa0IGcoHV4ZcOpON0Ls17RmtbE0CWoPXwT/DdP4OobyGpyAa4gVNAEjAZMNC4ox/BDhOuiklI4eJRAuD45ASeq1WISW2ADWgHjgDPorVUEe3HjTTW/iBSc7IEje+sJHPKcIQkO7p8G+ADjob3+TSQjb20EMVrovPz8cjhYDUEjvKTuL+6iaiLZZYBLwN67DsLUTw5eK5/L3JOUYK2Q7NJGTsQz5UmpHQ7EAAOC2rDjlQ8V8po+nBhXGNIMT9UBRQ1fHAg2exh2LnJeKuN1K7+O/42KZJvSYhPfigUfQ4C/Sy7yJpeQuuBE9iPTYkwBbSNRpghjdXNTB/ezJBTTxNqNlE58wL+jihGEonrMCWkdQDhYw7eXkr6xE00lv6Flo/m98lU0YYCJBfYGVb+lAh4SB1loWD54QhQSrhGhLBPANIebyR93FTga5KH/pPiw3PQZXgQu4VN6A5J0t4pCPCddaWkjd0AtDHgD0vImXYqwhQTmVKUmVJcQ1LRNOAmcJHBZTPQpbmjzIQrSAwzAQasf4+MpzYBLjInr6CfpUy7DnphimFmsrmGIX+bBtzuPlErxrlryV3yV5AUejQVUoZXMXj/PKAi6uRjhhybh76oPpq+RJMD5Ft2Ypy/Ea1VAWxkTV+JccYJEHthopL25H8osCwArsb4zzF4/yL0A+t6Z+qCmF/cRfbCVwBX2Okgd/k6TD8vQ9AF+2B+Q/5LPwWukZD2Dgq3WNCbbT3HCiEMs84AX/YwWU7W1Iuoas871ve3km95AfAmzLSQt+oVdLnNvTKNc451bzbBzmCcfxKVngWW+98j5zlLD0wvuSu3IJsbe0bKIQyzjsUmRSZjYnRByKEnFIzWrhrSWk0rZxFfbT6Nb4OQCrbfgnkz2Hd0r85BEITuZKAqWvkCBAMykIy+oAt9AbiuQOcFkHMh5EpDCUaTpSpaa3Yz/XV5mtADoOltCMbp2R+BKBM1mnfFLwNZCLIDQQZfJegLwFcFkInq08edk/CVoKpChOmrDovk+CQW+n0Ub7p2gQkgZ3pQAhKKNwlREAg2mcnfGF0daADTL7Tn+k0GULQLT0z1IslBgs4MBBVUdybtpyYAFwDw18cyR6P6UzWmCHKGF8Uvo3bpQBQI2gvjmKov+mzdYAJVQFFATHMj6hSCDo2JK4v24xOBswAkPx7LLEZ1JWviSCq6/DaCrlQUdwpCSCJQV4w5ypRpPxYbPImQMwud2Y5h2gHMm0pxVTxG8x9LcN8cj7/JDBQAiaVqQvEaUNP9pD9xmbw120gZUon9/bV0lq/AbzfRfvJHEZFCnbGxYwm600jqV0/mtL0UbNmN+9J4mn5fgrd6NH7rILTvrMS2ySboMKKm+ckY+RV5lhKSiqpo/vNaHP9YRcidi6M8KpIQ9wE/hqA3Df2guxjnvk/Bxl24Lj2BvbQE97UpdNnMQAbg1EQKtsUGZ5E95xAmy3ZaD3T/qbUC5yl4aTHeGwvx3cmPiKQ4u+PMpI6owjDjDZyf74953yaKP9xL0ztbUYNZ0QqM0zgN03NlGBdsoe14Q9h3igG7TtPx0fP4784k0GCMiNR1sztuKMmFVnJnvYXz0r44ZtHufdhe30TaD6MfhSFPLDOVnMWlmCyv0XakNeyrAKbT71ezcFYsxVddCFRqIhkXxAZ/jHH2LaA2LmdZswGOY/pZFSGHI+L3RcBOTC/8Bsf562T+OCHh1GBauwXnpWi96wfGzp8kb+UtAraGhDgVMfUDclffQhUCEa8gRZnZi35NwHqFzGcSmVXockowzBwW8Sj+2PmzSGl3gNa4qOwlAOfIW12LIEXK/f/YrAEtRauPuwAAAABJRU5ErkJggg=="
+                      />
+                    </svg>
+                    <span className="ml-2">5 reviews</span>
+                  </div>
+
+                  <div className="price">
+                    <strong>LICENSE</strong>
+                    <div className="flex items-center">
+                      <span>Personal:</span>
+                      <span className="c-price">
+                        {formattedMoney(data?.backdrop?.personal_price)}
+                      </span>
+
+                      {data?.backdrop?.discount > 0 && (
+                        <span className="o-price">
+                          AED{" "}
+                          {getDiscount(
+                            data?.backdrop?.personal_price,
+                            data?.backdrop?.discount
+                          )}
+                        </span>
+                      )}
                     </div>
 
-                    <div className="price">
+                    <div className="flex items-center">
+                      <span>Commercial:</span>
                       <span className="c-price">
-                        AED {data?.backdrop?.price}
+                        {formattedMoney(data?.backdrop?.commercial_price)}
                       </span>
-                      <span className="o-price">
-                        AED{" "}
-                        {getDiscount(
-                          data?.backdrop?.price,
-                          data?.backdrop?.discount
-                        )}
-                      </span>
+
+                      {data?.backdrop?.discount > 0 && (
+                        <span className="o-price">
+                          AED{" "}
+                          {getDiscount(
+                            data?.backdrop?.commercial_price,
+                            data?.backdrop?.discount
+                          )}
+                        </span>
+                      )}
                     </div>
-                    {/* 
+                  </div>
+
+                  {/* 
                     <div className="date">
                       <h4>Date:</h4>
                       <input type="date" name="date" />
                     </div> */}
-                    {/* <div
+                  {/* <div
                       className="em__spacer"
                       style={{ height: "30px" }}
                     ></div> */}
 
-                    <hr className="details" />
-                    {/* 
+                  <hr className="details" />
+                  {/* 
                     <div
                       className="em__spacer"
                       style={{ height: "30px" }}
                     ></div> */}
 
-                    <h4>Add-ons that go well this Backdrop</h4>
-                    <div className="em__spacer" style={{ height: "4px" }}></div>
-                    {data?.backdrop?.addOn.map((ad: string, i: number) => (
-                      <Addon key={i + "a"} ad={ad} />
-                    ))}
+                  {/* <h4>Add-ons that go well this Backdrop</h4>
+                  <div className="em__spacer" style={{ height: "4px" }}></div>
+                  {data?.backdrop?.addOn.map((ad: string, i: number) => (
+                    <Addon key={i + "a"} ad={ad} />
+                  ))} */}
 
-                    <div
-                      className="em__spacer"
-                      style={{ height: "10px" }}
-                    ></div>
+                  <div className="em__spacer" style={{ height: "10px" }}></div>
 
-                    <div className="d_items">
-                      <h1>Available Status:</h1>
-                      <span>In Stock</span>
-                    </div>
-                    <div
-                      className="em__spacer"
-                      style={{ height: "10px" }}
-                    ></div>
+                  <div className="d_items">
+                    <h1>Available Status:</h1>
+                    <span>Available digital file</span>
+                  </div>
+                  <div className="em__spacer" style={{ height: "10px" }}></div>
 
-                    <div className="d_items">
-                      <h1>Category:</h1>
-                      <span>{data?.backdrop?.category?.title}</span>
-                    </div>
+                  <div className="d_items">
+                    <h1>Category:</h1>
+                    <span>{data?.backdrop?.category?.title}</span>
+                  </div>
 
-                    <div
-                      className="em__spacer"
-                      style={{ height: "10px" }}
-                    ></div>
+                  <div className="em__spacer" style={{ height: "10px" }}></div>
 
-                    <div className="d_items mb-2">
-                      <h1>Share:</h1>
-                      <span className="flex gap-2 items-center">
-                        <a href="">
-                          <img
-                            src="/assets/icons/facebook.png"
-                            alt="Facebook icon"
-                          />
-                        </a>
-                        <a href="">
-                          <img
-                            src="/assets/icons/twitter.png"
-                            alt="Twiter Icon"
-                          />
-                        </a>
-                      </span>
-                    </div>
+                  <div className="d_items mb-2">
+                    <h1>Share your final production on:</h1>
+                    <span className="flex gap-2 items-center">
+                      <a href="">
+                        <Instagram />
+                      </a>
+                      <a href="">
+                        <Twitter />
+                      </a>
 
-                    {/* <div
+                      <a href="">
+                        <LinkedIn />
+                      </a>
+                    </span>
+                  </div>
+
+                  {/* <div
                       className="em__spacer"
                       style={{ height: "10px" }}
                     ></div> */}
 
-                    {/* <div className="cart__wish">
+                  {/* <div className="cart__wish">
                       <div className="cart__add">
                         <button className="minus">&#8722;</button>
                         <div className="input_con">
@@ -169,78 +174,24 @@ const Page: FC<PageProps> = ({ params }) => {
                       <div className="wish"></div>
                     </div> */}
 
-                    {/* <div
+                  {/* <div
                       className="em__spacer"
                       style={{ height: "20px" }}
                     ></div> */}
 
-                    <hr className="details" />
-                    <div
-                      className="em__spacer"
-                      style={{ height: "20px" }}
-                    ></div>
+                  <hr className="details" />
+                  <div className="em__spacer" style={{ height: "20px" }}></div>
 
-                    <Button
-                      onClick={() => addCart(data?.backdrop)}
-                      classNames="em__button primary block"
-                      RightIcon={<Basket />}
-                      text="Add to Cart"
-                    />
+                  <AddCardComponent backdrop={data.backdrop} />
 
-                    <div style={{ textAlign: "center" }}>
-                      <strong>100% secure online checkout</strong>
-                    </div>
+                  <div style={{ textAlign: "center" }}>
+                    <strong>100% secure online checkout</strong>
                   </div>
                 </div>
               </div>
-            )}
-
-            <div className="em__pro__details">
-              <div className="p__tab">
-                <div
-                  onClick={() => setTab(ITab.DESCRIPTION)}
-                  className={`p__tab__item ${
-                    tab == ITab.DESCRIPTION ? " active" : ""
-                  }`}
-                >
-                  product Infomation
-                </div>
-                <div
-                  onClick={() => setTab(ITab.REVIEW)}
-                  className={`p__tab__item  ${
-                    tab == ITab.REVIEW ? " active" : ""
-                  }`}
-                >
-                  Reviews
-                </div>
-                <div
-                  onClick={() => setTab(ITab.O_DESCRIPTION)}
-                  className={`p__tab__item ${
-                    tab == ITab.O_DESCRIPTION ? " active" : ""
-                  }`}
-                >
-                  Another Details
-                </div>
-              </div>
-
-              {tab == ITab.DESCRIPTION && (
-                <div className="p__tab__body">
-                  <p>{data?.backdrop?.description}</p>
-                </div>
-              )}
-
-              {tab == ITab.REVIEW && (
-                <div className="p__tab__body">
-                  <p>No Reviews</p>
-                </div>
-              )}
-
-              {tab == ITab.O_DESCRIPTION && (
-                <div className="p__tab__body">
-                  <p>{data?.backdrop?.description}</p>
-                </div>
-              )}
             </div>
+
+            <BackdropDetails backdrop={data?.backdrop} />
 
             <div className="em__related_con">
               <div className="container">
@@ -248,12 +199,14 @@ const Page: FC<PageProps> = ({ params }) => {
                   <div className="h__wrapper">
                     <div className="em__header">
                       <h1>Related</h1>
-                      <span className="em__fancy__text  ">Products</span>
+                      <span className="em__fancy__text  ">Backdrops</span>
                     </div>
                   </div>
 
                   <div className="em__inner">
-                    <Backdrops />
+                    {data.relatedBackdrops.map((backdrop) => (
+                      <Backdrop backdrop={backdrop} key={backdrop.id} />
+                    ))}
                   </div>
                 </div>
               </div>

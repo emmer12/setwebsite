@@ -3,10 +3,14 @@ import { getBackdrops } from "@/lib/prisma/backdrops";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
+    const query = req.query;
     try {
-      const { backdrops, error }: any = await getBackdrops();
+      const { backdrops, nextPage, prevPage, totalPages, error }: any =
+        await getBackdrops(1, 40, query);
       if (error) throw new Error(error);
-      return res.status(200).json({ backdrops });
+      return res
+        .status(200)
+        .json({ backdrops, nextPage, prevPage, totalPages });
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }

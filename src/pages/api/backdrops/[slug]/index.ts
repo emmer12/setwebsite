@@ -5,9 +5,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     try {
       const { slug }: any = req.query;
-      const { backdrop, error }: any = await getBackdrop(slug);
+      const { backdrop, relatedBackdrops, error }: any = await getBackdrop(
+        slug
+      );
       if (error) throw new Error(error);
-      return res.status(200).json({ backdrop });
+      return res.status(200).json({ backdrop, relatedBackdrops });
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }

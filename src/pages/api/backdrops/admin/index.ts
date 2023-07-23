@@ -98,12 +98,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           data.filePath = `backdrops/${files.file.newFilename}`;
         }
 
-        data.categoryId = "64664d24d36d7a9862be3daa";
-        data.addOn = ["Cake", "Acrylics", "Invitation", "Flowers"];
-        data.slug = generateSlug(data.title);
-        data.price = parseInt(data.price);
-
-        const { backdrop, error }: any = await createBackdrops(data);
+        const { backdrop, error }: any = await createBackdrops({
+          title: data.title,
+          slug: generateSlug(data.title),
+          personal_price: parseInt(data.personal_price),
+          commercial_price: parseInt(data.commercial_price),
+          addOn: ["Cake", "Acrylics", "Invitation", "Flowers"],
+          categoryId: data.category_id,
+          description: data.description,
+          imageUrl: data.imageUrl,
+          filePath: data.filePath,
+        });
         if (error) throw new Error(error);
         return res.status(200).json({ backdrop });
       } catch (error: any) {

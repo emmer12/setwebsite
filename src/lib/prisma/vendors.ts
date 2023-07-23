@@ -1,4 +1,6 @@
+import { Vendor } from "@prisma/client";
 import prisma from ".";
+import { sendEventQuoteRequestEmail, sendQuoteRequestEmail } from "../mailer";
 
 export async function getVendors(page: any, limit: number) {
   const offset = (page - 1) * limit;
@@ -76,3 +78,42 @@ export async function getVendorBySlug(id: string) {
     return { error };
   }
 }
+
+export async function getCategories() {
+  try {
+    const categories = await prisma.vendorCategory.findMany();
+    return { categories };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function sendAllVendorsQuotes(
+  requestId: string,
+  categoryId?: string
+) {
+  const today = new Date();
+
+  const query = categoryId ? { vendorCategoryId: categoryId } : {};
+  const vendors = await prisma.vendor.findMany({
+    where: {
+      ...query,
+      quote_sub: true,
+      quote_sub_exp: {
+        not: null,
+        gte: today,
+      },
+    },
+  });
+
+  vendors.forEach(async (vendor) => {
+    if (categoryId) {
+      await sendEventQuoteRequestEmail(vendor, requestId);
+    } else {
+      await sendQuoteRequestEmail(vendor, requestId);
+    }
+  });
+}
+// function sendEventQuoteRequestEmail(vendor: Vendor, requestId: string) {
+//   throw new Error("Function not implemented.");
+// }

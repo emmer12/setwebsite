@@ -162,7 +162,7 @@ const Header = () => {
                           </svg>
                         </div>
                         {dropOpen && (
-                          <ul className="h__dropdown p-5 bg-white absolute flex-col inset-0 z-50 top-6 block w-80  rounded-tl-2xl rounded-br-3xl">
+                          <ul className="h__dropdown p-5 bg-white absolute flex-col inset-0 z-50 top-[50px] block w-80  rounded-tl-2xl rounded-bl-2xl  rounded-tr-2xl rounded-br-3xl">
                             <li className="py-3">
                               <Link href="/vendor/onboard">
                                 Vendor Registration

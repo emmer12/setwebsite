@@ -412,29 +412,29 @@ const Page = () => {
 
           <div className="my-4">
             <div className="flex gap-3">
-              <FileUploader
+              {/* <FileUploader
                 handleChange={(e) => handleChange(e)}
                 placeholder="Image 1"
                 name="image_1"
                 file={vendor?.image_1_path || files.image_1}
                 handleRemove={handleRemove}
-              />
+              /> */}
 
-              <FileUploader
+              {/* <FileUploader
                 handleChange={(e) => handleChange(e)}
                 placeholder="Image 2"
                 name="image_2"
                 file={vendor?.image_2_path || files.image_2}
                 handleRemove={handleRemove}
-              />
+              /> */}
 
-              <FileUploader
+              {/* <FileUploader
                 handleChange={(e) => handleChange(e)}
                 placeholder="Image 3"
                 name="image_3"
                 file={vendor?.image_3_path || files.image_3}
                 handleRemove={handleRemove}
-              />
+              /> */}
             </div>
           </div>
         </div>

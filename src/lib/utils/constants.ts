@@ -33,6 +33,11 @@ const constants = {
     VENDOR_BASIC: "VENDOR_BASIC",
     VENDOR_PRO: "VENDOR_PRO",
   },
+  roles: {
+    ADMIN: "ADMIN",
+    VENDOR: "VENDOR",
+    USER: "USER",
+  },
 };
 
 export default constants;

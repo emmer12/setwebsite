@@ -8,9 +8,17 @@ import Api from "@/lib/api";
 import { signIn } from "next-auth/react";
 import Button from "@/components/Button";
 import FileUploader from "@/components/FileUploader";
-import { createBackdrop } from "@/lib/api/backdrop.api";
+import { createBackdrop, getFormData } from "@/lib/api/backdrop.api";
+import useSWR from "swr";
+import { IBackdropCat } from "@/types";
+
 const CreateBackdrop = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const { data, error, isLoading } = useSWR(
+    "/api/backdrops/admin/form-data",
+    getFormData
+  );
+
   const [files, setFiles] = useState({
     preview: null,
     file: null,
@@ -36,7 +44,9 @@ const CreateBackdrop = () => {
     initialValues: {
       title: "",
       description: "",
-      price: "",
+      personal_price: "",
+      commercial_price: "",
+      category_id: "",
     },
     onSubmit: async (data) => {
       const userData: any = { ...data };
@@ -76,7 +86,9 @@ const CreateBackdrop = () => {
     validationSchema: Yup.object().shape({
       title: Yup.string().required("Name is Required"),
       description: Yup.string().required("Required"),
-      price: Yup.string().required("Required"),
+      personal_price: Yup.string().required("Personal Price is Required"),
+      commercial_price: Yup.string().required("Commercial Price Required"),
+      category_id: Yup.string().required("Category Id is Required"),
     }),
   });
 
@@ -119,12 +131,44 @@ const CreateBackdrop = () => {
             <input
               type="number"
               onChange={formik.handleChange}
-              value={formik.values.price}
-              name="price"
-              placeholder="Price"
+              value={formik.values.personal_price}
+              name="personal_price"
+              placeholder="Personal price"
             />
-            {formik.touched && formik.errors.price && (
-              <span className="error">{formik.errors.price}</span>
+            {formik.touched && formik.errors.personal_price && (
+              <span className="error">{formik.errors.personal_price}</span>
+            )}
+          </div>
+
+          <div className="field">
+            <input
+              type="number"
+              onChange={formik.handleChange}
+              value={formik.values.commercial_price}
+              name="commercial_price"
+              placeholder="Commercial price"
+            />
+            {formik.touched && formik.errors.commercial_price && (
+              <span className="error">{formik.errors.commercial_price}</span>
+            )}
+          </div>
+
+          <div className="field">
+            <select
+              onChange={formik.handleChange}
+              value={formik.values.category_id}
+              name="category_id"
+            >
+              <option value="">Select category</option>
+
+              {data?.categories.map((category: IBackdropCat, i: number) => (
+                <option key={i} value={category.id}>
+                  {category.title}
+                </option>
+              ))}
+            </select>
+            {formik.touched && formik.errors.category_id && (
+              <span className="error">{formik.errors.category_id}</span>
             )}
           </div>
 
@@ -143,7 +187,7 @@ const CreateBackdrop = () => {
             </div>
 
             <div className=" my-4">
-              <h4>Backdrop File</h4>
+              <h4 className="mb-4">Backdrop File</h4>
 
               <input
                 type="file"

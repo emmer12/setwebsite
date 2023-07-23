@@ -1,7 +1,8 @@
 "use client";
 import { useCart } from "@/hooks/useCartProvider";
-import { getDiscount } from "@/lib/utils";
+import { formattedMoney, getDiscount } from "@/lib/utils";
 import { ICartItem } from "@/types";
+import Image from "next/image";
 import React, { FC, useState } from "react";
 
 interface ComponentProps {
@@ -20,7 +21,12 @@ const CartItem: FC<ComponentProps> = ({ cart }) => {
     <div className="cart__item">
       <div className="em__flex">
         <div className="display">
-          <img src="/assets/images/s3.png" alt="Cart" />
+          <Image
+            width={100}
+            height={100}
+            src={cart.displayUrl || "/assets/images/s3.png"}
+            alt="Cart"
+          />
         </div>
         <div className="details">
           <div className="d1">
@@ -29,9 +35,11 @@ const CartItem: FC<ComponentProps> = ({ cart }) => {
                 <h4>{cart.title}</h4>
               </div>
               <div className="price">
-                <span className="old">
-                  AED {getDiscount(cart.price, cart.discount)}
-                </span>
+                {cart.discount > 0 && (
+                  <span className="old">
+                    {formattedMoney(getDiscount(cart.price, cart.discount))}
+                  </span>
+                )}
                 <span className="new">$ {cart.price}</span>
               </div>
             </div>

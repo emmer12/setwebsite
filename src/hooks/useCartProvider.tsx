@@ -1,4 +1,5 @@
 "use client";
+import { ICartItem } from "@/types";
 import {
   createContext,
   ReactNode,
@@ -8,7 +9,7 @@ import {
 } from "react";
 
 const CartContext = createContext<{
-  cart?: any;
+  cart: ICartItem[];
   addToCart: (product: any) => void;
   removeCart: (product: any) => void;
   updateCart: (product: any) => void;

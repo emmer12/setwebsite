@@ -1,13 +1,9 @@
-"use client";
 import Backdrop from "@/components/backdrops/Backdrop";
-import { getBackdrops } from "@/lib/api/backdrop.api";
-import { IBackdrop } from "@/types";
+import BackdropCategoryComponent from "@/components/backdrops/clients/BackdropCategoryComponent";
+import BackdropComponent from "@/components/backdrops/clients/BackdropComponent";
 import React from "react";
-import useSWR from "swr";
 
 const Backdrops = () => {
-  const { data, error, isLoading } = useSWR("/api/backdrops", getBackdrops);
-
   return (
     <div>
       {" "}
@@ -46,37 +42,9 @@ const Backdrops = () => {
           <div className="em__body__wrapper">
             <div className="inner__wrapper">
               <div className="em__sidebar">
-                <section>
-                  <div className="em__search">
-                    <input type="search" placeholder="Search here.." />
-                  </div>
-                </section>
-                <section>
-                  <div className="em__price">
-                    <h4>Price</h4>
+                <BackdropCategoryComponent />
 
-                    <div className="em__flex em__justify__between">
-                      <span>Your Range:</span>
-                      <span>AED 50-500</span>
-                    </div>
-
-                    <input type="range" />
-                  </div>
-                </section>
-
-                <section>
-                  <div className="em__categories">
-                    <h4>Categories</h4>
-
-                    <div className="em__category">All</div>
-                    <div className="em__category">Birthday</div>
-                    <div className="em__category">Wedding</div>
-                    <div className="em__category">Baby Shawer</div>
-                    <div className="em__category">Baby Shawer</div>
-                  </div>
-                </section>
-
-                <section>
+                {/* <section>
                   <div className="em__tags">
                     <h4>Tags</h4>
                     <span className="em__tag">All /</span>
@@ -89,28 +57,10 @@ const Backdrops = () => {
                     <span className="em__tag">All /</span>
                     <span className="em__tag">Balet /</span>
                   </div>
-                </section>
+                </section> */}
               </div>
-              <div className="em__body">
-                <div className="em__header__filter">
-                  <span>
-                    Showing {data?.backdrops.length} of {data?.backdrops.length}{" "}
-                    Results
-                  </span>
-                  <div>
-                    <span>Default Sorting</span>
-                  </div>
-                </div>
-
-                <div className="em__main__body em_backdrop__grid">
-                  {isLoading ? (
-                    <span>Loading..</span>
-                  ) : (
-                    data?.backdrops.map((backdrop: IBackdrop, i: number) => (
-                      <Backdrop backdrop={backdrop} key={i} />
-                    ))
-                  )}
-                </div>
+              <div className="em__body flex-1">
+                <BackdropComponent />
               </div>
             </div>
           </div>

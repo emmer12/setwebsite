@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, FC } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   PaymentElement,
@@ -37,12 +37,22 @@ const Payment: FC<PageProps> = ({ params }) => {
 };
 
 const PaymentForm = ({ id }: any) => {
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const stripe = useStripe();
   const elements = useElements();
+
+  useEffect(() => {
+    const element = elements?.getElement(CardElement)!;
+    element?.on("ready", () => {
+      setLoaded(true);
+    });
+  }, [elements]);
 
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSubmit = async (event: any) => {
+    setLoading(true);
     event.preventDefault();
 
     if (elements == null) {
@@ -77,7 +87,9 @@ const PaymentForm = ({ id }: any) => {
 
     if (error) {
       setErrorMessage(error.message);
+      setLoading(false);
     } else {
+      setLoading(false);
     }
   };
 
@@ -92,7 +104,11 @@ const PaymentForm = ({ id }: any) => {
                 <br />
                 {errorMessage && <div className="error">{errorMessage}</div>}
                 <br />
-                <Button disabled={!stripe || !elements} text="Make Payment" />
+                <Button
+                  loading={loading}
+                  disabled={loading}
+                  text="Make Payment"
+                />
                 {/* Show error message to your customers */}
               </div>
             </form>

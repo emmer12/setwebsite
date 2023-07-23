@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { generateRequestLink } from "../utils";
 const path = require("path");
 const hbs = require("nodemailer-express-handlebars");
 
@@ -40,6 +41,41 @@ export const sendBackdropPurchaseEmail = async (data: any) => {
         "Thanks for buying a backdrop you can find the purchased file in  the attachment below",
     },
     attachments: data.attachments,
+  });
+
+  return true;
+};
+
+export const sendQuoteRequestEmail = async (data: any, id: string) => {
+  await transporter.sendMail({
+    from: `${"SetEvents"} ${"set@mail.com"}`,
+    to: data.company_email,
+    subject: `Backdrop Quote Requests`,
+    // @ts-ignore-next-line
+    template: "quote_request", //
+    context: {
+      company_name: data.company_name,
+      link: generateRequestLink(id),
+      requestId: id,
+      message: "You have a new backdrop quote request",
+    },
+  });
+
+  return true;
+};
+
+export const sendEventQuoteRequestEmail = async (data: any, id: string) => {
+  await transporter.sendMail({
+    from: `${"SetEvents"} ${"set@mail.com"}`,
+    to: data.company_email,
+    subject: `Event Quote Request`,
+    // @ts-ignore-next-line
+    template: "event_quote_request", //
+    context: {
+      company_name: data.company_name,
+      link: generateRequestLink(id),
+      message: "You have a new event quote request",
+    },
   });
 
   return true;

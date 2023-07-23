@@ -1,10 +1,10 @@
 "use client";
+import Image from "next/image";
 import React, { useState } from "react";
 import { A11y, FreeMode, Navigation, Thumbs } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const DetailsDisplay = () => {
-  const [items] = useState<any[]>([1, 2, 3, 4, 5, 6, 7, 8]);
+const DetailsDisplay = ({ images }: { images: string[] }) => {
   const [swiper, setSwiper] = useState<any>(null);
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 
@@ -24,12 +24,12 @@ const DetailsDisplay = () => {
             <Item />
           </SwiperSlide>
         ))} */}
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-        </SwiperSlide>
+
+        {images.map((image: string) => (
+          <SwiperSlide key={image}>
+            <Image alt="Backdrop image" src={image} height={400} width={400} />
+          </SwiperSlide>
+        ))}
       </Swiper>
       <Swiper
         onSwiper={(swiper) => {
@@ -48,12 +48,11 @@ const DetailsDisplay = () => {
           </SwiperSlide>
         ))} */}
 
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-        </SwiperSlide>
+        {images.map((image: string) => (
+          <SwiperSlide key={image + "slide"}>
+            <Image alt="Backdrop image" src={image} height={400} width={400} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

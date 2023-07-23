@@ -11,12 +11,20 @@ import { useFormik } from "formik";
 import { createBackdropOrder } from "@/lib/api/backdrop.api";
 import * as Yup from "yup";
 import { NotificationManager } from "react-notifications";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import { getFormData } from "@/lib/api/vendor.api";
 
 const Checkout = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [event_countries] = useState(["United Arab Emirates", "Nigeria"]);
+  const { isLoading, data: formData } = useSWR(
+    "/api/vendors/checkout/form-data",
+    getFormData
+  );
   const { cart, subTotal } = useCart();
   const router = useRouter();
+  const { status, data } = useSession();
 
   // useEffect(() => {
   //   if (cart.length < 1) {
@@ -32,7 +40,8 @@ const Checkout = () => {
     initialValues: {
       full_name: "",
       email: "",
-      email_confirmation: "",
+      password_confirmation: "",
+      password: "",
       country: "",
       address: "",
       ep_quote: false,
@@ -42,11 +51,12 @@ const Checkout = () => {
       occasion: "",
       location: "",
       additional_request: "",
+      vendorCategoryId: "",
     },
+    enableReinitialize: true,
     onSubmit: async ({
       full_name,
       email,
-      email_confirmation,
       country,
       address,
       ep_quote,
@@ -56,13 +66,14 @@ const Checkout = () => {
       occasion,
       location,
       additional_request,
+      password,
+      password_confirmation,
     }) => {
       setLoading(true);
       try {
         const res = await createBackdropOrder({
           full_name,
           email,
-          email_confirmation,
           country,
           address,
           items: JSON.stringify(cart),
@@ -74,6 +85,8 @@ const Checkout = () => {
           occasion,
           location,
           additional_request,
+          password,
+          password_confirmation,
         });
 
         NotificationManager.success("Order Created");
@@ -81,9 +94,10 @@ const Checkout = () => {
         router.push(`/checkout/backdrop/payment/${id}`);
       } catch (error: any) {
         if (error?.response?.status == 400) {
+          const err = error?.response?.data;
           NotificationManager.error(
             "Error message",
-            error?.response?.data?.msg
+            err?.msg || err?.error.errors[0].message
           );
         } else {
           NotificationManager.error("Error message", "Something went wrong");
@@ -94,16 +108,31 @@ const Checkout = () => {
 
       setLoading(false);
     },
-    validationSchema: Yup.object().shape({
-      full_name: Yup.string().required("Name is Required"),
-      country: Yup.string().required("Country Required"),
-      email: Yup.string().email("Invalid email").required("Required"),
-      email_confirmation: Yup.string().oneOf(
-        [Yup.ref("email"), ""],
-        "Passwords must match"
-      ),
-    }),
+    validationSchema:
+      status == "authenticated"
+        ? Yup.object().shape({
+            full_name: Yup.string().required("Name is Required"),
+            country: Yup.string().required("Country Required"),
+            email: Yup.string().email("Invalid email").required("Required"),
+          })
+        : Yup.object().shape({
+            full_name: Yup.string().required("Name is Required"),
+            country: Yup.string().required("Country Required"),
+            email: Yup.string().email("Invalid email").required("Required"),
+            password: Yup.string().required("Required"),
+            password_confirmation: Yup.string().oneOf(
+              [Yup.ref("password"), ""],
+              "Passwords must match"
+            ),
+          }),
   });
+
+  useEffect(() => {
+    if (status == "authenticated") {
+      formik.setFieldValue("full_name", data.user.name);
+      formik.setFieldValue("email", data.user.email);
+    }
+  }, [status]);
 
   return (
     <div>
@@ -200,37 +229,70 @@ const Checkout = () => {
                       />
                     </div>
 
-                    {/* <div className="field">
-                      <input placeholder="Zip" type="text" />
-                    </div> */}
-
                     <div className="field">
                       <input
                         onChange={formik.handleChange}
                         value={formik.values.email}
-                        placeholder="Email Address*"
-                        type="email"
+                        placeholder="Full name*"
                         name="email"
+                        type="text"
                       />
                       {formik.touched && formik.errors.email && (
                         <span className="error">{formik.errors.email}</span>
                       )}
                     </div>
 
-                    <div className="field">
-                      <input
-                        onChange={formik.handleChange}
-                        value={formik.values.email_confirmation}
-                        placeholder="Confirm Email Address*"
-                        type="email"
-                        name="email_confirmation"
-                      />
-                      {formik.touched && formik.errors.email_confirmation && (
-                        <span className="error">
-                          {formik.errors.email_confirmation}
-                        </span>
-                      )}
-                    </div>
+                    {status === "unauthenticated" && (
+                      <>
+                        <div className="title ">
+                          <h4>Account Details</h4>
+                        </div>
+
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.email}
+                            placeholder="Email Address*"
+                            type="email"
+                            name="email"
+                          />
+                          {formik.touched && formik.errors.email && (
+                            <span className="error">{formik.errors.email}</span>
+                          )}
+                        </div>
+
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.password}
+                            placeholder="Password*"
+                            type="password"
+                            name="password"
+                          />
+                          {formik.touched && formik.errors.password && (
+                            <span className="error">
+                              {formik.errors.password}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="field">
+                          <input
+                            onChange={formik.handleChange}
+                            value={formik.values.password_confirmation}
+                            placeholder="Password Confirmation*"
+                            type="password"
+                            name="password_confirmation"
+                          />
+                          {formik.touched &&
+                            formik.errors.password_confirmation && (
+                              <span className="error">
+                                {formik.errors.password_confirmation}
+                              </span>
+                            )}
+                        </div>
+                      </>
+                    )}
 
                     <div
                       className="em__spacer"
@@ -271,6 +333,34 @@ const Checkout = () => {
                         </div>
                       </div>
                     )}
+                    {/* {formik.values.bp_quote && (
+                      <div className="field">
+                        <select
+                          onChange={formik.handleChange}
+                          value={formik.values.vendorCategoryId}
+                          name="vendorCategoryId"
+                        >
+                          <option value="">Select Vendor category *</option>
+
+                          {formData?.categories.map((category: any) => {
+                            const key = Object.keys(category)[0];
+                            const value = category[key];
+
+                            return (
+                              <option key={key} value={key}>
+                                {value}
+                              </option>
+                            );
+                          })}
+
+                          {formik.touched && formik.errors.vendorCategoryId && (
+                            <span className="error">
+                              {formik.errors.vendorCategoryId}
+                            </span>
+                          )}
+                        </select>
+                      </div>
+                    )} */}
 
                     {/* Quote Request Section */}
                     {formik.values.ep_quote && (
@@ -377,7 +467,7 @@ const Checkout = () => {
 
                   <div className="em__flex">
                     <h4>Total</h4>
-                    <span>$100.00</span>
+                    <span>${subTotal()} </span>
                   </div>
                 </div>
               </div>
