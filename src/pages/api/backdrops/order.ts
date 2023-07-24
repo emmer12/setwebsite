@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { backdropOrderSchema } from "@/lib/utils/validations";
 import { processUserRegistration } from "@/lib/prisma/users";
 import { getToken } from "next-auth/jwt";
+import { IBackdropFileType } from "@/types";
 const shortid = require("shortid");
 const ObjectId = require("mongodb").ObjectId;
 
@@ -34,6 +35,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         data.userId = user.id;
       }
 
+      const items = JSON.parse(data.items);
+      let totalPrice = 0;
+
+      for (const item of items) {
+        const backdrop = await prisma.backdrops.findUnique({
+          where: { id: item.id },
+        });
+
+        if (item.price_type == IBackdropFileType.personal_price) {
+          totalPrice += backdrop?.personal_price as number;
+        } else {
+          totalPrice += backdrop?.commercial_price as number;
+        }
+      }
+
       const newOrder = await prisma.backdropOrder.create({
         data: {
           fullName: data.full_name,
@@ -41,13 +57,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           code: shortid.generate(),
           country: data.country,
           address: data.address,
-          totalPrice: data.total,
+          totalPrice: totalPrice,
           bp_quote: data.bp_quote,
           ep_quote: data.ep_quote,
         },
       });
-
-      const items = JSON.parse(data.items);
 
       items.forEach(async (item: any) => {
         await prisma.backdropOrderItem.create({
@@ -56,6 +70,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             backdropId: item.id,
             price: item.price,
             title: item.title,
+            license:
+              item.price_type == IBackdropFileType.commercial_price
+                ? "COMMERCIAL"
+                : "PERSONAL",
           },
         });
       });
@@ -87,7 +105,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       res.status(201).json({ newOrder });
     } catch (error) {
-      console.log(error);
       res.status(500).json({ error });
     } finally {
       await prisma.$disconnect();

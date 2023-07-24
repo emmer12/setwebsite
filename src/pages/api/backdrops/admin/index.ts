@@ -90,6 +90,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             console.log("Successfully renamed - AKA moved!");
           });
         }
+        if (files.file_2) {
+          const oldPath2 = `${path.join(
+            `public/uploads/images/backdrops/${files.file_2.newFilename}`
+          )}`;
+          const newPath2 = `${path.join(
+            `src/assets/backdrops/${files.file_2.newFilename}`
+          )}`;
+          fss.rename(oldPath2, newPath2, function (err) {
+            if (err) throw err;
+            console.log("Successfully renamed - AKA moved!");
+          });
+        }
         console.log("Got here");
         if (files.preview) {
           data.imageUrl = `/uploads/images/backdrops/${files.preview.newFilename}`;
@@ -98,6 +110,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           data.filePath = `backdrops/${files.file.newFilename}`;
         }
 
+        if (files.file_2) {
+          data.filePath2 = `backdrops/${files.file_2.newFilename}`;
+        }
         const { backdrop, error }: any = await createBackdrops({
           title: data.title,
           slug: generateSlug(data.title),
@@ -108,6 +123,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           description: data.description,
           imageUrl: data.imageUrl,
           filePath: data.filePath,
+          filePath2: data.filePath2,
         });
         if (error) throw new Error(error);
         return res.status(200).json({ backdrop });

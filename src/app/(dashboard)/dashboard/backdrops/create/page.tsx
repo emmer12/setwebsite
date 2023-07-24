@@ -22,6 +22,7 @@ const CreateBackdrop = () => {
   const [files, setFiles] = useState({
     preview: null,
     file: null,
+    file_2: null,
   });
 
   const router = useRouter();
@@ -64,6 +65,10 @@ const CreateBackdrop = () => {
 
         if (files.file) {
           formData.append("file", files.file);
+        }
+
+        if (files.file_2) {
+          formData.append("file_2", files.file_2);
         }
 
         const res = await createBackdrop(formData);
@@ -187,7 +192,7 @@ const CreateBackdrop = () => {
             </div>
 
             <div className=" my-4">
-              <h4 className="mb-4">Backdrop File</h4>
+              <h4 className="mb-4">Backdrop Personal File</h4>
 
               <input
                 type="file"
@@ -195,6 +200,18 @@ const CreateBackdrop = () => {
                 onChange={(e) => handleChange(e)}
                 accept="application/pdf"
                 name="file"
+              />
+            </div>
+
+            <div className=" my-4">
+              <h4 className="mb-4">Backdrop Commerical File</h4>
+
+              <input
+                type="file"
+                placeholder="Backdrop Commercial Files"
+                onChange={(e) => handleChange(e)}
+                accept="application/pdf"
+                name="file_2"
               />
             </div>
           </div>

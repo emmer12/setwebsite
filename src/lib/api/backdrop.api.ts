@@ -25,3 +25,6 @@ export const deleteBackdrop = (id: string) =>
 
 export const getFormData = () =>
   api.get("/api/backdrops/admin/form-data").then((res) => res.data);
+
+export const getOrderById = (id: string) =>
+  api.get(`/api/backdrops/order/${id}`).then((res) => res.data);

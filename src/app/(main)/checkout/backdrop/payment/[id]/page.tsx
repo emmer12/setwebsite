@@ -9,6 +9,8 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import Button from "@/components/Button";
+import { getOrderById } from "@/lib/api/backdrop.api";
+import { formattedMoney } from "@/lib/utils";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -29,14 +31,42 @@ const options: any = {
 };
 
 const Payment: FC<PageProps> = ({ params }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [order, setOrder] = useState<any>(null);
+
+  useEffect(() => {
+    getOrder();
+  }, []);
+
+  const getOrder = async () => {
+    try {
+      setLoading(true);
+      const data = await getOrderById(params.id);
+      setOrder(data.order);
+      // setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="h-[200px] m-auto text-center flex items-center justify-center">
+        loading...
+      </div>
+    );
+  }
+
   return (
     <Elements stripe={stripePromise} options={options}>
-      <PaymentForm id={params.id} />
+      <PaymentForm order={order} id={params.id} />
     </Elements>
   );
 };
 
-const PaymentForm = ({ id }: any) => {
+const PaymentForm = ({ id, order }: any) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const stripe = useStripe();
@@ -100,6 +130,27 @@ const PaymentForm = ({ id }: any) => {
           <div className="max-w-full m-auto w-[600px]">
             <form onSubmit={handleSubmit}>
               <div className="body__wrapper">
+                <div className="relative">
+                  <label
+                    className={`active transition-all block p-3 em__vpcard shadow rounded-[18px] rounded-br-lg bg-white my-3 `}
+                  >
+                    {order?.items.map((item: any) => (
+                      <div className="flex justify-between py-4" key={item.id}>
+                        <h4>
+                          {item?.backdrop?.title} ({item.license})
+                        </h4>
+                        <h2>{formattedMoney(item?.price)}</h2>
+                      </div>
+                    ))}
+
+                    <div className="flex gap-[50px] items-center">
+                      <strong>Total</strong>
+                      <span className="text-2xl font-bold text-[#986a47]">
+                        {formattedMoney(order?.totalPrice)}
+                      </span>
+                    </div>
+                  </label>
+                </div>
                 <PaymentElement />
                 <br />
                 {errorMessage && <div className="error">{errorMessage}</div>}

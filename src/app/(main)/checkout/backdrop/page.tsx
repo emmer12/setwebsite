@@ -91,6 +91,7 @@ const Checkout = () => {
 
         NotificationManager.success("Order Created");
         const id = res.data.newOrder.id;
+        if (typeof window !== "undefined") localStorage.removeItem("cart");
         router.push(`/checkout/backdrop/payment/${id}`);
       } catch (error: any) {
         if (error?.response?.status == 400) {

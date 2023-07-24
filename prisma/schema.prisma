@@ -109,6 +109,7 @@ model Backdrops {
     category          BackdropCategory?   @relation(fields: [categoryId], references: [id])
     BackdropOrderItem BackdropOrderItem[]
     filePath          String?             @default("backdrops")
+    filePath2         String?             @default("backdrops")
 }
 
 enum StockStatus {
@@ -150,12 +151,18 @@ model BackdropOrder {
     User          User?               @relation(fields: [userId], references: [id])
 }
 
+enum License {
+    COMMERCIAL
+    PERSONAL
+}
+
 model BackdropOrderItem {
     id         String        @id @default(auto()) @map("_id") @db.ObjectId
     orderId    String        @db.ObjectId
     price      Float
     title      String
     backdropId String        @db.ObjectId
+    license    License?      @default(PERSONAL)
     backdrop   Backdrops     @relation(fields: [backdropId], references: [id])
     order      BackdropOrder @relation(fields: [orderId], references: [id])
     User       User?         @relation(fields: [userId], references: [id])

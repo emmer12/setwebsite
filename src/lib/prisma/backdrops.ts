@@ -122,3 +122,28 @@ export async function getCategories() {
     return { error };
   }
 }
+
+export async function getOrderById(id: string) {
+  try {
+    const order = await prisma.backdropOrder.findUnique({
+      where: { id },
+      include: {
+        items: {
+          include: {
+            backdrop: {
+              select: {
+                id: true,
+                title: true,
+                imageUrl: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return { order };
+  } catch (error) {
+    return { error };
+  }
+}

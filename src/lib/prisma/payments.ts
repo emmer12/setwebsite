@@ -41,10 +41,17 @@ export async function logBackdropPayment(
 
     // Send Email to Buyer
     let att = order?.items.map((item) => {
-      return {
-        filename: "backdrop-files.pdf",
-        path: path.resolve(`./src/assets/${item.backdrop.filePath}`),
-      };
+      if (item.license == "COMMERCIAL") {
+        return {
+          filename: "backdrop-commercial-files.pdf",
+          path: path.resolve(`./src/assets/${item.backdrop.filePath2}`),
+        };
+      } else {
+        return {
+          filename: "backdrop-personal-files.pdf",
+          path: path.resolve(`./src/assets/${item.backdrop.filePath}`),
+        };
+      }
     });
 
     const data = {
@@ -88,7 +95,7 @@ export async function logVendorSubscription(
   let endingDate = new Date();
   endingDate.setFullYear(today.getFullYear() + 1);
 
-  console.log("THis is it");
+  console.log("This is it");
   try {
     const vendor = await prisma.vendor.findFirst({
       where: {

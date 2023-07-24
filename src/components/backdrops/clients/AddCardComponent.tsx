@@ -11,7 +11,7 @@ const AddCardComponent = ({ backdrop }: { backdrop: IBackdrop }) => {
   const { addToCart } = useCart();
   const router = useRouter();
   const [license, setLicense] = useState<IBackdropFileType>(
-    IBackdropFileType.price
+    IBackdropFileType.personal_price
   );
 
   const addCart = (backdrop: IBackdrop) => {
