@@ -9,9 +9,6 @@ import { getBackdrops } from "@/lib/api/backdrop.api";
 const SBackdrops = () => {
   const [swiper, setSwiper] = useState<any>(null);
   const { data, error, isLoading } = useSWR("/api/backdrops", getBackdrops);
-  const loaderProp = ({ src }: any) => {
-    return src;
-  };
 
   return (
     <div className="">

@@ -4,9 +4,9 @@ import Link from "next/link";
 import React from "react";
 
 const Backdrop = ({ backdrop }: { backdrop: IBackdrop }) => {
-  const loaderProp = ({ src }: any) => {
-    return src;
-  };
+  // const loaderProp = ({ src }: any) => {
+  //   return src;
+  // };
 
   return (
     <Link href={`/backdrops/${backdrop.slug}`}>
@@ -18,7 +18,6 @@ const Backdrop = ({ backdrop }: { backdrop: IBackdrop }) => {
               width={240}
               src={backdrop.imageUrl}
               alt="Backdrop Image"
-              loader={loaderProp}
             />
           </div>
           <div className="details">
