@@ -4,12 +4,22 @@ import Link from "next/link";
 import React from "react";
 
 const Backdrop = ({ backdrop }: { backdrop: IBackdrop }) => {
+  const loaderProp = ({ src }: any) => {
+    return src;
+  };
+
   return (
     <Link href={`/backdrops/${backdrop.slug}`}>
       <div className="em__backdrop_card">
         <div className="inner">
           <div className="display">
-            <Image height={300} width={240} src={backdrop.imageUrl} alt="" />
+            <Image
+              height={300}
+              width={240}
+              src={backdrop.imageUrl}
+              alt="Backdrop Image"
+              loader={loaderProp}
+            />
           </div>
           <div className="details">
             <div>
