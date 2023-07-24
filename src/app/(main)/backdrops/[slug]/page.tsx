@@ -24,7 +24,9 @@ interface PageProps {
 }
 
 const getBackdrop = async (slug: string): Promise<IBackdropDetails> => {
-  const data = await fetch(`${process.env.BASE_URL}/api/backdrops/${slug}`);
+  const data = await fetch(`${process.env.BASE_URL}/api/backdrops/${slug}`, {
+    next: { revalidate: 10 },
+  });
   const backdrops = await data.json();
 
   return backdrops;
