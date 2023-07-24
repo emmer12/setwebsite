@@ -7,7 +7,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 const DetailsDisplay = ({ images }: { images: string[] }) => {
   const [swiper, setSwiper] = useState<any>(null);
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
-
+  const loaderProp = ({ src }: any) => {
+    return src;
+  };
   return (
     <div>
       <Swiper
@@ -27,7 +29,13 @@ const DetailsDisplay = ({ images }: { images: string[] }) => {
 
         {images.map((image: string) => (
           <SwiperSlide key={image}>
-            <Image alt="Backdrop image" src={image} height={400} width={400} />
+            <Image
+              alt="Backdrop image"
+              src={image}
+              loader={loaderProp}
+              height={400}
+              width={400}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -50,7 +58,13 @@ const DetailsDisplay = ({ images }: { images: string[] }) => {
 
         {images.map((image: string) => (
           <SwiperSlide key={image + "slide"}>
-            <Image alt="Backdrop image" src={image} height={400} width={400} />
+            <Image
+              alt="Backdrop image"
+              loader={loaderProp}
+              src={image}
+              height={400}
+              width={400}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

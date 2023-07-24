@@ -13,6 +13,10 @@ const CartItem: FC<ComponentProps> = ({ cart }) => {
   const { removeCart, updateCart } = useCart();
   const [qty, setQty] = useState<number>(cart.qty || 0);
 
+  const loaderProp = ({ src }: any) => {
+    return src;
+  };
+
   const update = () => {
     updateCart({ ...cart, qty });
   };
@@ -24,6 +28,7 @@ const CartItem: FC<ComponentProps> = ({ cart }) => {
           <Image
             width={100}
             height={100}
+            loader={loaderProp}
             src={cart.displayUrl || "/assets/images/s3.png"}
             alt="Cart"
           />
