@@ -104,7 +104,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         console.log("Got here");
         if (files.preview) {
-          data.imageUrl = `/uploads/images/backdrops/${files.preview.newFilename}`;
+          data.imageUrl = `/api/uploads/images/backdrops/${files.preview.newFilename}`;
         }
         if (files.file) {
           data.filePath = `backdrops/${files.file.newFilename}`;
