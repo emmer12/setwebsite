@@ -1,5 +1,5 @@
 import { getCategories } from "@/lib/prisma/vendors";
-import { dropdown } from "@/lib/utils";
+import { dropdownCat, dropdownSub } from "@/lib/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -7,7 +7,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const { categories, error }: any = await getCategories();
       if (error) throw new Error(error);
-      return res.status(200).json({ categories: dropdown(categories) });
+      return res
+        .status(200)
+        .json({
+          categories: dropdownCat(categories),
+          subCategories: dropdownSub(categories),
+        });
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }

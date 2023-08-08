@@ -40,6 +40,12 @@ enum UserRole {
     VENDOR
 }
 
+enum ApprovalStatus {
+    Pending
+    Approved
+    Disapproved
+}
+
 model User {
     id                String              @id @default(auto()) @map("_id") @db.ObjectId
     name              String?
@@ -86,6 +92,9 @@ model VendorCategory {
     title       String
     slug        String
     description String?
+    hasServices Boolean? @default(false)
+    parent_id   String?  @db.ObjectId
+    services    String[] @default([])
     icon        String?
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
@@ -212,6 +221,8 @@ model Vendor {
     user             User            @relation(fields: [userId], references: [id])
     VendorCategory   VendorCategory? @relation(fields: [vendorCategoryId], references: [id])
     vendorCategoryId String?         @db.ObjectId
+    approval_status  ApprovalStatus  @default(Pending)
+    legal_disclaimer String?
 }
 
 enum RequestType {

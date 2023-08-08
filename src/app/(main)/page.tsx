@@ -1,5 +1,6 @@
 import { BackdropRentals, Backdrops } from "@/components/backdrops";
 import SBackdrops from "@/components/backdrops/BackdropSlide";
+import HeroImageComponent from "@/components/client/HeroImageComponent";
 import { Testimonies } from "@/components/testimonies";
 import Image from "next/image";
 import Link from "next/link";
@@ -45,14 +46,7 @@ export default function Home() {
                   </svg>
                 </a>
               </div>
-              <div className="em__hero__right">
-                <Image
-                  height={400}
-                  width={600}
-                  alt="Hero Image"
-                  src="/assets/images/hero/hero-bg.png"
-                />
-              </div>
+              <HeroImageComponent />
             </div>
           </div>
         </div>

@@ -42,7 +42,7 @@ const Testimony = ({ testimony }: any) => {
       <div className="inner2">
         <div className="em__user">
           <div className="em__avatar">
-            <img src="https://api.multiavatar.com/stefan.svg" alt="" />
+            {/* <img src="https://api.multiavatar.com/stefan.svg" alt="" /> */}
           </div>
           <div className="em__details">
             <h4>{testimony.name}</h4>

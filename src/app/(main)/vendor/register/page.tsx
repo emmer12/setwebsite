@@ -1,10 +1,6 @@
 "use client";
 import Button from "@/components/Button";
-import CartItem from "@/components/CartItem";
 import { ArrowRight, TimesCircle } from "@/components/icons";
-import { useCart } from "@/hooks/useCartProvider";
-// import { countries } from "@/lib/utils";
-import { ICartItem } from "@/types";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
@@ -52,10 +48,9 @@ const citiesUAE = [
   },
 ];
 
-const Checkout = () => {
+const RegisterPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [event_countries] = useState(["United Arab Emirates", "Nigeria"]);
-  const { cart, subTotal } = useCart();
   const router = useRouter();
   const [services, setServices] = useState<string[]>([]);
   const { status, data } = useSession();
@@ -76,22 +71,6 @@ const Checkout = () => {
   });
 
   let total = 0;
-
-  if (sub && sub.quote_sub) {
-    total += constants.vendor_subscriptions.QUOTE;
-  }
-  if (sub && sub.vendor_sub) {
-    total += constants.vendor_subscriptions.BASIC;
-  }
-  // useEffect(() => {
-  //   if (cart.length < 1) {
-  //     router.push("/");
-  //   }
-  // }, []);
-
-  // if (cart.length < 1) {
-  //   router.push("/");
-  // }
 
   const formik = useFormik({
     initialValues: {
@@ -239,48 +218,11 @@ const Checkout = () => {
 
   return (
     <div>
-      <div className="em__banner checkout">
-        <div className="inner">
-          <h1>
-            <span style={{ left: 0 }}>Checkout</span>
-          </h1>
-
-          <div className="em__breadcrome">
-            <a href="/">Home</a>
-
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              width="8"
-              height="5"
-              viewBox="0 0 8 5"
-            >
-              <image
-                id="right-arrow_34_copy"
-                data-name="right-arrow (34) copy"
-                width="8"
-                height="5"
-                xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAZElEQVQImVXNwQmCAByF8V/ivS081ghSl6QtnMFLIwQ5kAQ5gN1qjVxAAuUfCvkd3/ceb5Pl5QdX1NZUuCTocMPxzx/mwTPFGQ0e2GJEi3u4KAQFXujnwhunEHGxsMOAL/a/EBP9gRHwPbUJlQAAAABJRU5ErkJggg=="
-              />
-            </svg>
-
-            <span>Checkout</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="em__checkout_body">
+      <div className="em__checkout_body ">
         <div className="container-x">
           <div className="em__body__wrapper">
-            <div className="em__flex">
-              <div className="checkout__info">
-                <div className="cart">
-                  {cart.map((c: ICartItem, i: number) => (
-                    <CartItem cart={c} key={i} />
-                  ))}
-                </div>
-                <hr />
-                <br />
+            <div className="">
+              <div className="m-auto w-full sm:w-1/2">
                 <div className="billing">
                   <div className="title ">
                     <h4>Registration Details</h4>
@@ -704,37 +646,6 @@ const Checkout = () => {
                   </form>
                 </div>
               </div>
-              <div className="checkout__total mt-12 sm:mt-0">
-                <div className="title">
-                  <h4>Cart Total</h4>
-                </div>
-
-                <div className="cart__total">
-                  {sub.vendor_sub && (
-                    <div className="em__flex">
-                      <h4>Vendor Subscription</h4>
-                      <span>
-                        {formattedMoney(constants.vendor_subscriptions.BASIC)}{" "}
-                      </span>
-                    </div>
-                  )}
-
-                  {sub.quote_sub && (
-                    <div className="em__flex">
-                      <h4>Quote Subscription</h4>
-                      <span>
-                        {formattedMoney(constants.vendor_subscriptions.QUOTE)}
-                      </span>
-                    </div>
-                  )}
-                  <hr />
-
-                  <div className="em__flex">
-                    <h4>Total</h4>
-                    <span>${total}</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -743,4 +654,4 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+export default RegisterPage;

@@ -11,6 +11,7 @@ import constants from "@/lib/utils/constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SetAndForget from "@/components/saf/SetAndForget";
+import { Loading } from "@/components/icons";
 
 export default function RootLayout({
   children,
@@ -50,7 +51,11 @@ export default function RootLayout({
     ) || [];
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center h-[300px]">
+        <Loading />
+      </div>
+    );
   }
 
   if (status === "unauthenticated") {
@@ -59,10 +64,10 @@ export default function RootLayout({
 
   return (
     <div>
-      <div className="h-7 sm:h-32 flex items-center bg-[#ffe3cd]">
+      <div className="em__banner items-center ">
         <div className="container">
           <h2 className="text-[#263f61] text-2xl sm:text-3xl text-center">
-            Your Work ({session?.user?.name})
+            Welcome back ({session?.user?.name})
           </h2>
         </div>
       </div>
@@ -77,6 +82,22 @@ export default function RootLayout({
                     <Link className="block" href="/account">
                       {" "}
                       Profile
+                    </Link>
+                  </li>
+
+                  <li
+                    className={
+                      [
+                        "/account/my-requests/create",
+                        "/account/my-requests",
+                      ].includes(pathName as string)
+                        ? "active"
+                        : ""
+                    }
+                  >
+                    <Link className="block" href="/account/my-requests">
+                      {" "}
+                      My Requests
                     </Link>
                   </li>
                   {safSub.length || safProSub.length ? (

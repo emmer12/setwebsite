@@ -93,8 +93,8 @@ const OnboardPage = () => {
 
               <div className="text-center">
                 <Button
-                  onClick={handleSub}
-                  text="Subscribe"
+                  to="/vendor/register"
+                  text="Register"
                   RightIcon={<ArrowRight />}
                 />
               </div>
