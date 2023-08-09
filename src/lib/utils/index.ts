@@ -645,3 +645,20 @@ export const categories = [
     ],
   },
 ];
+
+
+export function getFileExtension(filename: string) {
+  return filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2);
+}
+
+
+export function removeEmptyValues(obj:any) {
+  for (const key in obj) { 
+    if (obj.hasOwnProperty(key)) {
+      if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+        delete obj[key];
+      }
+    }
+  }
+  return obj;
+}

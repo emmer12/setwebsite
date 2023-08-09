@@ -20,3 +20,19 @@ export const createVendorOrder = (data: any) =>
 
 export const getLoggedInVendor = () =>
   api.get(`/api/vendors/current`).then((res) => res.data);
+
+export const createQuote = (data: any) =>
+  api.post(`/api/vendors/quotes`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+export const getQuotes = () =>
+  api.get("/api/vendors/quotes").then((res) => res.data);
+
+export const getRequests = () =>
+  api.get("/api/vendors/quotes/requests").then((res) => res.data);
+
+export const getRequestQuote = (id: string) =>
+  api.get(`/api/vendors/quotes/${id}`).then((res) => res.data);

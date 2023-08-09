@@ -1,37 +1,47 @@
 import Image from "next/image";
 import React from "react";
-
+import { format } from "date-fns";
+import Button from "../Button";
 interface IRCard {
-  desc: string;
-  deadline: string;
-  display?: string;
-  isOwner?: boolean;
+  title: string;
+  deadline: any;
+  imageUrl?: string;
+  id: string;
 }
 
-const RequestCard = ({ desc, deadline, display, isOwner }: IRCard) => {
+const RequestCard = ({
+  request,
+  isVendor,
+}: {
+  request: IRCard;
+  isVendor: boolean;
+}) => {
   return (
-    <div className="my-3 shadow design-card">
+    <div className="my-3 shadow p-2">
       <div className="flex gap-3">
-        <div className="display flex-shrink-0">
+        <div className="h-[100px] sm:h-[150px] w-[100px] sm:w-[150px] display flex-shrink-0">
           <Image
-            height={200}
+            height={150}
             width={140}
-            src={display || "/assets/images/designs.jpg"}
+            src={request.imageUrl || "/assets/images/designs.jpg"}
             alt="Designs"
           />
         </div>
         <div className="flex-1">
-          <h4 className="text-xl">{desc}</h4>
+          <h4 className="text-xl">{request.title}</h4>
           <div className="bg-red-200 text-red-800 inline-block rounded-full px-3 py-1">
             <strong>Deadline: </strong>
-            {deadline}
+            {format(new Date(request.deadline), "yyyy-MM-dd HH:mm:ss")}
           </div>
         </div>
         <div className="self-center">
-          {isOwner ? (
-            <button className="em__button"> View Quotes</button>
+          {isVendor ? (
+            <Button
+              text="Submit Quote"
+              to={`vendor/dashboard/quotes/create/${request.id}`}
+            />
           ) : (
-            <button className="em__button"> Quote</button>
+            <button className="em__button"> View Quotes</button>
           )}
         </div>
       </div>

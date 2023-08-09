@@ -62,12 +62,14 @@ export default function RootLayout({
     router.push("/");
   }
 
+  const isVendor = session?.user?.role == constants.roles.VENDOR;
+
   return (
     <div>
       <div className="em__banner items-center ">
         <div className="container">
           <h2 className="text-[#263f61] text-2xl sm:text-3xl text-center">
-            Welcome back ({session?.user?.name})
+            Welcome back ({session?.user?.name}) {session?.user?.role}
           </h2>
         </div>
       </div>
@@ -105,7 +107,7 @@ export default function RootLayout({
                   ) : (
                     <></>
                   )}
-                  {vendorSub.length > 0 && (
+                  {isVendor && (
                     <li
                       className={
                         pathName == "/vendor/dashboard" ? "active" : ""

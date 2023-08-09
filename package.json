@@ -26,6 +26,7 @@
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "classnames": "^2.3.2",
+    "date-fns": "^2.30.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
     "express-handlebars": "^7.0.7",

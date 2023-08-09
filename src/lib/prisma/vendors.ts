@@ -114,6 +114,78 @@ export async function sendAllVendorsQuotes(
     }
   });
 }
+
+export async function createQuote(requests: any) {
+  try {
+    const record = await prisma.quote.create({ data: requests });
+    return { record };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function getQuotes(page: any, limit: number, id: any) {
+  const offset = (page - 1) * limit;
+  try {
+    const requests = await prisma.requests.findMany({
+      skip: offset,
+      take: limit,
+      where: {
+        userId: id,
+      },
+    });
+
+    const totalCount = await prisma.requests.count();
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const nextPage = page < totalPages ? parseInt(page) + 1 : null;
+    const prevPage = page > 1 ? parseInt(page) - 1 : null;
+
+    return { requests, nextPage, prevPage, totalPages };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function getRequests(page: any, limit: number, id: any) {
+  const offset = (page - 1) * limit;
+  try {
+    const requests = await prisma.requests.findMany({
+      skip: offset,
+      take: limit,
+      where: {
+        vendorsIds: {
+          some: { userId: id },
+        },
+      },
+    });
+
+    const totalCount = await prisma.requests.count();
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const nextPage = page < totalPages ? parseInt(page) + 1 : null;
+    const prevPage = page > 1 ? parseInt(page) - 1 : null;
+
+    return { requests, nextPage, prevPage, totalPages };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function getRequestQuote(id: string) {
+  try {
+    const quote = await prisma.quote.findFirst({
+      where: { requestId: id },
+      include: { request: true },
+    });
+    return { quote };
+  } catch (error) {
+    return { error };
+  }
+}
+
 // function sendEventQuoteRequestEmail(vendor: Vendor, requestId: string) {
 //   throw new Error("Function not implemented.");
 // }

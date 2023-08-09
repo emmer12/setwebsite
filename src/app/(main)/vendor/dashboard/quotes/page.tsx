@@ -50,7 +50,7 @@ const Page = () => {
         <h4 className="text-xl font-black">My Design Quote</h4>
       </div>
 
-      <RequestCard deadline={"June,3,2023 12:20"} desc="Quote Requests " />
+      {/* <RequestCard deadline={"June,3,2023 12:20"} desc="Quote Requests " /> */}
     </div>
   );
 };

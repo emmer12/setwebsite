@@ -39,7 +39,7 @@ export default function RootLayout({
 
   return (
     <div>
-      <div className="h-7 sm:h-32 flex items-center bg-[#ffe3cd]">
+      <div className="em__banner flex items-center">
         <div className="container">
           <h2 className="text-[#263f61] text-2xl sm:text-3xl text-center">
             Welcome back!! ({session?.user?.name})
@@ -60,22 +60,17 @@ export default function RootLayout({
                       Vendor Profile
                     </Link>
                   </li>
-                  {vendorQuoteSub.length > 0 && (
-                    <li
-                      className={
-                        pathName == "/vendor/dashboard/quotes" ? "active" : ""
-                      }
-                    >
-                      <Link href={"/vendor/dashboard/quotes"} className="block">
-                        Design Quotes
-                      </Link>
-                    </li>
-                  )}
+
+                  <li
+                    className={
+                      pathName == "/vendor/dashboard/requests" ? "active" : ""
+                    }
+                  >
+                    <Link href={"/vendor/dashboard/requests"} className="block">
+                      Quote Requests
+                    </Link>
+                  </li>
                   <li>Messages</li>
-                  <li>Guide</li>
-                  {vendorQuoteSub.length == 0 && (
-                    <li>Upgrade to vendor plus</li>
-                  )}
                 </ul>
               </div>
               <div className="body flex-1">{children}</div>

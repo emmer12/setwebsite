@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { createBackdrops, getAllBackdrops } from "@/lib/prisma/backdrops";
+import { createRequest, getRequests } from "@/lib/prisma/users";
 import { getToken } from "next-auth/jwt";
 import formidable from "formidable";
-import path from "path";
 import fs from "fs/promises";
 import fss from "fs";
+import path from "path";
 import { generateSlug, getFileExtension } from "@/lib/utils";
 
 export const config = {
@@ -19,10 +19,7 @@ const readFile = (
 ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   const options: formidable.Options = {};
   if (saveLocally) {
-    options.uploadDir = path.join(
-      process.cwd(),
-      "public/uploads/images/backdrops"
-    );
+    options.uploadDir = path.join(process.cwd(), "public/uploads/docs");
     options.filename = (name, ext, path, form) => {
       return Date.now().toString() + "_" + path.originalFilename;
     };
@@ -30,12 +27,20 @@ const readFile = (
   const form = formidable(options);
   return new Promise((resolve, reject) => {
     form.parse(req, (err, fields, files) => {
-      const file: any = files.file;
+      const file: any = files.doc;
 
-      const allowedExtensions = ["pdf"];
+      const allowedExtensions = [
+        "pdf",
+        "img",
+        "png",
+        "jpg",
+        "jpeg",
+        "ppt",
+        "doc",
+        "docx",
+        "pptx",
+      ];
       const fileExtension = getFileExtension(file.originalFilename);
-
-      console.log(fileExtension);
 
       if (!allowedExtensions.includes(fileExtension))
         reject("File must be pdf");
@@ -47,15 +52,15 @@ const readFile = (
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({ req });
-  //   if (token && token.role == 'Admin') {
-  // && token.role == "Admin"
   if (token) {
     if (req.method === "GET") {
       try {
-        const { backdrops, nextPage, prevPage, totalPages, error }: any =
-          await getAllBackdrops(1, 20);
+        const { requests, nextPage, prevPage, totalPages, error }: any =
+          await getRequests(1, 20, token.id);
         if (error) throw new Error(error);
-        return res.status(200).json({ backdrops });
+        return res
+          .status(200)
+          .json({ requests, nextPage, prevPage, totalPages });
       } catch (error: any) {
         return res.status(500).json({ error: error.message });
       }
@@ -63,63 +68,58 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (req.method === "POST") {
       try {
-        await fs.readdir(
-          path.join(process.cwd() + "/public/uploads/images", "/backdrops")
-        );
+        await fs.readdir(path.join(process.cwd() + "/public/uploads", "/docs"));
       } catch (error) {
-        await fs.mkdir(
-          path.join(process.cwd() + "/public/uploads/images", "/backdrops")
-        );
+        await fs.mkdir(path.join(process.cwd() + "/public/uploads", "/docs"));
       }
+
       const { fields, files }: any = await readFile(req, true);
       let data = { ...fields };
+
       try {
-        if (files.file) {
+        if (files.doc) {
           const oldPath = `${path.join(
-            `public/uploads/images/backdrops/${files.file.newFilename}`
+            `public/uploads/docs/${files.doc.newFilename}`
           )}`;
           const newPath = `${path.join(
-            `src/assets/backdrops/${files.file.newFilename}`
+            `src/assets/docs/${files.doc.newFilename}`
           )}`;
           fss.rename(oldPath, newPath, function (err) {
             if (err) throw err;
             console.log("Successfully renamed - AKA moved!");
           });
         }
-        if (files.file_2) {
-          const oldPath2 = `${path.join(
-            `public/uploads/images/backdrops/${files.file_2.newFilename}`
-          )}`;
-          const newPath2 = `${path.join(
-            `src/assets/backdrops/${files.file_2.newFilename}`
-          )}`;
-          fss.rename(oldPath2, newPath2, function (err) {
-            if (err) throw err;
-            console.log("Successfully renamed - AKA moved!");
-          });
-        }
-        console.log("Got here");
-        if (files.preview) {
-          data.imageUrl = `/api/uploads/images/backdrops/${files.preview.newFilename}`;
-        }
-        if (files.file) {
-          data.filePath = `backdrops/${files.file.newFilename}`;
+
+        if (files.doc) {
+          data.docUrl = `docs/${files.doc.newFilename}`;
         }
 
-        if (files.file_2) {
-          data.filePath2 = `backdrops/${files.file_2.newFilename}`;
-        }
-        const { backdrop, error }: any = await createBackdrops({
+        const currentDate = new Date();
+
+        //added 3 days to currentDate
+        const deadline = new Date(currentDate.getTime() + 72 * 60 * 60 * 1000);
+
+        const { backdrop, error }: any = await createRequest({
           title: data.title,
-          slug: generateSlug(data.title),
-          personal_price: parseInt(data.personal_price),
-          commercial_price: parseInt(data.commercial_price),
-          addOn: ["Cake", "Acrylics", "Invitation", "Flowers"],
-          categoryId: data.category_id,
-          description: data.description,
-          imageUrl: data.imageUrl,
-          filePath: data.filePath,
-          filePath2: data.filePath2,
+          deadline:deadline,
+          categoryId: data.categoryId,
+          subCategoryId: data.subCategoryId,
+          services: data.services,
+          people_number: data.phone_number,
+          event_date: data.event_date,
+          occasion: data.occasion,
+          location: data.location,
+          additional_request: data.additional_request,
+          docUrl: data.docUrl,
+          userId: token.id,
+          // vendorsIds: {
+          //   connect: [
+          //     "64bd4a17108027b976111e80",
+          //     "64d0af1c1fb749369f5f0a52",
+          //   ].map((vId) => ({
+          //     id: vId,
+          //   })),
+          // },
         });
         if (error) throw new Error(error);
         return res.status(200).json({ backdrop });

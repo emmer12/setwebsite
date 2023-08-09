@@ -63,6 +63,7 @@ model User {
     Subscription      Subscription[]
     Requests          Requests[]
     BackdropOrder     BackdropOrder[]
+    Quote             Quote[]
 }
 
 model VerificationRequest {
@@ -158,6 +159,7 @@ model BackdropOrder {
     ep_quote      Boolean             @default(false)
     bp_quote      Boolean             @default(false)
     User          User?               @relation(fields: [userId], references: [id])
+    Quote         Quote[]
 }
 
 enum License {
@@ -223,6 +225,8 @@ model Vendor {
     vendorCategoryId String?         @db.ObjectId
     approval_status  ApprovalStatus  @default(Pending)
     legal_disclaimer String?
+    Requests         Requests?       @relation(fields: [requestsId], references: [id])
+    requestsId       String?         @db.ObjectId
 }
 
 enum RequestType {
@@ -231,18 +235,26 @@ enum RequestType {
 }
 
 model Requests {
-    id                 String        @id @default(auto()) @map("_id") @db.ObjectId
-    request_type       RequestType
-    orderId            String        @db.ObjectId
-    order              BackdropOrder @relation(fields: [orderId], references: [id])
+    id                 String         @id @default(auto()) @map("_id") @db.ObjectId
+    title              String?
+    request_type       RequestType?
+    categoryId         String         @db.ObjectId
+    subCategoryId      String?        @db.ObjectId
+    services           String[]       @default([])
+    orderId            String?        @db.ObjectId
+    order              BackdropOrder? @relation(fields: [orderId], references: [id])
     people_number      Int?
     event_date         String?
     occasion           String?
     location           String?
     additional_request String?
     imageUrl           String?
-    userId             String        @db.ObjectId
-    user               User          @relation(fields: [userId], references: [id])
+    docUrl             String?
+    userId             String         @db.ObjectId
+    user               User           @relation(fields: [userId], references: [id])
+    vendorsIds         Vendor[]
+    deadline           DateTime?
+    Quote              Quote[]
 }
 
 enum SubType {
@@ -267,4 +279,17 @@ model Subscription {
     start_date    DateTime?
     end_date      DateTime?
     user          User          @relation(fields: [userId], references: [id])
+}
+
+model Quote {
+    id              String         @id @default(auto()) @map("_id") @db.ObjectId
+    userId          String         @db.ObjectId
+    requestId       String         @db.ObjectId
+    request         Requests?      @relation(fields: [requestId], references: [id])
+    user            User           @relation(fields: [userId], references: [id])
+    description     String?
+    amount          String
+    attachmentUrl   String?
+    backdropOrderId String?        @db.ObjectId
+    BackdropOrder   BackdropOrder? @relation(fields: [backdropOrderId], references: [id])
 }
