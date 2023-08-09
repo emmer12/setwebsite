@@ -56,7 +56,7 @@ const QuotesPage: FC<PageProps> = ({ params }) => {
         const res = await createQuote(formData);
         NotificationManager.success("Quote successfully created!");
 
-        router.push("/account/my-requests");
+        // router.push("/account/my-requests");
       } catch (error: any) {
         if (error?.response?.status == 400) {
           const err = error?.response?.data;

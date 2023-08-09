@@ -69,7 +69,7 @@ export default function RootLayout({
       <div className="em__banner items-center ">
         <div className="container">
           <h2 className="text-[#263f61] text-2xl sm:text-3xl text-center">
-            Welcome back ({session?.user?.name}) {session?.user?.role}
+            Welcome back! {session?.user?.name}
           </h2>
         </div>
       </div>
