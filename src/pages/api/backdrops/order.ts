@@ -84,6 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             request_type: "BACKDROP_PRODUCTION",
             orderId: newOrder.id,
             userId: user.id,
+            categoryId: user.id,
           },
         });
       }
@@ -99,6 +100,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             occasion: data.occasion,
             people_number: data.people_number,
             userId: user.id,
+            categoryId: user.id,
           },
         });
       }
