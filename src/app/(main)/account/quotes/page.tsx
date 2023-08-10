@@ -12,11 +12,10 @@ const Page = () => {
         <h4 className="text-xl font-black">My Quotes</h4>
       </div>
 
-      <RequestCard
-        deadline={"June,3,2023 12:20"}
+      {/* <RequestCard
         desc="Quote Requests"
         isOwner={true}
-      />
+      /> */}
     </div>
   );
 };
