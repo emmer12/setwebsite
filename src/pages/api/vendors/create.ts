@@ -28,13 +28,6 @@ const readFile = (
     options.uploadDir = path.join(process.cwd(), "public/uploads/");
     options.maxFileSize = 10 * 1024 * 1024; // 10mb
     options.filename = (name, ext, path, form) => {
-      let allowedExtensions: string[] =
-        name == ("image_1" || "image_2" || "image_3")
-          ? allowedFiles["image"]
-          : allowedFiles["video"];
-      if (!allowedExtensions.includes(ext))
-        Promise.reject("File type not allowed");
-
       return Date.now().toString() + "_" + path.originalFilename;
     };
   }

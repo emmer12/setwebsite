@@ -15,7 +15,7 @@ import { createRequest } from "@/lib/api/user.api";
 
 const animatedComponents = makeAnimated();
 
-const RequestForm = () => {
+const RequestForm = ({ redirectUrl }: { redirectUrl?: string }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [file, setFile] = useState(null);
   const router = useRouter();
@@ -79,7 +79,7 @@ const RequestForm = () => {
         const res = await createRequest(formData);
         NotificationManager.success("Request created!");
 
-        router.push("/account/my-requests");
+        router.push(redirectUrl || "/account/my-requests");
       } catch (error: any) {
         if (error?.response?.status == 400) {
           const err = error?.response?.data;

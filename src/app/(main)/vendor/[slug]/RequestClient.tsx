@@ -128,7 +128,10 @@ const RequestClient = ({ vendor }: any) => {
               </form>
             </div>
           ) : (
-            <LoginComponent desc="kindly login to your account to send a quote request or Register" />
+            <LoginComponent
+              callback={() => setOpen(false)}
+              desc="kindly login to your account to send a quote request or Register"
+            />
           )}
         </Modal>
       </div>

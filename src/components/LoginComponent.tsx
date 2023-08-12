@@ -8,7 +8,13 @@ import * as Yup from "yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const LoginComponent = ({ desc }: { desc: string }) => {
+const LoginComponent = ({
+  desc,
+  callback,
+}: {
+  desc: string;
+  callback: () => void;
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -27,6 +33,7 @@ const LoginComponent = ({ desc }: { desc: string }) => {
         });
 
         if (res.status == 200) {
+          callback();
           NotificationManager.success("Welcome back!");
         } else {
           throw new Error("Invalid credentials");

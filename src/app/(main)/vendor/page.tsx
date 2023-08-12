@@ -1,16 +1,19 @@
 "use client";
 import Button from "@/components/Button";
-import FeatureList from "@/components/FeatureList";
-import ServiceCard from "@/components/ServicePrice";
 import VendorCategory from "@/components/vendor/Category";
-import { ArrowRight } from "@/components/icons";
-import classNames from "classnames";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useMemo, useState } from "react";
+import { useState } from "react";
+import QuoteRequest from "@/components/QuoteRequest";
+import { useSession } from "next-auth/react";
+import Modal from "@/components/modal";
+import LoginComponent from "@/components/LoginComponent";
 
 const Backdrops = () => {
   const [state, setState] = useState<string>("United Arab Emirates");
+  const { status, data } = useSession();
+  const [open, setOpen] = useState<boolean>(false);
+  const [openQ, setOpenQ] = useState<boolean>(false);
+
   const [categories] = useState<any>([
     {
       title: "Production Companies",
@@ -40,25 +43,16 @@ const Backdrops = () => {
   ]);
 
   const [countries] = useState([{ name: "United Arab Emirates", code: "AE" }]);
-
   const [category, setCategory] = useState("");
 
-  const features = useMemo(() => {
-    return [
-      "Register up to 30 people on our set and forget feature, ensuring no birthday goes unnoticed.",
-      "Enjoy the convenience of requesting quotes from suppliers for the designs you love using the set and forget feature.",
-      "Access a whopping 50 AI-developed designs for backdrops each month, available for download in both JPG and PDF formats.",
-      "Indulge in 50 AI-developed designs for cakes every month, delivered in high-quality JPG and PDF formats.",
-      "Explore 50 AI-developed designs for exhibition stands per month, ready for download as JPG and PDF files once designed.",
-      "Immerse yourself in 50 AI-developed designs for wedding stages every month, downloadable in JPG and PDF formats.",
-      "Receive a complimentary copy of one of our backdrop design production files.",
-      "Seamlessly obtain quotes for any design directly through our AI-powered quotation system, ensuring a quick response within 24 hours.",
-      "Upload and Quote feature, allowing you to easily upload your design preferences, choose the desired category (backdrops, stands, events, cakes, or flowers), and receive quotations from registered suppliers.",
-      "Enhance your design process with our free guide on developing prompts, providing insights into the best ways to generate exceptional designs using AI.",
-      "Unlock the potential for a home-based business with our free guide on opening your own venture in the event industry.",
-      "Our AI system analyzes uploaded pictures and generates diverse variations and themes based on your written request.",
-    ];
-  }, []);
+  const handleQuote = () => {
+    if (status == "authenticated") {
+      setOpenQ(true);
+    } else {
+      setOpen(true);
+    }
+  };
+
   return (
     <div>
       {" "}
@@ -73,6 +67,19 @@ const Backdrops = () => {
       <div className="em__dee bg-white">
         <div className="container">
           <div className="em__body__wrapper">
+            <div className="w-full sm:w-1/2 m-auto">
+              <div className="quote">
+                <h2 className="font-bold p-3 text-xl">
+                  Fill form to get quote{" "}
+                </h2>
+              </div>
+
+              <div>
+                <Button onClick={handleQuote} text="Request Quote" />
+              </div>
+              {openQ && <QuoteRequest redirectUrl="vendor" />}
+            </div>
+
             <div className="about__service my-5">
               <div className="mt-5">
                 <p>
@@ -139,6 +146,15 @@ const Backdrops = () => {
           </div>
         </div>
       </div>
+      <Modal size="small" open={open} close={() => setOpen(false)}>
+        <LoginComponent
+          callback={() => {
+            setOpen(false);
+            setOpenQ(true);
+          }}
+          desc="kindly login to your account to send a quote request or Register"
+        />
+      </Modal>
     </div>
   );
 };
