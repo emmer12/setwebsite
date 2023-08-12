@@ -1,23 +1,24 @@
-"use client";
 import Button from "@/components/Button";
-import Backdrop from "@/components/backdrops/Backdrop";
-import { CaretRight } from "@/components/icons";
-import VendorCard from "@/components/vendor/VendorCard";
-import { getBackdrops } from "@/lib/api/backdrop.api";
-import { getVendorById } from "@/lib/api/vendor.api";
-import { IBackdrop } from "@/types";
 import Image from "next/image";
-import React, { useState } from "react";
-import useSWR from "swr";
+import RequestClient from "./RequestClient";
+
+const getVendor = async (slug: string): Promise<any> => {
+  const data = await fetch(`${process.env.BASE_URL}/api/vendors/${slug}`, {
+    next: { revalidate: 10 },
+  });
+  const vendor = await data.json();
+
+  return vendor;
+};
 
 interface PageProps {
   params: { slug: string };
 }
 
-const VendorDetailsPage = ({ params }: PageProps) => {
-  const { data, error, isLoading } = useSWR(`/${params.slug}`, getVendorById);
+const VendorDetailsPage = async ({ params }: PageProps) => {
+  const data = await getVendor(params.slug);
 
-  const [reviews] = useState([
+  const reviews = [
     {
       content:
         "My employee consistently delivers exceptional performance, demonstrating attention to detail, problem-solving skills, and effective collaboration. Their professionalism, reliability, and positive attitude make them a valuable asset to our organization. Highly recommended.",
@@ -33,23 +34,20 @@ const VendorDetailsPage = ({ params }: PageProps) => {
         "Exceptional employee. Consistently delivers high-quality work with attention to detail. Strong problem-solving skills and effective team collaboration. Reliable, professional, and a valuable asset.",
       name: "Joe Stone",
     },
-  ]);
-  // const [vendor] = useState({
-  //   name: "Production Companies",
-  //   imageUrl: "/assets/images/d1.png",
-  //   link: "vendor/category/production-companies",
-  //   location: "United Arab Emirates",
-  //   services: "Service1 1,Service 2",
-  // });
+  ];
 
   return (
     <div>
       {" "}
-      <div className="em__banner">
+      <div className="em__banner relative">
         <div className="inner">
           <h1>
             <span>{data?.vendor?.company_name}</span>
           </h1>
+        </div>
+
+        <div>
+          <RequestClient vendor={data.vendor}  />
         </div>
       </div>
       <div className="em__backdrops">
@@ -61,7 +59,8 @@ const VendorDetailsPage = ({ params }: PageProps) => {
                   <div className="display flex-1 sm:w-full/2 w-full">
                     <Image
                       src={
-                        data?.vendor?.image_1_path || "/assets/images/d1.png"
+                        `/uploads${data?.vendor?.image_1_path}` ||
+                        "/assets/images/d1.png"
                       }
                       height={400}
                       width={400}
@@ -90,17 +89,12 @@ const VendorDetailsPage = ({ params }: PageProps) => {
               </div>
 
               <div className="grid grid-cols-3 gap-3 my-4">
-                {!isLoading &&
-                  JSON.parse(data?.vendor?.services).map(
-                    (service: string, i: number) => (
-                      <div className="bg-white p-4" key={i + "services"}>
-                        <h1 className="text-center text-4xl font-bold">
-                          {i + 1}
-                        </h1>
-                        <p>{service}</p>
-                      </div>
-                    )
-                  )}
+                {data?.vendor?.services.map((service: string, i: number) => (
+                  <div className="bg-white p-4" key={i + "services"}>
+                    <h1 className="text-center text-4xl font-bold">{i + 1}</h1>
+                    <p>{service}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -115,14 +109,20 @@ const VendorDetailsPage = ({ params }: PageProps) => {
 
               <div className="grid grid-cols-3 gap-3 my-4">
                 <Image
-                  src={data?.vendor?.image_1_path || "/assets/images/d1.png"}
+                  src={
+                    `/uploads${data?.vendor?.image_1_path}` ||
+                    "/assets/images/d1.png"
+                  }
                   height={200}
                   width={300}
                   alt="Works images 1"
                 />
                 {data?.vendor?.image_2_path && (
                   <Image
-                    src={data?.vendor?.image_2_path || "/assets/images/d1.png"}
+                    src={
+                      `/uploads${data?.vendor?.image_2_path}` ||
+                      "/assets/images/d1.png"
+                    }
                     height={200}
                     width={300}
                     alt="Works images 2"
@@ -130,7 +130,10 @@ const VendorDetailsPage = ({ params }: PageProps) => {
                 )}
                 {data?.vendor?.image_3_path && (
                   <Image
-                    src={data?.vendor?.image_3_path || "/assets/images/d1.png"}
+                    src={
+                      `/uploads${data?.vendor?.image_3_path}` ||
+                      "/assets/images/d1.png"
+                    }
                     height={200}
                     width={300}
                     alt="Works images 3"

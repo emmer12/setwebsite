@@ -9,20 +9,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NotificationManager } from "react-notifications";
 import FileUploader from "@/components/FileUploader";
-import { createVendorOrder, getFormData } from "@/lib/api/vendor.api";
+import { createVendor, getFormData } from "@/lib/api/vendor.api";
 import { signIn } from "next-auth/react";
-import constants from "@/lib/utils/constants";
-import { formattedMoney } from "@/lib/utils";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+const animatedComponents = makeAnimated();
 
 const countries = [{ name: "United Arab Emirates", code: "AE" }];
-
-const vendorCategories = [
-  "Production Company",
-  "Event Planning",
-  "Venue",
-  "Florist",
-  "Cake Baker",
-];
 
 const citiesUAE = [
   { name: "Abu Dhabi" },
@@ -52,7 +45,6 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [event_countries] = useState(["United Arab Emirates", "Nigeria"]);
   const router = useRouter();
-  const [services, setServices] = useState<string[]>([]);
   const { status, data } = useSession();
   const [sinput, setSInput] = useState("");
   const [sub] = useState<any>(
@@ -64,6 +56,7 @@ const RegisterPage = () => {
     "/api/vendors/checkout/form-data",
     getFormData
   );
+
   const [files, setFiles] = useState({
     image_1: null,
     image_2: null,
@@ -91,11 +84,33 @@ const RegisterPage = () => {
       website: "",
       instagram: "",
       vendorCategoryId: "",
+      legal: "",
+      category: {
+        value: "",
+        label: "",
+        services: [],
+      },
+      subCategory: {
+        value: "",
+        label: "",
+        services: [],
+      },
     },
     onSubmit: async (data) => {
       const userData: any = { ...data };
-      userData.services = JSON.stringify(services);
       userData.coverage_cities = JSON.stringify(data.coverage_cities);
+
+      userData.vendorCategoryId = data.category.value;
+      userData.vendorSubCategoryId = data.subCategory.value;
+
+      userData.services = userData.services.map(
+        (service: any) => service.label
+      );
+
+      userData.services = JSON.stringify(userData.services);
+
+      delete userData.category;
+      delete userData.subCategory;
 
       let formData = new FormData();
 
@@ -129,18 +144,17 @@ const RegisterPage = () => {
 
       setLoading(true);
       try {
-        const res = await createVendorOrder(formData);
+        const res = await createVendor(formData);
 
-        await signIn("credentials", {
-          email: userData.email,
-          password: userData.password,
-          redirect: false,
-        });
+        if (status == "unauthenticated") {
+          await signIn("credentials", {
+            email: userData.email,
+            password: userData.password,
+            redirect: false,
+          });
+        }
 
-        NotificationManager.success("Order Created");
-        const id = res.data.record.id;
-        if (typeof window !== "undefined") localStorage.removeItem("vSub");
-        router.push(`/checkout/vendor/payment/${id}`);
+        NotificationManager.success("Registration Successful");
       } catch (error: any) {
         const err = error?.response?.data;
         if (error?.response?.status == 400) {
@@ -166,14 +180,14 @@ const RegisterPage = () => {
             full_name: Yup.string().required("Name is Required"),
             email: Yup.string().email("Invalid email").required("Required"),
             company_name: Yup.string().required("Company Name Required"),
+            legal: Yup.bool().oneOf([true], "Legal agreement must be checked"),
             company_overview: Yup.string().required("Company Brief Required"),
-            vendorCategoryId: Yup.string().required("Category is Required"),
           })
         : Yup.object().shape({
             full_name: Yup.string().required("Name is Required"),
             company_name: Yup.string().required("Company Name Required"),
             company_overview: Yup.string().required("Company Brief Required"),
-            vendorCategoryId: Yup.string().required("Category is Required"),
+            legal: Yup.bool().oneOf([true], "Legal agreement must be checked"),
             email: Yup.string().email("Invalid email").required("Required"),
             password: Yup.string().required("Required"),
             password_confirmation: Yup.string().oneOf(
@@ -197,24 +211,42 @@ const RegisterPage = () => {
     });
   };
 
-  const addServices = () => {
-    if (sinput.length < 1) return;
-    setServices((prev: string[]) => {
-      return [...prev, sinput];
-    });
-    setSInput("");
-  };
-
-  const removeService = (i: number) => {
-    setServices((prev) => prev.filter((s, idx) => idx !== i));
-  };
-
   useEffect(() => {
     if (status == "authenticated") {
       formik.setFieldValue("full_name", data.user.name);
       formik.setFieldValue("email", data.user.email);
     }
   }, [status]);
+
+  const filterCategories = formData?.categories
+    ?.filter((cat: any) => cat.parent_id == null)
+    .map((cat: any) => {
+      return { value: cat.id, label: cat.title, services: cat.services };
+    });
+
+  const subCategories = formData?.subCategories
+    ?.filter((cat: any) => cat.parent_id == formik.values.category.value)
+    .map((cat: any) => {
+      return { value: cat.id, label: cat.title, services: cat.services };
+    });
+
+  const getServices = (cats: string[], subCats: string[]) => {
+    if (cats.length > 0) {
+      return cats.map((cat) => {
+        return {
+          value: cat,
+          label: cat,
+        };
+      });
+    } else {
+      return subCats.map((cat) => {
+        return {
+          value: cat,
+          label: cat,
+        };
+      });
+    }
+  };
 
   return (
     <div>
@@ -288,32 +320,60 @@ const RegisterPage = () => {
                       </div>
                     </div>
 
-                    <div className="field">
-                      <select
-                        onChange={formik.handleChange}
-                        value={formik.values.vendorCategoryId}
-                        name="vendorCategoryId"
-                      >
-                        <option value="">Select Vendor category *</option>
+                    <div className=" my-4">
+                      <label htmlFor="category">Select Category</label>
 
-                        {formData?.categories.map((category: any) => {
-                          const key = Object.keys(category)[0];
-                          const value = category[key];
-
-                          return (
-                            <option key={key} value={key}>
-                              {value}
-                            </option>
-                          );
-                        })}
-
-                        {formik.touched && formik.errors.vendorCategoryId && (
-                          <span className="error">
-                            {formik.errors.vendorCategoryId}
-                          </span>
-                        )}
-                      </select>
+                      <Select
+                        components={animatedComponents}
+                        options={filterCategories as any}
+                        onChange={(selectedOption: any) => {
+                          formik.setFieldValue("category", selectedOption);
+                        }}
+                        placeholder="Select Category"
+                        value={formik.values.category}
+                        name="category"
+                      />
                     </div>
+
+                    {formik.values.category.value.length > 0 &&
+                      subCategories.length > 0 && (
+                        <div className=" my-4">
+                          <label htmlFor="category">Select Category</label>
+                          <Select
+                            id="category"
+                            components={animatedComponents}
+                            onChange={(selectedOption: any) => {
+                              formik.setFieldValue(
+                                "subCategory",
+                                selectedOption
+                              );
+                            }}
+                            placeholder="Select Sub Category"
+                            options={subCategories}
+                            name="subCategory"
+                          />
+                        </div>
+                      )}
+
+                    {formik.values.category.value.length > 0 && (
+                      <div className=" my-4">
+                        <label htmlFor="category">Select Services</label>
+
+                        <Select
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          onChange={(selectedOptions: any) => {
+                            formik.setFieldValue("services", selectedOptions);
+                          }}
+                          isMulti
+                          placeholder="Select Services"
+                          options={getServices(
+                            formik.values.category.services,
+                            formik.values.subCategory.services
+                          )}
+                        />
+                      </div>
+                    )}
 
                     <div className="field">
                       <input
@@ -390,7 +450,7 @@ const RegisterPage = () => {
                         </div>
                       ))}
                     </div>
-                    <div className="field_wrapper">
+                    {/* <div className="field_wrapper">
                       <span className="hint">
                         Kindly include services you provide
                       </span>
@@ -430,7 +490,7 @@ const RegisterPage = () => {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="field">
                       <input
@@ -617,10 +677,13 @@ const RegisterPage = () => {
                         <input
                           className="mr-3"
                           type="checkbox"
-                          name="bp_quote"
-                          id="bp_quote"
+                          name="legal"
+                          onChange={formik.handleChange}
+                          id="legal"
+                          value={formik.values.legal}
+                          checked={!!formik.values.legal}
                         />
-                        <label htmlFor="bp_quote">
+                        <label htmlFor="legal">
                           <b>Legal disclaimer -</b>
                           By clicking here, you acknowledge and agree to adhere
                           to the highest standards when serving our clients,
@@ -636,10 +699,13 @@ const RegisterPage = () => {
                         </label>
                       </div>
                     </div>
+                    {formik.touched && formik.errors.legal && (
+                      <span className="error">{formik.errors.legal}</span>
+                    )}
 
                     <Button
                       classNames="em__button primary"
-                      text="Checkout"
+                      text="Register"
                       RightIcon={<ArrowRight />}
                       loading={loading}
                     />

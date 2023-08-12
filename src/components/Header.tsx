@@ -3,6 +3,25 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const container = {
+  hidden: { opacity: 1, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delayChildren: 0.3,
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: 50,
+    transition: {
+      delay: 0.3,
+    },
+  },
+};
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -161,29 +180,37 @@ const Header = () => {
                             />
                           </svg>
                         </div>
-                        {dropOpen && (
-                          <ul className="h__dropdown p-5 bg-white absolute flex-col inset-0 z-50 top-[50px] block w-80  rounded-tl-2xl rounded-bl-2xl  rounded-tr-2xl rounded-br-3xl">
-                            <li className="py-3">
-                              <Link href="/vendor/onboard">
-                                Vendor Registration
-                              </Link>
-                            </li>
-                            <li className="py-3">
-                              <Link href="/design-services">
-                                Dee Ultra Subscription system
-                              </Link>
-                            </li>
-                            <li className="py-3">
-                              <a href=""> Design Download </a>
-                            </li>
-                            <li className="py-3">
-                              <a href="">Creative AI Studio</a>
-                            </li>
-                            <li className="py-3">
-                              <a href="">Event Connections</a>
-                            </li>
-                          </ul>
-                        )}
+                        <AnimatePresence>
+                          {dropOpen && (
+                            <motion.ul
+                              variants={container}
+                              initial="hidden"
+                              animate="visible"
+                              exit="exit"
+                              className="h__dropdown p-5 bg-white absolute flex-col inset-0 z-50 top-[50px] block w-80  rounded-tl-2xl rounded-bl-2xl  rounded-tr-2xl rounded-br-3xl"
+                            >
+                              <li className="py-3">
+                                <Link href="/vendor/onboard">
+                                  Vendor Registration
+                                </Link>
+                              </li>
+                              <li className="py-3">
+                                <Link href="/design-services">
+                                  Dee Ultra Subscription system
+                                </Link>
+                              </li>
+                              <li className="py-3">
+                                <a href=""> Design Download </a>
+                              </li>
+                              <li className="py-3">
+                                <a href="">Creative AI Studio</a>
+                              </li>
+                              <li className="py-3">
+                                <a href="">Event Connections</a>
+                              </li>
+                            </motion.ul>
+                          )}
+                        </AnimatePresence>
                       </li>
                     </ul>
                   </div>

@@ -99,9 +99,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         //added 3 days to currentDate
         const deadline = new Date(currentDate.getTime() + 72 * 60 * 60 * 1000);
 
-        const { backdrop, error }: any = await createRequest({
+        const { record, error }: any = await createRequest({
           title: data.title,
-          deadline:deadline,
+          deadline: deadline,
           categoryId: data.categoryId,
           subCategoryId: data.subCategoryId,
           services: data.services,
@@ -121,8 +121,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           //   })),
           // },
         });
+
+        //TODO Notify All Vendors
+
         if (error) throw new Error(error);
-        return res.status(200).json({ backdrop });
+        return res.status(200).json({ record });
       } catch (error: any) {
         return res.status(500).json({ error: error.message });
       }

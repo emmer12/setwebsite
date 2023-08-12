@@ -38,6 +38,18 @@ const constants = {
     VENDOR: "VENDOR",
     USER: "USER",
   },
+
+  legal: {
+    VENDOR_REG:
+      "By clicking here, you acknowledge and agree to adhere to the highest standards when serving our clients, including the commitment to respond to all leads within 24 hours. Failure to meet this requirement may result in the opportunity to send a quotation being forfeited. Additionally, you understand that our platform acts as a connection facilitator, and any transactions or agreements are solely between you and the client. Please carefully review and accept these terms before proceeding with your Vendor Registration Subscription.",
+    BACKDROP_PURCHASE: "",
+  },
+
+  approval_status: {
+    PENDING: "Pending",
+    APPROVED: "Approved",
+    DISAPPROVED: "Disapproved",
+  },
 };
 
 export default constants;

@@ -124,7 +124,7 @@ const Backdrops = () => {
           <div className="container">
             <div className="em__body__wrapper">
               <div className="about__service">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {categories.map((category: any, i: number) => (
                     <VendorCategory
                       key={i + "cat"}

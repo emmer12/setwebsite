@@ -7,6 +7,7 @@ import { createVendor } from "@/lib/prisma/vendors";
 import { getToken } from "next-auth/jwt";
 import { processUserRegistration } from "@/lib/prisma/users";
 import { vendorOrderSchema } from "@/lib/utils/validations";
+import { allowedFiles } from "@/lib/utils/filesystem";
 
 export const config = {
   api: {
@@ -22,6 +23,13 @@ const readFile = (
   if (saveLocally) {
     options.uploadDir = path.join(process.cwd(), "public/uploads/images");
     options.filename = (name, ext, path, form) => {
+      let allowedExtensions: string[] =
+        name == ("image_1" || "image_2" || "image_3")
+          ? allowedFiles["image"]
+          : allowedFiles["video"];
+      if (!allowedExtensions.includes(ext))
+        Promise.reject("File type not allowed");
+
       return Date.now().toString() + "_" + path.originalFilename;
     };
   }

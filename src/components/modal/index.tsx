@@ -7,6 +7,7 @@ interface ModalI {
   open: boolean;
   close: () => void;
   children: ReactNode;
+  size?: "large" | "medium" | "small";
 }
 
 const overlay = {
@@ -41,7 +42,7 @@ const container = {
   },
 };
 
-const SafModal = ({ open, close, children }: ModalI) => {
+const SafModal = ({ open, close, size = "large", children }: ModalI) => {
   return (
     <AnimatePresence>
       {open && (
@@ -59,7 +60,7 @@ const SafModal = ({ open, close, children }: ModalI) => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="m__container"
+            className={`m__container ${size}`}
           >
             <div className="m__header" onClick={() => close()}>
               <Close />

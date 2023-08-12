@@ -1,6 +1,7 @@
 import { Vendor } from "@prisma/client";
 import prisma from ".";
 import { sendEventQuoteRequestEmail, sendQuoteRequestEmail } from "../mailer";
+import constant from "../utils/constants";
 
 export async function getVendors(page: any, limit: number) {
   const offset = (page - 1) * limit;
@@ -10,10 +11,7 @@ export async function getVendors(page: any, limit: number) {
       skip: offset,
       take: limit,
       where: {
-        profile_sub_exp: {
-          not: null,
-          gte: today,
-        },
+        approval_status: constant.approval_status.APPROVED as any,
       },
     });
 

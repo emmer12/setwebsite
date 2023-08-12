@@ -60,3 +60,32 @@ export const vendorOrderSchema = z.object({
     .min(4, { message: "Coverage is required" })
     .max(30),
 });
+
+export const vendorSchema = z.object({
+  company_location: z
+    .string()
+    .min(1, { message: "Company location is required" })
+    .max(50),
+  company_name: z
+    .string()
+    .min(1, { message: "Company Name is required" })
+    .max(50),
+  country: z.string().min(1, { message: "Country is required" }).max(30),
+  city: z.string().min(1, { message: "City is required" }).max(30),
+  coverage_cities: z
+    .array(z.string())
+    .min(1, { message: "At least a city is required" }),
+  services: z
+    .array(z.string())
+    .min(1, { message: "At least a service required" }),
+  vendorCategoryId: z
+    .string()
+    .min(4, { message: "Coverage is required" })
+    .max(30),
+});
+
+export const vendorRequestSchema = z.object({
+  title: z.string().min(1, { message: "Title is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  vendor_id: z.string().min(1, { message: "Vendor is required" }),
+});

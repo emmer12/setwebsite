@@ -117,9 +117,16 @@ ul {
   }
 }
 
+span.error {
+  font-size: 12px;
+  color: #dc3545;
+  margin-left: 15px;
+  display: block;
+}
+
 .field {
   height: 45px;
-  margin: 20px 0px;
+  margin: 30px 0px;
   textarea,
   input,
   select {
@@ -920,11 +927,11 @@ input[type="radio"] {
 
 .m__container {
   position: fixed;
-  width: 90%;
-  height: 100vh;
   max-width: 100%;
   background: #fff;
-  inset: 0;
+  // inset: 0;
+  translate: -50% -50%;
+  left: 50%;
   padding: 40px;
   margin: auto;
   display: flex;
@@ -933,6 +940,23 @@ input[type="radio"] {
   border-radius: 20px;
   flex-direction: column;
   z-index: 999;
+
+  &.large {
+    width: 90%;
+    height: 100vh;
+  }
+  &.medium,
+  &.small {
+    min-height: 300px;
+    height: auto;
+    max-width: 90%;
+  }
+  &.medium {
+    width: 700px;
+  }
+  &.small {
+    width: 460px;
+  }
 }
 
 .m__overlay {

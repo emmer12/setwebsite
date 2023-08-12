@@ -29,7 +29,7 @@ const VendorCard = ({
           <Image
             height={100}
             width={300}
-            src={image_1_path || "/assets/images/c1.png"}
+            src={`/uploads${image_1_path}` || "/assets/images/c1.png"}
             alt="Category Image"
           />
         </Link>
