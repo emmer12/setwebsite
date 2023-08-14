@@ -351,7 +351,7 @@ export const Facebook = () => (
 //     viewBox="0 0 24 24"
 //     fill="none"
 //     stroke="currentColor"
-//     stroke-width="2"
+//     strokeWidth="2"
 //     stroke-linecap="round"
 //     stroke-linejoin="round"
 //   >
@@ -368,5 +368,51 @@ export const Plus = () => (
     viewBox="0 0 16 16"
   >
     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+  </svg>
+);
+
+export const CheckAnim = () => (
+  <svg width="115px" height="115px" viewBox="0 0 133 133" version="1.1">
+    <g
+      id="check-group"
+      stroke="none"
+      strokeWidth="1"
+      fill="none"
+      fillRule="evenodd"
+    >
+      <circle id="filled-circle" fill="#07b481" cx="66.5" cy="66.5" r="54.5" />
+      <circle id="white-circle" fill="#FFFFFF" cx="66.5" cy="66.5" r="55.5" />
+      <circle
+        id="outline"
+        stroke="#07b481"
+        strokeWidth="4"
+        cx="66.5"
+        cy="66.5"
+        r="54.5"
+      />
+      <polyline
+        id="check"
+        stroke="#FFFFFF"
+        strokeWidth="5.5"
+        points="41 70 56 85 92 49"
+      />
+    </g>
+  </svg>
+);
+
+export const Bell = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
   </svg>
 );

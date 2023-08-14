@@ -1,4 +1,6 @@
 "use client";
+import Button from "@/components/Button";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -9,6 +11,10 @@ const DesignPage = () => {
   if (status === "loading") {
     return <p>Loading...</p>;
   }
+
+  const handleCreate = () => {
+    axios.get("/api/users/tests");
+  };
 
   return (
     <div>
@@ -29,6 +35,10 @@ const DesignPage = () => {
             <div className="flex items-center justify-between  my-5">
               <strong>Password</strong>
               <span className="text-4xl">........</span>
+            </div>
+
+            <div>
+              <Button text="Create Not" onClick={handleCreate} />
             </div>
           </div>
         </div>

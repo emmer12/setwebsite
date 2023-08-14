@@ -3,6 +3,10 @@ import { generateRequestLink } from "../utils";
 const path = require("path");
 const hbs = require("nodemailer-express-handlebars");
 
+const assets = {
+  host: process.env.BASE_URL,
+};
+
 const handlebarOptions = {
   viewEngine: {
     extName: ".handlebars",
@@ -75,6 +79,22 @@ export const sendEventQuoteRequestEmail = async (data: any, id: string) => {
       company_name: data.company_name,
       link: generateRequestLink(id),
       message: "You have a new event quote request",
+    },
+  });
+
+  return true;
+};
+
+export const sendTestEmail = async () => {
+  await transporter.sendMail({
+    from: `${"SetEvents"}`,
+    to: "example@mail.com",
+    subject: `Email test `,
+    // @ts-ignore-next-line
+    template: "test", //
+    context: {
+      ...assets,
+      message: "You have a new text request",
     },
   });
 

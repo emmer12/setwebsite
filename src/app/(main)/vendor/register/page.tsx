@@ -13,6 +13,7 @@ import { createVendor, getFormData } from "@/lib/api/vendor.api";
 import { signIn } from "next-auth/react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Alert from "@/components/modal/Alert";
 const animatedComponents = makeAnimated();
 
 const countries = [{ name: "United Arab Emirates", code: "AE" }];
@@ -43,14 +44,9 @@ const citiesUAE = [
 
 const RegisterPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [event_countries] = useState(["United Arab Emirates", "Nigeria"]);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const router = useRouter();
   const { status, data } = useSession();
-  const [sinput, setSInput] = useState("");
-  const [sub] = useState<any>(
-    typeof window !== "undefined" &&
-      JSON.parse(localStorage.getItem("vSub") as any)
-  );
 
   const { isLoading, data: formData } = useSWR(
     "/api/vendors/checkout/form-data",
@@ -120,8 +116,8 @@ const RegisterPage = () => {
 
       if (!files.image_1) {
         NotificationManager.error(
-          "Error message",
-          "At least one image is required"
+          "At least one image is required",
+          "Error message"
         );
         return;
       }
@@ -135,12 +131,6 @@ const RegisterPage = () => {
       if (files.image_3) {
         formData.append("image_3", files.image_3);
       }
-      if (sub && sub.quote_sub) {
-        formData.append("quote_sub", sub.quote_sub);
-      }
-      if (sub && sub.vendor_sub) {
-        formData.append("profile_sub", sub.vendor_sub);
-      }
 
       setLoading(true);
       try {
@@ -153,6 +143,14 @@ const RegisterPage = () => {
             redirect: false,
           });
         }
+
+        setShowModal(true);
+        formik.resetForm();
+        setFiles({
+          image_1: null,
+          image_2: null,
+          image_3: null,
+        });
 
         NotificationManager.success("Registration Successful");
       } catch (error: any) {
@@ -715,6 +713,14 @@ const RegisterPage = () => {
             </div>
           </div>
         </div>
+
+        <Alert
+          open={showModal}
+          size="small"
+          close={() => setShowModal(false)}
+          title="Account has been created"
+          msg="Please relax while we verify your account. This might take up to 3 business days."
+        />
       </div>
     </div>
   );

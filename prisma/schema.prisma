@@ -64,6 +64,7 @@ model User {
     Requests          Requests[]
     BackdropOrder     BackdropOrder[]
     Quote             Quote[]
+    Notification      Notification[]
 }
 
 model VerificationRequest {
@@ -294,4 +295,13 @@ model Quote {
     attachmentUrl   String?
     backdropOrderId String?        @db.ObjectId
     BackdropOrder   BackdropOrder? @relation(fields: [backdropOrderId], references: [id])
+}
+
+model Notification {
+    id      String  @id @default(auto()) @map("_id") @db.ObjectId
+    userId  String  @db.ObjectId
+    user    User    @relation(fields: [userId], references: [id])
+    isRead  Boolean @default(false)
+    title   String
+    message String
 }

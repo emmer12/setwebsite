@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Bell } from "./icons";
 
 const container = {
   hidden: { opacity: 1, y: 50 },
@@ -25,6 +26,7 @@ const container = {
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const [count] = useState(3);
   const [dropOpen, setDropOpen] = useState(false);
   const path = usePathname();
   const router = useRouter();
@@ -143,6 +145,17 @@ const Header = () => {
                       />
                     </svg>
                   </div>
+
+                  {status === "authenticated" && (
+                    <div className="relative">
+                      <Bell />
+                      {count > 0 && (
+                        <span className="rounded-full absolute top-[-3px] right-[-10px] h-[20px] w-[20px] flex items-center justify-center text-xs bg-white font-serif">
+                          2
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
