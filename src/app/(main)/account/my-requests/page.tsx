@@ -17,7 +17,7 @@ const Page = () => {
       <div className="header">
         <div className="flex justify-between items-center">
           <h4 className="text-xl font-black">My Quotes</h4>
-          <Button text="Make a Request" />
+          <Button to="/account/my-requests/create" text="Make a Request" />
         </div>
       </div>
 

@@ -8,6 +8,8 @@ import path from "path";
 import { generateSlug, getFileExtension } from "@/lib/utils";
 import { request } from "http";
 import prisma from "@/lib/prisma";
+import { sendQuoteNotification } from "@/lib/mailer";
+import { createNotifications } from "@/lib/prisma/notifications";
 
 export const config = {
   api: {
@@ -98,9 +100,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           where: {
             id: data.requestId,
           },
+          include: {
+            user: true,
+          },
         });
 
-        console.log(currentDate > request.deadline);
+        const vendor: any = await prisma.vendor.findFirst({
+          where: {
+            userId: token.id as any,
+          },
+        });
 
         if (!request || currentDate > request.deadline) {
           return res.status(400).json({ msg: "Request not found or Expired" });
@@ -112,6 +121,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           requestId: request.id,
           attachmentUrl: data.docUrl,
         });
+
+        const newData = {
+          username: request.user.name,
+          email: request.user.email,
+          company_name: vendor.company_name,
+        };
+
+        // Send Quote Notification
+        sendQuoteNotification(newData);
+
+        const newNotify = {
+          title: "Quote Notification",
+          message: `${vendor.company_name} sent a quote`,
+          userId: request.user.id,
+        };
+
+        await createNotifications(newNotify);
+
         if (error) throw new Error(error);
         return res.status(200).json({ backdrop });
       } catch (error: any) {

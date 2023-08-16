@@ -6,6 +6,9 @@ import fs from "fs/promises";
 import fss from "fs";
 import path from "path";
 import { generateSlug, getFileExtension } from "@/lib/utils";
+import prisma from "@/lib/prisma";
+import { sendQuoteRequestEmail } from "@/lib/mailer";
+import { createNotifications } from "@/lib/prisma/notifications";
 
 export const config = {
   api: {
@@ -99,6 +102,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         //added 3 days to currentDate
         const deadline = new Date(currentDate.getTime() + 72 * 60 * 60 * 1000);
 
+        const vendors = await prisma.vendor.findMany({
+          where: {
+            approval_status: "Approved",
+            OR: {
+              vendorCategoryId: data.categoryId,
+              vendorSubCategoryId: data.subCategoryId,
+            },
+          },
+        });
+
         const { record, error }: any = await createRequest({
           title: data.title,
           deadline: deadline,
@@ -112,17 +125,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           additional_request: data.additional_request,
           docUrl: data.docUrl,
           userId: token.id,
-          // vendorsIds: {
-          //   connect: [
-          //     "64bd4a17108027b976111e80",
-          //     "64d0af1c1fb749369f5f0a52",
-          //   ].map((vId) => ({
-          //     id: vId,
-          //   })),
-          // },
+          vendorsIds: {
+            connect: [...vendors.map((vendor: any) => vendor.id)].map(
+              (vId) => ({
+                id: vId,
+              })
+            ),
+          },
         });
 
         //TODO Notify All Vendors
+
+        vendors.forEach(async (vendor) => {
+          await sendQuoteRequestEmail(vendor);
+          const newData = {
+            title: "New Quote Requests",
+            message: "You have a new quote request",
+            userId: vendor.userId.toString(),
+          };
+
+          await createNotifications(newData);
+        });
 
         if (error) throw new Error(error);
         return res.status(200).json({ record });

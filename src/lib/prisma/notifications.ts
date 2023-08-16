@@ -10,9 +10,12 @@ export async function createNotifications(data: any) {
     return { error };
   }
 }
-export async function getNotifications() {
+export async function getNotifications(id: string) {
   try {
-    const notifications = await prisma.notification.findMany();
+    const notifications = await prisma.notification.findMany({
+      orderBy: { createdAt: "desc" },
+      where: { userId: id },
+    });
     return { notifications };
   } catch (error) {
     return { error };
@@ -30,11 +33,13 @@ export async function getUnreadNotifications() {
   }
 }
 
-export async function updateNotification(id: string, data: any) {
+export async function markNotification(id: string) {
   try {
-    await prisma.notification.update({
-      where: { id: id },
-      data: data,
+    await prisma.notification.updateMany({
+      where: { userId: id },
+      data: {
+        isRead: true,
+      },
     });
     return { success: true };
   } catch (error) {

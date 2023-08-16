@@ -229,6 +229,8 @@ model Vendor {
     legal_disclaimer    String?
     Requests            Requests?       @relation(fields: [requestsId], references: [id])
     requestsId          String?         @db.ObjectId
+    createdAt           DateTime        @default(now())
+    updatedAt           DateTime        @updatedAt
 }
 
 enum RequestType {
@@ -258,6 +260,8 @@ model Requests {
     vendorsIds         Vendor[]
     deadline           DateTime?
     Quote              Quote[]
+    createdAt          DateTime       @default(now())
+    updatedAt          DateTime       @updatedAt
 }
 
 enum SubType {
@@ -282,6 +286,8 @@ model Subscription {
     start_date    DateTime?
     end_date      DateTime?
     user          User          @relation(fields: [userId], references: [id])
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
 }
 
 model Quote {
@@ -295,13 +301,17 @@ model Quote {
     attachmentUrl   String?
     backdropOrderId String?        @db.ObjectId
     BackdropOrder   BackdropOrder? @relation(fields: [backdropOrderId], references: [id])
+    createdAt       DateTime       @default(now())
+    updatedAt       DateTime       @updatedAt
 }
 
 model Notification {
-    id      String  @id @default(auto()) @map("_id") @db.ObjectId
-    userId  String  @db.ObjectId
-    user    User    @relation(fields: [userId], references: [id])
-    isRead  Boolean @default(false)
-    title   String
-    message String
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId    String   @db.ObjectId
+    user      User     @relation(fields: [userId], references: [id])
+    isRead    Boolean  @default(false)
+    title     String
+    message   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

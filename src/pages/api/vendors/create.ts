@@ -12,6 +12,7 @@ import { vendorSchema } from "@/lib/utils/validations";
 import { processUserRegistration } from "@/lib/prisma/users";
 import { allowedFiles, moveToAsset } from "@/lib/utils/filesystem";
 import constants from "@/lib/utils/constants";
+import { sendAdminNotification } from "@/lib/mailer";
 
 export const config = {
   api: {
@@ -137,6 +138,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(500).json({ msg: "Opps, Something went wrong" });
         } else {
           // TODO Notify  Admin
+
+          sendAdminNotification();
 
           res.status(201).json({ record: record.vendor });
         }

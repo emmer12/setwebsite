@@ -108,7 +108,7 @@ export async function sendAllVendorsQuotes(
     if (categoryId) {
       await sendEventQuoteRequestEmail(vendor, requestId);
     } else {
-      await sendQuoteRequestEmail(vendor, requestId);
+      await sendQuoteRequestEmail(vendor);
     }
   });
 }

@@ -10,7 +10,10 @@ const assets = {
 const handlebarOptions = {
   viewEngine: {
     extName: ".handlebars",
-    partialsDir: path.join(__dirname, "./src/lib/mailer/templates/"),
+    partialsDir: [
+      path.join(__dirname, "./src/lib/mailer/templates/"),
+      path.join(__dirname, "./src/lib/mailer/templates/partials"),
+    ],
     defaultLayout: false,
   },
   viewPath: path.resolve("./src/lib/mailer/templates/"),
@@ -50,18 +53,18 @@ export const sendBackdropPurchaseEmail = async (data: any) => {
   return true;
 };
 
-export const sendQuoteRequestEmail = async (data: any, id: string) => {
+export const sendQuoteRequestEmail = async (data: any) => {
   await transporter.sendMail({
     from: `${"SetEvents"} ${"set@mail.com"}`,
     to: data.company_email,
-    subject: `Backdrop Quote Requests`,
+    subject: `New Quote Requests`,
     // @ts-ignore-next-line
     template: "quote_request", //
     context: {
+      ...assets,
       company_name: data.company_name,
-      link: generateRequestLink(id),
-      requestId: id,
-      message: "You have a new backdrop quote request",
+      message:
+        "You have a new quote request. A user is seeking a quote for a specific service. Kindly access your account to review the details of the request and offer a competitive quote that aligns with the user's requirements. Your prompt response will contribute to a positive experience for our users. Thank you for your dedication to providing quality service through our platform.",
     },
   });
 
@@ -76,6 +79,7 @@ export const sendEventQuoteRequestEmail = async (data: any, id: string) => {
     // @ts-ignore-next-line
     template: "event_quote_request", //
     context: {
+      ...assets,
       company_name: data.company_name,
       link: generateRequestLink(id),
       message: "You have a new event quote request",
@@ -95,6 +99,40 @@ export const sendTestEmail = async () => {
     context: {
       ...assets,
       message: "You have a new text request",
+    },
+  });
+
+  return true;
+};
+
+export const sendAdminNotification = async () => {
+  await transporter.sendMail({
+    from: `${"SetEvents"}`,
+    to: process.env.ADMIN_EMAIL,
+    subject: `New Vendor Notification`,
+    // @ts-ignore-next-line
+    template: "new.vendor", //
+    context: {
+      ...assets,
+      message:
+        "A new vendor has just registered. Please be informed that a new vendor has joined our platform and may require verification and approval. Kindly review their registration details and proceed with the necessary steps. Thank you.",
+    },
+  });
+
+  return true;
+};
+
+export const sendQuoteNotification = async (data: any) => {
+  await transporter.sendMail({
+    from: `${"SetEvents"}`,
+    to: data.email,
+    subject: `New Quote Notification`,
+    // @ts-ignore-next-line
+    template: "new.quote", //
+    context: {
+      ...assets,
+      company_name: data.company_name,
+      username: data.username,
     },
   });
 

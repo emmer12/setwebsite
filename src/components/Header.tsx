@@ -4,10 +4,14 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell } from "./icons";
+import { Bell, Close } from "./icons";
+import { format } from "date-fns";
+import useSWR from "swr";
+import { getNotifications, makeNotifications } from "@/lib/api/user.api";
 
+const date = new Date("2023-07-23T09:15:00");
 const container = {
-  hidden: { opacity: 1, y: 50 },
+  hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
     y: 0,
@@ -24,18 +28,49 @@ const container = {
   },
 };
 
+const side = {
+  hidden: { x: "100%" },
+  visible: {
+    x: 0,
+    transition: {
+      delayChildren: 0.3,
+      ease: "easeOut",
+    },
+  },
+  exit: {
+    x: "100%",
+    transition: {
+      delay: 0.3,
+      ease: "easeOut",
+    },
+  },
+};
+
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const [count] = useState(3);
+  const [openNotif, setOpenNotif] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
   const path = usePathname();
   const router = useRouter();
   const { data: session, status } = useSession();
 
+  const { data, error, isLoading } = useSWR(
+    "/api/users/notifications",
+    getNotifications
+  );
+
   useEffect(() => {
     setOpen(false);
     setDropOpen(false);
   }, [path]);
+
+  const handleOpenNotf = async () => {
+    if (!openNotif) {
+      makeNotifications();
+    }
+    setOpenNotif(true);
+  };
+  const count = data?.notifications.filter((n: any) => !n.isRead).length;
 
   return (
     <div className="em__main">
@@ -148,12 +183,14 @@ const Header = () => {
 
                   {status === "authenticated" && (
                     <div className="relative">
-                      <Bell />
-                      {count > 0 && (
-                        <span className="rounded-full absolute top-[-3px] right-[-10px] h-[20px] w-[20px] flex items-center justify-center text-xs bg-white font-serif">
-                          2
-                        </span>
-                      )}
+                      <div onClick={handleOpenNotf}>
+                        <Bell />
+                        {count > 0 && (
+                          <span className="rounded-full absolute top-[-3px] right-[-10px] h-[20px] w-[20px] flex items-center justify-center text-xs bg-white font-serif">
+                            {count}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -316,6 +353,46 @@ const Header = () => {
           )}
         </div>
       </div>
+      <AnimatePresence>
+        {openNotif && (
+          <motion.div
+            variants={side}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="side__notify w-full sm:w-[400px] bg-white fixed top-[70px] right-0 h-screen z-50 p-4"
+          >
+            <div
+              className="absolute top-3 right-3 cursor-pointer"
+              onClick={() => setOpenNotif(false)}
+            >
+              <Close />
+            </div>
+            <div>
+              <h4 className="text-2xl font-bold">Notifications</h4>
+            </div>
+
+            <div className="h-[100%] overflow-y-auto">
+              {data.notifications.map((n: any) => (
+                <div key={n.id} className="flex gap-2 my-3 py-2 border-b">
+                  <div className="h-[10px] w-[10px] shrink-0 mt-1 rounded-full bg-[#4CAF50]"></div>
+                  <div>
+                    <p className="font-semibold">{n.message}</p>
+                    <div>
+                      <span className="text-sm">
+                        {format(
+                          new Date(n.createdAt),
+                          "MMM dd,yyyy 'at' hh:mm a"
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

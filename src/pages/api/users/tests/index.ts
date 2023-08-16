@@ -4,15 +4,19 @@ import {
   getNotifications,
 } from "@/lib/prisma/notifications";
 import { getToken } from "next-auth/jwt";
-import { sendQuoteRequestEmail, sendTestEmail } from "@/lib/mailer";
+import {
+  sendAdminNotification,
+  sendQuoteRequestEmail,
+  sendTestEmail,
+} from "@/lib/mailer";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({ req });
   if (req.method === "GET") {
     try {
-      sendTestEmail();
+      sendAdminNotification();
       // const { notifications, error }: any = await getNotifications();
-      return res.status(200).json({});
+      return res.status(200).json({ msg: "yoo" });
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }
