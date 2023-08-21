@@ -6,6 +6,7 @@ import {
   logBackdropPayment,
   logVendorSubscription,
   logSubscription,
+  logAccountTopUp,
 } from "@/lib/prisma/payments";
 // import getRawBody from 'raw-body';
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -40,18 +41,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let event;
 
       event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
+      let paymentIntentSucceeded: any;
 
       switch (event.type) {
         case "payment_intent.succeeded":
-          let paymentIntentSucceeded = event.data.object;
-
+          paymentIntentSucceeded = event.data.object;
           let { order_id, payment_type } = paymentIntentSucceeded.metadata;
           if (payment_type == constants.payment_type.BACKDROP) {
             await logBackdropPayment(order_id, paymentIntentSucceeded.id);
           }
+
           // Then define and call a function to handle the event payment_intent.succeeded
           break;
+        case "checkout.session.completed":
+          paymentIntentSucceeded = event.data.object;
+          const {
+            payment_type: p_t,
+            user_id,
+            amount,
+          } = paymentIntentSucceeded.metadata;
 
+          if (p_t == constants.payment_type.TOP_UP) {
+            console.log("GOT HERE");
+            await logAccountTopUp(user_id, amount, paymentIntentSucceeded.id);
+          }
+          break;
         case "customer.subscription.created":
           {
             let paymentIntentSucceeded2 = event.data.object;

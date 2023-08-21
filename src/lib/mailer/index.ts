@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { generateRequestLink } from "../utils";
+import { generatePasswordResetLink, generateRequestLink } from "../utils";
 const path = require("path");
 const hbs = require("nodemailer-express-handlebars");
 
@@ -37,7 +37,7 @@ transporter.use("compile", hbs(handlebarOptions));
 
 export const sendBackdropPurchaseEmail = async (data: any) => {
   await transporter.sendMail({
-    from: `${"SetEvents"} ${"set@mail.com"}`,
+    from: `${process.env.ADMIN_EMAIL} ${"set@mail.com"}`,
     to: data.email,
     subject: `Backdrop Purchase  File`,
     // @ts-ignore-next-line
@@ -55,7 +55,7 @@ export const sendBackdropPurchaseEmail = async (data: any) => {
 
 export const sendQuoteRequestEmail = async (data: any) => {
   await transporter.sendMail({
-    from: `${"SetEvents"} ${"set@mail.com"}`,
+    from: `${process.env.ADMIN_EMAIL} ${"set@mail.com"}`,
     to: data.company_email,
     subject: `New Quote Requests`,
     // @ts-ignore-next-line
@@ -73,7 +73,7 @@ export const sendQuoteRequestEmail = async (data: any) => {
 
 export const sendEventQuoteRequestEmail = async (data: any, id: string) => {
   await transporter.sendMail({
-    from: `${"SetEvents"} ${"set@mail.com"}`,
+    from: `${process.env.ADMIN_EMAIL} ${"set@mail.com"}`,
     to: data.company_email,
     subject: `Event Quote Request`,
     // @ts-ignore-next-line
@@ -81,7 +81,7 @@ export const sendEventQuoteRequestEmail = async (data: any, id: string) => {
     context: {
       ...assets,
       company_name: data.company_name,
-      link: generateRequestLink(id),
+      link: generateRequestLink(id, "ppp"),
       message: "You have a new event quote request",
     },
   });
@@ -91,7 +91,7 @@ export const sendEventQuoteRequestEmail = async (data: any, id: string) => {
 
 export const sendTestEmail = async () => {
   await transporter.sendMail({
-    from: `${"SetEvents"}`,
+    from: `${process.env.ADMIN_EMAIL}`,
     to: "example@mail.com",
     subject: `Email test `,
     // @ts-ignore-next-line
@@ -107,7 +107,7 @@ export const sendTestEmail = async () => {
 
 export const sendAdminNotification = async () => {
   await transporter.sendMail({
-    from: `${"SetEvents"}`,
+    from: `${process.env.ADMIN_EMAIL}`,
     to: process.env.ADMIN_EMAIL,
     subject: `New Vendor Notification`,
     // @ts-ignore-next-line
@@ -124,7 +124,7 @@ export const sendAdminNotification = async () => {
 
 export const sendQuoteNotification = async (data: any) => {
   await transporter.sendMail({
-    from: `${"SetEvents"}`,
+    from: `${process.env.ADMIN_EMAIL}`,
     to: data.email,
     subject: `New Quote Notification`,
     // @ts-ignore-next-line
@@ -133,6 +133,24 @@ export const sendQuoteNotification = async (data: any) => {
       ...assets,
       company_name: data.company_name,
       username: data.username,
+      link: generateRequestLink(data.quote.id, data.rid),
+      quote: data.quote,
+    },
+  });
+
+  return true;
+};
+
+export const sendResetPasswordEmail = async (data: any, token: string) => {
+  await transporter.sendMail({
+    from: `${process.env.ADMIN_EMAIL}`,
+    to: data.email,
+    subject: `Reset Password Notification`,
+    // @ts-ignore-next-line
+    template: "password.reset", //
+    context: {
+      ...assets,
+      link: generatePasswordResetLink(token),
     },
   });
 

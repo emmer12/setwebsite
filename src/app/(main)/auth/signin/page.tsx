@@ -62,7 +62,7 @@ const SignIn = () => {
         </div>
       </div>
       <div className="w-full sm:w-1/2 flex-1">
-        <div className="w-80 my-4 py-12">
+        <div className="w-80 my-4 py-12 m-auto sm:m-0">
           <form onSubmit={formik.handleSubmit}>
             <div className="title">
               <h2 className="font-bold text-2xl">Sign in</h2>
@@ -91,6 +91,12 @@ const SignIn = () => {
                 <span className="error">{formik.errors.password}</span>
               )}
             </div>
+            <Link
+              className="flex justify-end mt-[-20px]"
+              href="/auth/forgot-password"
+            >
+              Forgot password?
+            </Link>
 
             <Button
               text="Login"

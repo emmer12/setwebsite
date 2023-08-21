@@ -39,14 +39,6 @@ export default function RootLayout({
 
   return (
     <div>
-      <div className="em__banner flex items-center">
-        <div className="container">
-          <h2 className="text-[#263f61] text-2xl sm:text-3xl text-center">
-            Welcome back!! ({session?.user?.name})
-          </h2>
-        </div>
-      </div>
-
       <div className="bg-white">
         <div className="container">
           <div className="py-12 ">

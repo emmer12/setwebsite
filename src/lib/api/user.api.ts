@@ -23,3 +23,21 @@ export const getNotifications = (data: any) =>
 
 export const makeNotifications = () =>
   api.patch(`${END_POINT}/notifications`).then((res) => res.data);
+
+export const forgotPassword = (data: { email: string }) =>
+  api.post(`${END_POINT}/forgot-password`, data).then((res) => res.data);
+
+export const validateToken = (data: any) =>
+  api
+    .post(`${END_POINT}/validate-token`, { token: data })
+    .then((res) => res.data);
+
+export const resetPassword = (data: {
+  id: string;
+  password: string;
+  password_confirmation: string;
+  token: string;
+}) => api.post(`${END_POINT}/reset-password`, data).then((res) => res.data);
+
+export const topUp = (data: { amount: number }) =>
+  api.post(`${END_POINT}/top-up`, data).then((res) => res.data);

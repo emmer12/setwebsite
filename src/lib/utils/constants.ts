@@ -5,6 +5,7 @@ const constants = {
     DEE_DIGITAL_SUB: "dee_digital_subscription",
     QUOTE_SUB: "quote_subscription",
     VENDOR_SUB: "vendor_subscription",
+    TOP_UP: "top_up",
   },
   payment_status: {
     PAID: "PAID",

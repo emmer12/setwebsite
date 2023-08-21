@@ -1,5 +1,6 @@
 import prisma from ".";
 import bcrypt from "bcrypt";
+import { addHours } from "date-fns";
 
 export async function getUsers() {
   try {
@@ -119,4 +120,15 @@ export async function getRequests(page: any, limit: number, id: any) {
   } catch (error) {
     return { error };
   }
+}
+
+ export async function createPasswordResetToken(userId: string, token: string) {
+  const expiresAt = addHours(new Date(), 1); // Set to expire 1 hour from now
+  await prisma.passwordResetToken.create({
+    data: {
+      userId,
+      token,
+      expiresAt,
+    },
+  });
 }

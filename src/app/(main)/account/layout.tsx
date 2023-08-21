@@ -102,11 +102,7 @@ export default function RootLayout({
                       My Requests
                     </Link>
                   </li>
-                  {safSub.length || safProSub.length ? (
-                    <li onClick={() => setOpen(true)}>Set and Forget</li>
-                  ) : (
-                    <></>
-                  )}
+                  <li onClick={() => setOpen(true)}>Set and Forget</li>
                   {isVendor && (
                     <li
                       className={
@@ -119,17 +115,19 @@ export default function RootLayout({
                     </li>
                   )}
 
-                  {aiSub.length == 0 && (
-                    <li
-                      className={pathName == "/account/ai/dee" ? "active" : ""}
-                    >
-                      <Link className="block" href="/account/ai/dee">
-                        Design with Dee
-                      </Link>
-                    </li>
-                  )}
+                  <li className={pathName == "/account/ai/dee" ? "active" : ""}>
+                    <Link className="block" href="/account/ai/dee">
+                      Design with Dee
+                    </Link>
+                  </li>
 
-                  {aiProSub.length == 0 && (
+                  {/* <li className={pathName == "/account/ai/dee" ? "active" : ""}>
+                    <Link className="block" href="/account/ai/dee">
+                      Quotations Recived
+                    </Link>
+                  </li> */}
+
+                  {/* {aiProSub.length == 0 && (
                     <li
                       className={
                         pathName == "/account/quotes/create" ? "active" : ""
@@ -139,21 +137,8 @@ export default function RootLayout({
                         Upload and Quote
                       </Link>
                     </li>
-                  )}
-
-                  {aiProSub.length == 0 && (
-                    <li>
-                      <Link className="block" href="/account/quotes">
-                        Quotation Received
-                      </Link>
-                    </li>
-                  )}
-
-                  {/* {vendorQuoteSub.length > 0 && <li>Design Quotes</li>}
-                  {(aiSub.length > 0 || aiProSub.length > 0) && (
-                    <li>Developed designs</li>
                   )} */}
-                  {/* <li>Upgrade to DEE Ultra </li> */}
+
                   <li>Guide</li>
                 </ul>
               </div>

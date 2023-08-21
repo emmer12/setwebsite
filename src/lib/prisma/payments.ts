@@ -83,6 +83,39 @@ export async function logBackdropPayment(
   }
 }
 
+export async function logAccountTopUp(
+  user_id: string,
+  amount: number,
+  transactionId: string
+) {
+  const user: any = await prisma.user.findUnique({
+    where: {
+      id: user_id,
+    },
+  });
+
+  const points = user?.points + Number(amount);
+
+  await prisma.user.update({
+    where: {
+      id: user_id,
+    },
+    data: {
+      points: Number(points),
+    },
+  });
+
+  await prisma.transactionLog.create({
+    data: {
+      description: `Account top up`,
+      orderId: user_id,
+      type: "TOP_UP",
+      transactionId,
+      amount: Number(amount),
+    },
+  });
+}
+
 export async function logVendorSubscription(
   vendor_id: string,
   sub: string,

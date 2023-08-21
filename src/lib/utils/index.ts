@@ -1,3 +1,5 @@
+import * as uuid from "uuid";
+
 export function serialize(obj: any) {
   return JSON.parse(JSON.stringify(obj));
 }
@@ -325,30 +327,38 @@ export const dropdown = (values: any[]) => {
 export const dropdownCat = (values: any[]) => {
   return values.map((val) => {
     return {
-      id:val.id,
-      title:val.title,
-      services:val.services,
-      hasServices:val.hasServices,
-      parent_id:val.parent_id,
+      id: val.id,
+      title: val.title,
+      services: val.services,
+      hasServices: val.hasServices,
+      parent_id: val.parent_id,
     };
   });
 };
 
-
 export const dropdownSub = (values: any[]) => {
   return values.filter((val) => {
-    return val.parent_id && { [val.parent_id]: {
-      id:val.id,
-      services:val.services,
-      title:val.title,
-    }} ;
+    return (
+      val.parent_id && {
+        [val.parent_id]: {
+          id: val.id,
+          services: val.services,
+          title: val.title,
+        },
+      }
+    );
   });
-}
-
-export const generateRequestLink = (id: string) => {
-  return `${process.env.BASE_URL}/vendor/quote/create/${id}`;
 };
 
+export const generateRequestLink = (id: string, rId: string) => {
+  return `${process.env.BASE_URL}/account/my-requests/quote/${rId}/${id}`;
+};
+
+export const generatePasswordResetLink = (token: string) => {
+  return `${process.env.BASE_URL}/auth/reset-password?token=${token}`;
+};
+
+export const generateToken = (): string => uuid.v4();
 
 export const categories = [
   {
@@ -426,11 +436,7 @@ export const categories = [
       },
       {
         name: "Trade Shows and Exhibitions",
-        services: [
-          "Trade Shows",
-          "Industry Exhibitions",
-          "Business Expos",
-        ],
+        services: ["Trade Shows", "Industry Exhibitions", "Business Expos"],
       },
       {
         name: "Government and Public Events",
@@ -453,12 +459,12 @@ export const categories = [
   },
   {
     category: "Wedding Planners",
-    services:[
+    services: [
       "Full-Service Wedding Planners",
       "Day-Of Wedding Coordinator (On-Site Coordination on the Wedding Day)",
       "Destination Wedding Planners (specializing in planning weddings at destination locations)",
-      "Cultural/Traditional Wedding Planners (for specific cultural or religious weddings)"
-    ]
+      "Cultural/Traditional Wedding Planners (for specific cultural or religious weddings)",
+    ],
   },
   {
     category: "Cake Artists",
@@ -467,7 +473,7 @@ export const categories = [
       "Birthday Cakes",
       "Specialty Cakes (for specific occasions or themes)",
       "Cupcakes and Desserts",
-      "Vegan/Gluten-Free Cakes (for dietary preferences)"
+      "Vegan/Gluten-Free Cakes (for dietary preferences)",
     ],
   },
   {
@@ -525,11 +531,7 @@ export const categories = [
       },
       {
         name: "Special Effects",
-        services: [
-          "Visual Effects",
-          "Special Lighting Effects",
-          "Laser Shows",
-        ],
+        services: ["Visual Effects", "Special Lighting Effects", "Laser Shows"],
       },
       {
         name: "Event Technical Support",
@@ -618,7 +620,7 @@ export const categories = [
       },
     ],
   },
- {
+  {
     category: "Event Planning and Management",
     services: [
       "Event Planning and Management",
@@ -646,16 +648,14 @@ export const categories = [
   },
 ];
 
-
 export function getFileExtension(filename: string) {
   return filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2);
 }
 
-
-export function removeEmptyValues(obj:any) {
-  for (const key in obj) { 
+export function removeEmptyValues(obj: any) {
+  for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
-      if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+      if (obj[key] === null || obj[key] === undefined || obj[key] === "") {
         delete obj[key];
       }
     }

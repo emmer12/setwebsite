@@ -114,7 +114,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (!request || currentDate > request.deadline) {
           return res.status(400).json({ msg: "Request not found or Expired" });
         }
-        const { backdrop, error }: any = await createQuote({
+        const { record, error }: any = await createQuote({
           description: data.description,
           amount: data.amount,
           userId: token.id,
@@ -123,6 +123,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         });
 
         const newData = {
+          rid:request.id,
+          quote: record,
           username: request.user.name,
           email: request.user.email,
           company_name: vendor.company_name,
@@ -140,7 +142,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await createNotifications(newNotify);
 
         if (error) throw new Error(error);
-        return res.status(200).json({ backdrop });
+        return res.status(200).json({ record });
       } catch (error: any) {
         return res.status(500).json({ error: error.message });
       }

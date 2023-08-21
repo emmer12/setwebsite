@@ -89,3 +89,30 @@ export const vendorRequestSchema = z.object({
   description: z.string().min(1, { message: "Description is required" }),
   vendor_id: z.string().min(1, { message: "Vendor is required" }),
 });
+
+export const registrationSchema = z.object({
+  fullname: z.string().min(1, { message: "Title is required" }),
+  pa: z.string().min(1, { message: "Description is required" }),
+  vendor_id: z.string().min(1, { message: "Vendor is required" }),
+});
+
+export const passwordResetRequestSchema = z.object({
+  email: props.email,
+});
+
+export const tokenValidationSchema = z.object({
+  token: z.string().min(1, { message: "Token is required" }),
+});
+
+export const passwordResetSchema = z.object({
+  id: z.string().min(1, { message: "Id is required" }),
+  token: z.string().min(1, { message: "Token is required" }),
+  password: z.string().min(6, { message: "Password is required" }),
+  password_confirmation: z
+    .string()
+    .min(6, { message: "Password Confirmation is required" }),
+});
+
+export const topUpSchema = z.object({
+  amount: z.number().min(10, { message: "Amount cannot be less than $10" }),
+});

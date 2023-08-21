@@ -393,6 +393,13 @@ a {
     opacity: 0.7;
     background: linear-gradient(to left, #ffecdc, #ffbe67);
   }
+
+  &.sm {
+    padding: 4px 12px;
+    border-radius: 9px;
+    border-bottom-left-radius: 4px;
+    text-transform: none;
+  }
 }
 
 .swiper {

@@ -47,20 +47,26 @@ export default NextAuth({
   },
   callbacks: {
     session: async ({ session, token, user }) => {
-      if (session?.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
+      if (token) {
+        const newUser = await prisma.user.findFirst({
+          where: {
+            email: token.email,
+          },
+        });
+
+        console.log(newUser);
+        session.user.id = newUser?.id as string;
+        session.user.role = newUser?.role as string;
+        session.user.points = newUser?.points as any;
       }
-      // const userData = await fetch(
-      //   `${process.env.NEXTAUTH_URL}/api/user?userId=${token.id}`
-      // ).then((response) => response.json());
-      // session.user.subscriptionStatus = userData.subscriptionStatus;
+
       return Promise.resolve(session);
     },
     jwt: ({ token, user }) => {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.point = user.points;
       }
       return token;
     },
