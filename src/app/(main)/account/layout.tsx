@@ -149,7 +149,10 @@ export default function RootLayout({
       </div>
 
       <SafModal open={open} close={() => setOpen(false)}>
-        <SetAndForget />
+        <SetAndForget
+          close={() => setOpen(false)}
+          points={session?.user?.saf_points}
+        />
       </SafModal>
     </div>
   );

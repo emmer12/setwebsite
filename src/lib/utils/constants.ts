@@ -5,7 +5,8 @@ const constants = {
     DEE_DIGITAL_SUB: "dee_digital_subscription",
     QUOTE_SUB: "quote_subscription",
     VENDOR_SUB: "vendor_subscription",
-    TOP_UP: "top_up",
+    SAF_TOP_UP: "saf_top_up",
+    AI_TOP_UP: "ai_top_up",
   },
   payment_status: {
     PAID: "PAID",
@@ -51,6 +52,13 @@ const constants = {
     APPROVED: "Approved",
     DISAPPROVED: "Disapproved",
   },
+
+  points: {
+    SAF: 100,
+    AI: 100,
+  },
+
+
 };
 
 export default constants;

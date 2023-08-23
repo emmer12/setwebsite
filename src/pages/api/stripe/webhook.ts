@@ -61,9 +61,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             amount,
           } = paymentIntentSucceeded.metadata;
 
-          if (p_t == constants.payment_type.TOP_UP) {
-            console.log("GOT HERE");
-            await logAccountTopUp(user_id, amount, paymentIntentSucceeded.id);
+          if (p_t == constants.payment_type.SAF_TOP_UP || p_t == constants.payment_type.AI_TOP_UP) {
+            await logAccountTopUp(user_id, amount, paymentIntentSucceeded.id, p_t);
           }
           break;
         case "customer.subscription.created":

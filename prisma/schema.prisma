@@ -65,7 +65,8 @@ model User {
     BackdropOrder     BackdropOrder[]
     Quote             Quote[]
     Notification      Notification[]
-    points            Float               @default(50)
+    ai_points         Float               @default(10)
+    saf_points        Float               @default(10)
 }
 
 model VerificationRequest {
@@ -187,7 +188,8 @@ enum TranstionType {
     DEE_DIGITAL
     SAF
     VENDOR
-    TOP_UP
+    AI_TOP_UP
+    SAF_TOP_UP
 }
 
 model transactionLog {

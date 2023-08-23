@@ -1,4 +1,5 @@
 import * as uuid from "uuid";
+import { NotificationManager } from "react-notifications";
 
 export function serialize(obj: any) {
   return JSON.parse(JSON.stringify(obj));
@@ -661,4 +662,33 @@ export function removeEmptyValues(obj: any) {
     }
   }
   return obj;
+}
+
+
+export function parseError(errorRes: any) {
+  const err = errorRes.data;
+  if ([400, 401, 500].includes(errorRes?.status)) {
+    NotificationManager.error(
+      err?.msg || err?.error.errors[0].message || err.error.message,
+      "Error message"
+    );
+  } else if (errorRes?.status == 404) {
+    NotificationManager.error(
+      err?.msg,
+      "Not Found"
+    );
+  } else {
+    NotificationManager.error(
+
+      "Opps, somthing went wrong",
+      "Error Message"
+    );
+  }
+}
+
+export function parseSuccess(msg: string) {
+  NotificationManager.success(
+    msg,
+    "Suscess Message"
+  );
 }

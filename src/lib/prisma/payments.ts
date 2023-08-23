@@ -86,30 +86,36 @@ export async function logBackdropPayment(
 export async function logAccountTopUp(
   user_id: string,
   amount: number,
-  transactionId: string
+  transactionId: string,
+  p_type: string,
 ) {
   const user: any = await prisma.user.findUnique({
     where: {
       id: user_id,
     },
   });
+  let data: any = {}
 
-  const points = user?.points + Number(amount);
+  if (p_type == constants.payment_type.AI_TOP_UP) {
+    const points = user?.ai_points + Number(amount);
+    data.ai_points = points;
+  } else {
+    const points = user?.saf_points + Number(amount);
+    data.saf_points = points;
+  }
 
   await prisma.user.update({
     where: {
       id: user_id,
     },
-    data: {
-      points: Number(points),
-    },
+    data: data,
   });
 
   await prisma.transactionLog.create({
     data: {
       description: `Account top up`,
       orderId: user_id,
-      type: "TOP_UP",
+      type: p_type == constants.payment_type.AI_TOP_UP ? 'AI_TOP_UP' : "SAF_TOP_UP",
       transactionId,
       amount: Number(amount),
     },

@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { getToken } from "next-auth/jwt";
 import { createUser } from "@/lib/prisma/saf";
 import constants from "@/lib/utils/constants";
+import { getUserById } from "@/lib/prisma/users";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({ req });
@@ -12,10 +13,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (token) {
       try {
-        const record = await createUser(data);
+        const { user } = await getUserById(token.id as string);
+        const record: any = await createUser(data, user);
         if (record.error) {
-          console.log(record.error);
-          return res.status(400).json({ msg: record.error });
+          return res.status(400).json({ msg: record.error.message });
         } else {
           return res.status(201).json({ record: record });
         }

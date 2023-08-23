@@ -5,6 +5,8 @@ import { NotificationManager } from "react-notifications";
 import * as Yup from "yup";
 import Button from "../Button";
 import { createUser } from "@/lib/api/saf.api";
+import { useRouter } from "next/navigation";
+import { parseError } from "@/lib/utils";
 
 const initialValues = {
   users: [
@@ -19,13 +21,31 @@ const initialValues = {
 };
 const init = { name: "", gender: "", location: "", relation: "", dob: "" };
 
-const SetAndForget = () => {
+const SetAndForget = ({
+  close,
+  points,
+}: {
+  close: () => void;
+  points: string | undefined;
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleSubmit = async (data: any) => {
+    setLoading(true);
     try {
       await createUser(data);
-    } catch {}
+      NotificationManager.success(
+        "Set and forget user(s) saved successfully",
+        "Success message"
+      );
+      router.refresh();
+      close();
+    } catch (err: any) {
+      parseError(err.response);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -80,6 +100,13 @@ const SetAndForget = () => {
               <Form>
                 <React.Fragment>
                   <div>
+                    <div className="inline-flex bg-red-50 p-2 rounded ">
+                      <h1 className="font-bold mx-1">Points:</h1>
+                      <span>
+                        {points}
+                        <small>pts</small>{" "}
+                      </span>
+                    </div>
                     {values.users.length > 0 &&
                       values.users.map((user, index) => (
                         <div className="form-con" key={index}>
@@ -192,7 +219,11 @@ const SetAndForget = () => {
                   </div>
 
                   <div className="flex justify-between">
-                    <Button text="Register" />
+                    <Button
+                      text="Register"
+                      loading={loading}
+                      disabled={loading}
+                    />
 
                     <button
                       className="em__button primary"

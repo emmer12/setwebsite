@@ -8,13 +8,15 @@ declare module "next-auth" {
     user: DefaultUser & {
       id: string;
       role: string;
-      points: string;
+      saf_points: string;
+      ai_points: string;
     };
   }
 
   interface User extends DefaultUser {
     id: string;
     role: string;
-    points: string;
+    saf_points: string;
+    ai_points: string;
   }
 }

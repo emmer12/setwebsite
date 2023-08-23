@@ -3,6 +3,7 @@ import { useState } from "react";
 import DesignCard from "@/components/designs/DesignCard";
 import Button from "@/components/Button";
 import classNames from "classnames";
+import { useSession } from "next-auth/react";
 
 const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -14,11 +15,20 @@ const Page = () => {
     "Wedding Stage Design",
   ]);
   const [category, setCategory] = useState("");
+  const { data: session, status } = useSession();
 
   return (
     <div>
       <div className="header">
         <h4 className="text-xl font-black">Write and get Designs Ai</h4>
+      </div>
+
+      <div className="inline-flex bg-red-50 p-2 rounded my-4">
+        <h1 className="font-bold mx-1">Points:</h1>
+        <span>
+          {session?.user.ai_points}
+          <small>pts</small>{" "}
+        </span>
       </div>
 
       <br />

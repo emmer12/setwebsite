@@ -15,20 +15,14 @@ const variants = {
 
 const HeroImageComponent = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, width: 0 }}
-      whileInView={{ opacity: 1, width: "auto" }}
-      viewport={{ once: true }}
-      className="em__hero__right"
-      style={{ overflow: "hidden" }}
-    >
+    <div className="em__hero__right">
       <Image
         height={400}
         width={600}
         alt="Hero Image"
         src="/assets/images/hero/hero-bg.png"
       />
-    </motion.div>
+    </div>
   );
 };
 

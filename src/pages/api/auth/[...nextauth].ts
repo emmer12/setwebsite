@@ -35,7 +35,6 @@ export default NextAuth({
           } else {
             return Promise.resolve(null);
           }
-          console.log(isValid);
         } else {
           return Promise.resolve(null);
         }
@@ -54,10 +53,10 @@ export default NextAuth({
           },
         });
 
-        console.log(newUser);
         session.user.id = newUser?.id as string;
         session.user.role = newUser?.role as string;
-        session.user.points = newUser?.points as any;
+        session.user.ai_points = newUser?.ai_points as any;
+        session.user.saf_points = newUser?.saf_points as any;
       }
 
       return Promise.resolve(session);
@@ -66,7 +65,8 @@ export default NextAuth({
       if (user) {
         token.id = user.id;
         token.role = user.role;
-        token.point = user.points;
+        token.ai_points = user.ai_points;
+        token.saf_points = user.saf_points;
       }
       return token;
     },

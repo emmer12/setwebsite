@@ -25,6 +25,7 @@ const TopUpClient = () => {
   const formik = useFormik({
     initialValues: {
       amount: 0,
+      type: "saf",
     },
     onSubmit: async (data) => {
       try {
@@ -48,12 +49,23 @@ const TopUpClient = () => {
 
   return (
     <div>
-      <div className=" p-4 bg-red-50 rounded-[18px] rounded-br-[8px] relative h-[150px]">
+      <div className=" p-4 bg-red-50 rounded-[18px] rounded-br-[8px] relative h-[160px]">
         <h2 className="text-xl font-bold ">My Points</h2>
-        <h1 className="py-4 ">
-          <span className="text-3xl"> {session?.user?.points}</span>
-          <small>points</small>{" "}
-        </h1>
+        <div className="flex py-4 items-center gap-2">
+          Set and Forget:
+          <h1 className=" ">
+            <span className="text-3xl"> {session?.user?.saf_points}</span>
+            <small>pts</small>{" "}
+          </h1>
+        </div>
+
+        <div className="flex py-0 items-center gap-2">
+          Dee Designer:
+          <h1 className=" ">
+            <span className="text-3xl"> {session?.user?.ai_points}</span>
+            <small>pts</small>{" "}
+          </h1>
+        </div>
 
         <button
           onClick={() => setOpen(true)}
@@ -69,6 +81,31 @@ const TopUpClient = () => {
         </h2>
 
         <form className="w-[70%] m-auto" onSubmit={formik.handleSubmit}>
+          <div className="agree__info my-3">
+            <div className="form-radio">
+              <input
+                type="radio"
+                className="mx-2"
+                value="saf"
+                checked
+                name="type"
+                onChange={(e) => formik.setFieldValue("type", e.target.value)}
+                id="saf"
+              />
+              <label htmlFor="saf">Set and Forget</label>
+            </div>
+            <div className="form-radio">
+              <input
+                type="radio"
+                className="mx-2"
+                value="ai"
+                name="type"
+                onChange={(e) => formik.setFieldValue("type", e.target.value)}
+                id="ai"
+              />
+              <label htmlFor="ai">Dee Designer</label>
+            </div>
+          </div>
           <div className="field w-full">
             <input
               type="number"

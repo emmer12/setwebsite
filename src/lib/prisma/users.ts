@@ -1,6 +1,7 @@
 import prisma from ".";
 import bcrypt from "bcrypt";
 import { addHours } from "date-fns";
+import constants from "../utils/constants";
 
 export async function getUsers() {
   try {
@@ -122,7 +123,7 @@ export async function getRequests(page: any, limit: number, id: any) {
   }
 }
 
- export async function createPasswordResetToken(userId: string, token: string) {
+export async function createPasswordResetToken(userId: string, token: string) {
   const expiresAt = addHours(new Date(), 1); // Set to expire 1 hour from now
   await prisma.passwordResetToken.create({
     data: {
@@ -132,3 +133,32 @@ export async function getRequests(page: any, limit: number, id: any) {
     },
   });
 }
+
+export const debitPoint = async (amount: number, user: any, type: string) => {
+  try {
+    if (user.points < amount) {
+      throw new Error("You have enough funds to set users");
+    }
+
+    let data: any;
+
+
+    if (type == constants.payment_type.AI_TOP_UP) {
+      const points = Number(user?.ai_points) - Number(amount);
+      data.ai_points = points;
+    } else {
+      const points = Number(user?.saf_points) - Number(amount);
+      data.saf_points = points;
+    }
+
+    const record = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: data
+    });
+    return { record };
+  } catch (error) {
+    return { error };
+  }
+};

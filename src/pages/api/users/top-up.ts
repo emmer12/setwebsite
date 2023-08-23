@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           metadata: {
             user_id: token.id,
             amount: data.amount,
-            payment_type: constants.payment_type.TOP_UP,
+            payment_type: data.type === 'saf' ? constants.payment_type.SAF_TOP_UP : constants.payment_type.AI_TOP_UP,
           },
           mode: "payment",
           success_url: `${process.env.BASE_URL}/account?status=success`,
