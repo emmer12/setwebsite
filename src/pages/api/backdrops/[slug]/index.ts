@@ -1,6 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getBackdrop } from "@/lib/prisma/backdrops";
 
+export const config = {
+
+  api: {
+    externalResolver: true
+  }
+}
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     try {

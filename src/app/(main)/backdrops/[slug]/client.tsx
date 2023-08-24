@@ -21,7 +21,7 @@ interface PageProps {
 //   return backdrops;
 // };
 
-const Page = ({ params }: PageProps) => {
+const Page = async ({ params }: PageProps) => {
   const { data, error, isLoading } = useSWR(`${params.slug}`, getBackdrop);
 
   // const data = await getBackdrop(params.slug);

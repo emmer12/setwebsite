@@ -63,6 +63,7 @@ export async function getBackdrop(slug: string) {
       },
       take: 4,
     });
+
     return { backdrop, relatedBackdrops };
   } catch (error) {
     return { error };
