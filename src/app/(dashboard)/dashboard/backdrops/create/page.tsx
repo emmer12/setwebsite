@@ -1,18 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { NotificationManager } from "react-notifications";
-import Api from "@/lib/api";
-import { signIn } from "next-auth/react";
 import Button from "@/components/Button";
 import FileUploader from "@/components/FileUploader";
 import { createBackdrop, getFormData } from "@/lib/api/backdrop.api";
 import useSWR from "swr";
 import { IBackdropCat } from "@/types";
 
-const CreateBackdrop = () => {
+const CreateBackdropPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { data, error, isLoading } = useSWR(
     "/api/backdrops/admin/form-data",
@@ -228,4 +226,4 @@ const CreateBackdrop = () => {
   );
 };
 
-export default CreateBackdrop;
+export default CreateBackdropPage;

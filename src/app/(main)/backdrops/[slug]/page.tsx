@@ -1,41 +1,32 @@
-import React, { FC, useState } from "react";
-import { Backdrops, DetailsSlide } from "@/components/backdrops";
-// import { getBackdrop } from "@/lib/api/backdrop.api";
-import useSWR from "swr";
-import { IBackdrop, IBackdropDetails } from "@/types";
+"use client";
+import { DetailsSlide } from "@/components/backdrops";
+import { IBackdropDetails } from "@/types";
 import { formattedMoney, getDiscount } from "@/lib/utils";
-import { useCart } from "@/hooks/useCartProvider";
-import { useRouter } from "next/navigation";
-import Button from "@/components/Button";
-import {
-  Basket,
-  Facebook,
-  Instagram,
-  LinkedIn,
-  Twitter,
-} from "@/components/icons";
+import { Instagram, LinkedIn, Twitter } from "@/components/icons";
 import BackdropDetails from "@/components/backdrops/clients/BackdropDetails";
 import AddCardComponent from "@/components/backdrops/clients/AddCardComponent";
-import Image from "next/image";
 import Backdrop from "@/components/backdrops/Backdrop";
-
+import useSWR from "swr";
+import { getBackdrop } from "@/lib/api/backdrop.api";
 interface PageProps {
   params: { slug: string };
 }
 
-const getBackdrop = async (slug: string): Promise<IBackdropDetails> => {
-  const data = await fetch(`${process.env.BASE_URL}/api/backdrops/${slug}`, {
-    next: { revalidate: 10 },
-  });
-  const backdrops = await data.json();
+// const getBackdrop = async (slug: string): Promise<IBackdropDetails> => {
+//   const data = await fetch(`${process.env.BASE_URL}/api/backdrops/${slug}`, {
+//     next: { revalidate: 10 },
+//   });
+//   const backdrops = await data.json();
 
-  return backdrops;
-};
+//   return backdrops;
+// };
 
 const Page = async ({ params }: PageProps) => {
-  // const { data, error, isLoading } = useSWR(`${params.slug}`, getBackdrop);
+  const { data, error, isLoading } = useSWR(`${params.slug}`, getBackdrop);
 
-  const data = await getBackdrop(params.slug);
+  // const data = await getBackdrop(params.slug);
+
+  if (isLoading) return <>Loading..</>;
 
   return (
     <div>
@@ -45,7 +36,7 @@ const Page = async ({ params }: PageProps) => {
             <div className="em__d__top">
               <div className="em__display">
                 <div className="contain">
-                  <DetailsSlide images={[data.backdrop.imageUrl]} />
+                  <DetailsSlide images={[data?.backdrop.imageUrl]} />
                 </div>
               </div>
               <div className="em__content">
@@ -206,7 +197,7 @@ const Page = async ({ params }: PageProps) => {
                   </div>
 
                   <div className="em__inner">
-                    {data.relatedBackdrops.map((backdrop) => (
+                    {data.relatedBackdrops.map((backdrop:any) => (
                       <Backdrop backdrop={backdrop} key={backdrop.id} />
                     ))}
                   </div>
@@ -220,78 +211,78 @@ const Page = async ({ params }: PageProps) => {
   );
 };
 
-const Addon = ({ ad }: any) => (
-  <button className="em__tab__button active">
-    {icons[ad]}
-    <span>{ad}</span>
-  </button>
-);
+// const Addon = ({ ad }: any) => (
+//   <button className="em__tab__button active">
+//     {icons[ad]}
+//     <span>{ad}</span>
+//   </button>
+// );
 
-const icons: { [name: string]: any } = {
-  Flowers: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="17"
-      height="19"
-      viewBox="0 0 17 19"
-    >
-      <image
-        id="flower"
-        width="17"
-        height="19"
-        xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAATCAYAAAB2pebxAAADYklEQVQ4jWWUXWgcVRTHfzP3zs7szn42m26y6brbNgkB27Q++FHwQayIeZGKz2JBEH206LtW1Acf+qI0D1KxgiA+iYqiVImtSqAkL21q0DaVpjVpddck+zk7M1fuHaqC52E4DOee8z//c/7HUifexphtQRjBZhMsC/qDh2ltv45lHSZWTTLeBxSzJwlCGClAIQdhaJ5K7poChADbhk5vL82t80QxKAUWRVrBa1jWEN97C1vwX7P/TaJACsj70O7MGVQZF25sQLcPngt/7byIkJBLQxT+8/RukmeAZcLoCqXcc2T9G4RRZJBURiDtwTDUKBcoF+7Ftr9FsQqc1vh1O08BZxPYFmQz71GrnGPzz9uE0bgpYQGDIKRRLVPMLdIPfBOr1DSwTyM5ZQIdqQPh/BKU8kfZv2eEwRA2WtBqQy4DtcoTpD2fIEhidSJ4XCepmySag3wWXBcu/wK7yykYg40OrG9DvSGpjcI3P8GF5aSoMGz09HcNKZOeFy6CY8NWB768Asc24IsqvD8HMobTn0O7Cw8eTIjWhSEtUeppUGcp5iaZnUpxc9OmnYb7V+AlBe6zQAnkEvxWg8cOQ9BXdPshabcFzEu81DLD6AHWN98BnmRivExb030J3H1wJw+FWzDXgK/WYPFn8O2QYLiEsN9Aqc8kO70DrFw7Q7s7gxS+GeulNlQCOLYOo7rYGHx6ET5cgIwDJd+hkLsP29IjnhWvFicv0Nw+SM53iWPLcKPasDYKkQe5Jqz68MoibPXgnpGEi0JWkHLyCPGopDuYMlrY+AO22lAfh8mJRBGrh+CjH6F+HfZPQbMFlg1TdS0NDGpLTyfjrtMbQCYNjSo4Dmx3YU85YjIFcQBZCw7VQg5MY2Iv/wpxnIw4itM2tnjZbGvGS7Sz09EqXWRi923jz9TAd5O1bVS/Zlc+MDLoB1rpWl/fS4LgY3yvRH94AhWnEfYp9k5cRdifmK00SyW0CCXl0u/MNI5w8867DMMqnvMdo7tekGZ1hZhHRPN0Bja1Sky5+Dy9gUM6BSvXYLqR3JBB8Ajl4nGkPMIgsJBCaV6Se6Lb0T26TsxYWfvnzD8N+aFZSDmJr9QZc29024GlzCT/d080qRp+GF8FjhLFP1DKt3Cd68Txm8BJo2iNXhfVBvwNI6tKf4nhWrMAAAAASUVORK5CYII="
-      />
-    </svg>
-  ),
-  Acrylics: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="16"
-      height="18"
-      viewBox="0 0 16 18"
-    >
-      <image
-        id="paint"
-        width="16"
-        height="18"
-        xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAABxUlEQVQ4jZ1Tu44TQRCs6endtffWd+gI4IQAIQIkIj7hfoA/AIkI8RH8CIQkIAQBF/IHZEiIkACQhUGAz3jvZh+z3WgWn2zvGoRcyUhTXTXVMz3mzrN7RxzbQ1VFFzYiTD/PcTotYGPb4wF8ZY7t7aZRGNMjETw3+C5IAAYjnuUyAduLKgrT4akhVLVCfYOme4Jpi2q+dfnn/WsH1ZH3unZaqE8T4DUTPk4yXBgNISprBir6ig9vXHl3/XzS7smKQzDIYuAkT+B0jijKwRRD10O856v8ID0wN1uBYD0BAbh7yWM4f4Gn4+c4F+2BDK02wmSJSzWLnjbCYEBJV3gGx87PikYrCWaizUo8AwKjlhKV1D3lmQGRsQVUyx71f3BEsIVCq7+38E84UtVaVcvt9CjCzdQK2b4FheifO9gqg+OYdsEmKym8u4mW1MIv5RQpD6HY+CkKzv0EJ35QDilDI36pNwYRMaalwxf3rX3WsNczeDt7jB8GksYKL8uCdpQTxcsPMd6MBfs7u61JB55/la4dlMwK6mZZElavilM/gOgOCLSpje+cuxTjY3k4SppHMWFfFjUhgTWKgU3CwHfFYTSfAPj0G44xwn/7xKvEAAAAAElFTkSuQmCC"
-      />
-    </svg>
-  ),
-  Invitation: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="18"
-      height="20"
-      viewBox="0 0 18 20"
-    >
-      <image
-        id="wedding-invitation"
-        width="18"
-        height="20"
-        xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAADj0lEQVQ4jYWUTYgcVRDHf++ju3dmemZnJ2vMGnFXEdGDNxFEUdiDYtCLRLypB8HLKl4U41EFPSnowYNBEAQVbzGCoB4UEdGsxkskbozmY8fsxt2d7Hz09Md7JT0zWRM0Woemu+vVv/5V71+l2msbTOxFEXlGAMX/m1KKwWCAiDwZBMH79mKEF5kLrK1XK1Pl+38CqTKVgiRJcM7tEhF2gESka4whDEO8c+OAaMeNKc8ALi1QWo/9asQ9KR/60kwlsvd+xEgiS3Fqleyr7yhW1+gc/ozh+iZEFu/86NylZscdubwUFQX4384wXDoAWxcw89cyWD5K59abmXv7dWxzGp+7y2K0m5pBai2UreSIv9gE/KlVZOUk7J5FpRnV6+cZLh8l/7OD0pPrkAJsnLnKHLq+8hL21Ef4tKMxwcTvMXfehn30EdSZVQRh6/gvzDz7NJWbFnD5OKGYGiTtonbmIOSHF2gfbCyd+OadjY1MJEkL6Q9SGYhIIiJbL7wix6vXyenX3pJMRAaFl0GSySB1cnJd5NgnB37dfLfxoC3C+TeHyi75sqxJuwRF6MAaiF5+HnvX7cT3L45ZeKEYCwClHM5xQ2KuOWTDRryEKAoXiRr7MUZxbm2djc0tqrMt7H2LtE+3SbZ77Nmzm+Z0HS9jURQ+KjNnVsdxZ26h0TxfLSQVqGijLI6zf5zjyPJPVKuVCVEhS3PuufsOZpsNUqUZetjV8sxWK0Mly/s3CfIZCvG91mMw/5DCoWIDZ9vrfPHl10RRNCpr372LNOIKvbJ8h/iVN2S6+FwzdF0lP+zfRNkZ3BZk5ylaD/h04Tmloppy/YxeqiAM0OmAuDYFUxrdOy3R76+K7n+rqSyQ931X7+jBTEO0gN04pKvHHsdsfS+6FsrV8cDPdd8rWq2qlCDB2se+8vMT6O4RTXgjEFGW8PcwjW5NQ3wLKm0r8+NTInsfRrmTio1Pre6dEJOFYtY+0DT3MgLx+c5UjEuDmdGXtfgsI+8laF0QmG0IG2CvgnwV8iFZ0RwlDOIayphRWNHvd8eMSskrTdHr44ZDbLWCqU6Da5aTDJKNwUJNqBRFr0fWuYCtVTFxXAoKW4pGnCPvdkYkw2YDZSwUxT8X0WTibb2ODlPyXh8p/5X7yKVps2RipiJsrTZmMNlHV7SiQIch0UxA3h/gkqRu3SD5MKjH+3SplX9jcSUrkyk16pUJ7PZfRtC/fIbEoxwAAAAASUVORK5CYII="
-      />
-    </svg>
-  ),
-  Cake: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="19"
-      height="19"
-      viewBox="0 0 19 19"
-    >
-      <image
-        id="cake-slice"
-        width="19"
-        height="19"
-        xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAC6UlEQVQ4jZWUzYtcRRTFf7deva953W33DJp2hpFRXISowSSgLgKCGxHElS7ciP4NgoJZRVzoxn8gbhXJwoVudaNGQsCFJmIkkQSNds8sbGfoft9VJe91J86HGeJdVRXvnHvOPZcnOx+d439V0qP7649c++ErzpOfdEp9mIj62HOc0/fKIyII0rGiCqf9yjj7+lAH7647/+VbprqUK8c9kTU0VV2dCYPozQAp6snmVubJ8RPeEiez4NlNikuFdagDyH1qPOW9pJT6SUTeu/DzN4OtP68NzWR0/OEgYaPy2Mq234qdYcVyqLJHtNLv51X+ilYenajL6mAVSbqY/ir11avY2uE9+YyWx08NTZaOD5A550ji7jueDs9evPylrk3N6dOv8u2FT4n9iMfWniMLumAVcRiRPPF0P/PU57Ysn9qTpiAvBkH0wfe/fHes31lhsLLGeHSdzFQ82B+y3Luf679fAR1w4tTzTCZjLl/5mqNrR+klgxcUaQlpuUFanicrv6h3psdUVhNWMAwGbNy3jt3e4Ui4TI8IM83oGR872iT97QZRCR1iXFq8JtufffI2cBYIFzZtd6lHWZXkxYwgiIiCmFk2xdiaXtKnsT5N/5bAjyQOYjfNp+KcuyWT8UW3e2Rzu4vDHfvzu4jCCdRFhqlLEaUQ46CyzUeFVuPsL2B5F27v4fZdKbAWl6eIqfFFIRbskoeN2nOu5Y/c3yPjQDlQHlgD6QzPGJpVaRuUFtPTlI8mbXdNJ3J3J5PGG1RNSBmEGrywXZ+2mik3y9VY9QTNjZut/Ba0vxbWKIqFQrV3mKWBbggPrbV4TRg2Ee4TJHNgloGpIQw4OMXmyYD/795rjgx35diokTkwT2kb/Zfi21w1SNOnwbrmr1GXd4jaxIzDpTOoKvDmg75rNLXDJhq0gHU9bdfjZO5MYZ2lzmdgfPCiQ4nmAhzOX8zVyUgTqpuIPGCtaZfRNbKVfzjRbqvWgZGR0vqNfwBLBTofGL8NSgAAAABJRU5ErkJggg=="
-      />
-    </svg>
-  ),
-};
+// const icons: { [name: string]: any } = {
+//   Flowers: (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       xmlnsXlink="http://www.w3.org/1999/xlink"
+//       width="17"
+//       height="19"
+//       viewBox="0 0 17 19"
+//     >
+//       <image
+//         id="flower"
+//         width="17"
+//         height="19"
+//         xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAATCAYAAAB2pebxAAADYklEQVQ4jWWUXWgcVRTHfzP3zs7szn42m26y6brbNgkB27Q++FHwQayIeZGKz2JBEH206LtW1Acf+qI0D1KxgiA+iYqiVImtSqAkL21q0DaVpjVpddck+zk7M1fuHaqC52E4DOee8z//c/7HUifexphtQRjBZhMsC/qDh2ltv45lHSZWTTLeBxSzJwlCGClAIQdhaJ5K7poChADbhk5vL82t80QxKAUWRVrBa1jWEN97C1vwX7P/TaJACsj70O7MGVQZF25sQLcPngt/7byIkJBLQxT+8/RukmeAZcLoCqXcc2T9G4RRZJBURiDtwTDUKBcoF+7Ftr9FsQqc1vh1O08BZxPYFmQz71GrnGPzz9uE0bgpYQGDIKRRLVPMLdIPfBOr1DSwTyM5ZQIdqQPh/BKU8kfZv2eEwRA2WtBqQy4DtcoTpD2fIEhidSJ4XCepmySag3wWXBcu/wK7yykYg40OrG9DvSGpjcI3P8GF5aSoMGz09HcNKZOeFy6CY8NWB768Asc24IsqvD8HMobTn0O7Cw8eTIjWhSEtUeppUGcp5iaZnUpxc9OmnYb7V+AlBe6zQAnkEvxWg8cOQ9BXdPshabcFzEu81DLD6AHWN98BnmRivExb030J3H1wJw+FWzDXgK/WYPFn8O2QYLiEsN9Aqc8kO70DrFw7Q7s7gxS+GeulNlQCOLYOo7rYGHx6ET5cgIwDJd+hkLsP29IjnhWvFicv0Nw+SM53iWPLcKPasDYKkQe5Jqz68MoibPXgnpGEi0JWkHLyCPGopDuYMlrY+AO22lAfh8mJRBGrh+CjH6F+HfZPQbMFlg1TdS0NDGpLTyfjrtMbQCYNjSo4Dmx3YU85YjIFcQBZCw7VQg5MY2Iv/wpxnIw4itM2tnjZbGvGS7Sz09EqXWRi923jz9TAd5O1bVS/Zlc+MDLoB1rpWl/fS4LgY3yvRH94AhWnEfYp9k5cRdifmK00SyW0CCXl0u/MNI5w8867DMMqnvMdo7tekGZ1hZhHRPN0Bja1Sky5+Dy9gUM6BSvXYLqR3JBB8Ajl4nGkPMIgsJBCaV6Se6Lb0T26TsxYWfvnzD8N+aFZSDmJr9QZc29024GlzCT/d080qRp+GF8FjhLFP1DKt3Cd68Txm8BJo2iNXhfVBvwNI6tKf4nhWrMAAAAASUVORK5CYII="
+//       />
+//     </svg>
+//   ),
+//   Acrylics: (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       xmlnsXlink="http://www.w3.org/1999/xlink"
+//       width="16"
+//       height="18"
+//       viewBox="0 0 16 18"
+//     >
+//       <image
+//         id="paint"
+//         width="16"
+//         height="18"
+//         xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAABxUlEQVQ4jZ1Tu44TQRCs6endtffWd+gI4IQAIQIkIj7hfoA/AIkI8RH8CIQkIAQBF/IHZEiIkACQhUGAz3jvZh+z3WgWn2zvGoRcyUhTXTXVMz3mzrN7RxzbQ1VFFzYiTD/PcTotYGPb4wF8ZY7t7aZRGNMjETw3+C5IAAYjnuUyAduLKgrT4akhVLVCfYOme4Jpi2q+dfnn/WsH1ZH3unZaqE8T4DUTPk4yXBgNISprBir6ig9vXHl3/XzS7smKQzDIYuAkT+B0jijKwRRD10O856v8ID0wN1uBYD0BAbh7yWM4f4Gn4+c4F+2BDK02wmSJSzWLnjbCYEBJV3gGx87PikYrCWaizUo8AwKjlhKV1D3lmQGRsQVUyx71f3BEsIVCq7+38E84UtVaVcvt9CjCzdQK2b4FheifO9gqg+OYdsEmKym8u4mW1MIv5RQpD6HY+CkKzv0EJ35QDilDI36pNwYRMaalwxf3rX3WsNczeDt7jB8GksYKL8uCdpQTxcsPMd6MBfs7u61JB55/la4dlMwK6mZZElavilM/gOgOCLSpje+cuxTjY3k4SppHMWFfFjUhgTWKgU3CwHfFYTSfAPj0G44xwn/7xKvEAAAAAElFTkSuQmCC"
+//       />
+//     </svg>
+//   ),
+//   Invitation: (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       xmlnsXlink="http://www.w3.org/1999/xlink"
+//       width="18"
+//       height="20"
+//       viewBox="0 0 18 20"
+//     >
+//       <image
+//         id="wedding-invitation"
+//         width="18"
+//         height="20"
+//         xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAADj0lEQVQ4jYWUTYgcVRDHf++ju3dmemZnJ2vMGnFXEdGDNxFEUdiDYtCLRLypB8HLKl4U41EFPSnowYNBEAQVbzGCoB4UEdGsxkskbozmY8fsxt2d7Hz09Md7JT0zWRM0Woemu+vVv/5V71+l2msbTOxFEXlGAMX/m1KKwWCAiDwZBMH79mKEF5kLrK1XK1Pl+38CqTKVgiRJcM7tEhF2gESka4whDEO8c+OAaMeNKc8ALi1QWo/9asQ9KR/60kwlsvd+xEgiS3Fqleyr7yhW1+gc/ozh+iZEFu/86NylZscdubwUFQX4384wXDoAWxcw89cyWD5K59abmXv7dWxzGp+7y2K0m5pBai2UreSIv9gE/KlVZOUk7J5FpRnV6+cZLh8l/7OD0pPrkAJsnLnKHLq+8hL21Ef4tKMxwcTvMXfehn30EdSZVQRh6/gvzDz7NJWbFnD5OKGYGiTtonbmIOSHF2gfbCyd+OadjY1MJEkL6Q9SGYhIIiJbL7wix6vXyenX3pJMRAaFl0GSySB1cnJd5NgnB37dfLfxoC3C+TeHyi75sqxJuwRF6MAaiF5+HnvX7cT3L45ZeKEYCwClHM5xQ2KuOWTDRryEKAoXiRr7MUZxbm2djc0tqrMt7H2LtE+3SbZ77Nmzm+Z0HS9jURQ+KjNnVsdxZ26h0TxfLSQVqGijLI6zf5zjyPJPVKuVCVEhS3PuufsOZpsNUqUZetjV8sxWK0Mly/s3CfIZCvG91mMw/5DCoWIDZ9vrfPHl10RRNCpr372LNOIKvbJ8h/iVN2S6+FwzdF0lP+zfRNkZ3BZk5ylaD/h04Tmloppy/YxeqiAM0OmAuDYFUxrdOy3R76+K7n+rqSyQ931X7+jBTEO0gN04pKvHHsdsfS+6FsrV8cDPdd8rWq2qlCDB2se+8vMT6O4RTXgjEFGW8PcwjW5NQ3wLKm0r8+NTInsfRrmTio1Pre6dEJOFYtY+0DT3MgLx+c5UjEuDmdGXtfgsI+8laF0QmG0IG2CvgnwV8iFZ0RwlDOIayphRWNHvd8eMSskrTdHr44ZDbLWCqU6Da5aTDJKNwUJNqBRFr0fWuYCtVTFxXAoKW4pGnCPvdkYkw2YDZSwUxT8X0WTibb2ODlPyXh8p/5X7yKVps2RipiJsrTZmMNlHV7SiQIch0UxA3h/gkqRu3SD5MKjH+3SplX9jcSUrkyk16pUJ7PZfRtC/fIbEoxwAAAAASUVORK5CYII="
+//       />
+//     </svg>
+//   ),
+//   Cake: (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       xmlnsXlink="http://www.w3.org/1999/xlink"
+//       width="19"
+//       height="19"
+//       viewBox="0 0 19 19"
+//     >
+//       <image
+//         id="cake-slice"
+//         width="19"
+//         height="19"
+//         xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAC6UlEQVQ4jZWUzYtcRRTFf7deva953W33DJp2hpFRXISowSSgLgKCGxHElS7ciP4NgoJZRVzoxn8gbhXJwoVudaNGQsCFJmIkkQSNds8sbGfoft9VJe91J86HGeJdVRXvnHvOPZcnOx+d439V0qP7649c++ErzpOfdEp9mIj62HOc0/fKIyII0rGiCqf9yjj7+lAH7647/+VbprqUK8c9kTU0VV2dCYPozQAp6snmVubJ8RPeEiez4NlNikuFdagDyH1qPOW9pJT6SUTeu/DzN4OtP68NzWR0/OEgYaPy2Mq234qdYcVyqLJHtNLv51X+ilYenajL6mAVSbqY/ir11avY2uE9+YyWx08NTZaOD5A550ji7jueDs9evPylrk3N6dOv8u2FT4n9iMfWniMLumAVcRiRPPF0P/PU57Ysn9qTpiAvBkH0wfe/fHes31lhsLLGeHSdzFQ82B+y3Luf679fAR1w4tTzTCZjLl/5mqNrR+klgxcUaQlpuUFanicrv6h3psdUVhNWMAwGbNy3jt3e4Ui4TI8IM83oGR872iT97QZRCR1iXFq8JtufffI2cBYIFzZtd6lHWZXkxYwgiIiCmFk2xdiaXtKnsT5N/5bAjyQOYjfNp+KcuyWT8UW3e2Rzu4vDHfvzu4jCCdRFhqlLEaUQ46CyzUeFVuPsL2B5F27v4fZdKbAWl6eIqfFFIRbskoeN2nOu5Y/c3yPjQDlQHlgD6QzPGJpVaRuUFtPTlI8mbXdNJ3J3J5PGG1RNSBmEGrywXZ+2mik3y9VY9QTNjZut/Ba0vxbWKIqFQrV3mKWBbggPrbV4TRg2Ee4TJHNgloGpIQw4OMXmyYD/795rjgx35diokTkwT2kb/Zfi21w1SNOnwbrmr1GXd4jaxIzDpTOoKvDmg75rNLXDJhq0gHU9bdfjZO5MYZ2lzmdgfPCiQ4nmAhzOX8zVyUgTqpuIPGCtaZfRNbKVfzjRbqvWgZGR0vqNfwBLBTofGL8NSgAAAABJRU5ErkJggg=="
+//       />
+//     </svg>
+//   ),
+// };
 
 export default Page;

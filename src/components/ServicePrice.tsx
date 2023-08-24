@@ -1,3 +1,4 @@
+"use client";
 import { formattedMoney } from "@/lib/utils";
 import React from "react";
 

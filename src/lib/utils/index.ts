@@ -680,7 +680,7 @@ export function parseError(errorRes: any) {
   } else {
     NotificationManager.error(
 
-      "Opps, somthing went wrong",
+      "Opps, something went wrong",
       "Error Message"
     );
   }
@@ -689,6 +689,6 @@ export function parseError(errorRes: any) {
 export function parseSuccess(msg: string) {
   NotificationManager.success(
     msg,
-    "Suscess Message"
+    "Success Message"
   );
 }

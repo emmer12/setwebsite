@@ -9,7 +9,7 @@ import React from "react";
 import useSWR from "swr";
 import { NotificationManager } from "react-notifications";
 
-const Page = () => {
+const PageBackdrop = () => {
   const { data, error, isLoading } = useSWR(
     "/api/backdrops/admin",
     getAllBackdrops
@@ -111,4 +111,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default PageBackdrop;
