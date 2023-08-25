@@ -10,6 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === "POST") {
       try {
         const data = JSON.parse(req.body);
+        data.amount = Number(data.amount)
 
         const validate = topUpSchema.safeParse(data);
 

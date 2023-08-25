@@ -692,3 +692,32 @@ export function parseSuccess(msg: string) {
     "Success Message"
   );
 }
+
+export const pointPackages = {
+  ai: [
+    {
+      price: 20,
+      val: 10
+    },
+    {
+      price: 50,
+      val: 25
+    }, {
+      price: 100,
+      val: 50
+    }
+  ],
+  saf: [
+    {
+      price: 10,
+      val: 10
+    },
+    {
+      price: 20,
+      val: 22
+    }, {
+      price: 30,
+      val: 30
+    }
+  ]
+} 

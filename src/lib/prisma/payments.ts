@@ -3,6 +3,7 @@ import prisma from ".";
 import { sendBackdropPurchaseEmail } from "../mailer";
 import constants from "../utils/constants";
 import { sendAllVendorsQuotes } from "./vendors";
+import { pointPackages } from "../utils";
 
 export async function logBackdropPayment(
   order_id: string,
@@ -97,10 +98,15 @@ export async function logAccountTopUp(
   let data: any = {}
 
   if (p_type == constants.payment_type.AI_TOP_UP) {
-    const points = user?.ai_points + Number(amount);
+
+    const point = pointPackages.ai.find((p) => p.price == Number(amount))?.val
+
+    console.log(point,amount,'added point')
+    const points = user?.ai_points + Number(point);
     data.ai_points = points;
   } else {
-    const points = user?.saf_points + Number(amount);
+    const point = pointPackages.saf.find((p) => p.price == Number(amount))?.val
+    const points = user?.saf_points + Number(point);
     data.saf_points = points;
   }
 

@@ -7,6 +7,7 @@ import { NotificationManager } from "react-notifications";
 import * as Yup from "yup";
 import Button from "@/components/Button";
 import { topUp } from "@/lib/api/user.api";
+import { pointPackages } from "@/lib/utils";
 
 const TopUpClient = () => {
   const { status, data: session, update } = useSession();
@@ -80,16 +81,19 @@ const TopUpClient = () => {
           Add Account Point
         </h2>
 
-        <form className="w-[70%] m-auto" onSubmit={formik.handleSubmit}>
+        <form className="w-[100%] m-auto" onSubmit={formik.handleSubmit}>
           <div className="agree__info my-3">
             <div className="form-radio">
               <input
                 type="radio"
                 className="mx-2"
                 value="saf"
-                checked
+                checked={formik.values.type === "saf"}
                 name="type"
-                onChange={(e) => formik.setFieldValue("type", e.target.value)}
+                onChange={(e) => {
+                  formik.setFieldValue("amount", 0);
+                  formik.setFieldValue("type", e.target.value);
+                }}
                 id="saf"
               />
               <label htmlFor="saf">Set and Forget</label>
@@ -98,15 +102,71 @@ const TopUpClient = () => {
               <input
                 type="radio"
                 className="mx-2"
+                checked={formik.values.type === "ai"}
                 value="ai"
                 name="type"
-                onChange={(e) => formik.setFieldValue("type", e.target.value)}
+                onChange={(e) => {
+                  formik.setFieldValue("amount", 0);
+                  formik.setFieldValue("type", e.target.value);
+                }}
                 id="ai"
               />
               <label htmlFor="ai">Dee Designer</label>
             </div>
           </div>
-          <div className="field w-full">
+
+          <div className="flex gap-3">
+            {formik.values.type == "ai"
+              ? pointPackages.ai.map((pack, i) => (
+                  <div className="form-radio flex relative" key={i + "ai"}>
+                    <input
+                      type="radio"
+                      className="mr-3 absolute top-2 right-[-5px] accent-gray-400"
+                      name="amount"
+                      id={"amount" + i}
+                      onChange={formik.handleChange}
+                      value={pack.price}
+                    />
+                    <label
+                      className="bg-[#fef7f1;] p-3 rounded-[18px] rounded-br-[8px] h-[100px] w-[100px] cursor-pointer"
+                      htmlFor={"amount" + i}
+                    >
+                      <div>
+                        <h3> ${pack.price}</h3>
+                        <h2 className="text-2xl text-[#986a47] font-bold ">
+                          {" "}
+                          {pack.val}pts
+                        </h2>
+                      </div>
+                    </label>
+                  </div>
+                ))
+              : pointPackages.saf.map((pack, i) => (
+                  <div className="form-radio flex relative" key={i + "dee"}>
+                    <input
+                      type="radio"
+                      className="mr-3  absolute top-2 right-[-5px] accent-gray-400 "
+                      name="amount"
+                      id={"amount" + i}
+                      onChange={formik.handleChange}
+                      value={pack.price}
+                    />
+                    <label
+                      className="bg-[#fef7f1;] p-3 rounded-[18px] rounded-br-[8px] h-[100px] w-[100px] cursor-pointer"
+                      htmlFor={"amount" + i}
+                    >
+                      <div>
+                        <h3> ${pack.price}</h3>
+                        <h2 className="text-2xl text-[#986a47] font-bold ">
+                          {" "}
+                          {pack.val}pts
+                        </h2>
+                      </div>
+                    </label>
+                  </div>
+                ))}
+          </div>
+          {/* <div className="field w-full">
             <input
               type="number"
               onChange={formik.handleChange}
@@ -117,7 +177,7 @@ const TopUpClient = () => {
             {formik.touched && formik.errors.amount && (
               <span className="error">{formik.errors.amount}</span>
             )}
-          </div>
+          </div> */}
 
           <Button
             text="Top up"
