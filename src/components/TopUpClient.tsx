@@ -78,7 +78,7 @@ const TopUpClient = () => {
 
       <SafModal size="small" open={open} close={() => setOpen(false)}>
         <h2 className="text-[#8b5326] em__fancy__text font-extrabold text-2xl sm:text-5xl">
-          Add Account Point
+          Add Credit
         </h2>
 
         <form className="w-[100%] m-auto" onSubmit={formik.handleSubmit}>
@@ -135,7 +135,7 @@ const TopUpClient = () => {
                         <h3> ${pack.price}</h3>
                         <h2 className="text-2xl text-[#986a47] font-bold ">
                           {" "}
-                          {pack.val}pts
+                          {pack.val} Designs
                         </h2>
                       </div>
                     </label>
@@ -159,7 +159,7 @@ const TopUpClient = () => {
                         <h3> ${pack.price}</h3>
                         <h2 className="text-2xl text-[#986a47] font-bold ">
                           {" "}
-                          {pack.val}pts
+                          {pack.val} People
                         </h2>
                       </div>
                     </label>
