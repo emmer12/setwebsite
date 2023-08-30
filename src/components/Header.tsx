@@ -53,9 +53,8 @@ const Header = () => {
   const path = usePathname();
   const router = useRouter();
   const { data: session, status } = useSession();
-
   const { data, error, isLoading } = useSWR(
-    "/api/users/notifications",
+    status == "authenticated" ? "/api/users/notifications" : null,
     getNotifications
   );
 

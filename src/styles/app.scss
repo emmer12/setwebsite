@@ -1056,3 +1056,39 @@ input[type="radio"] {
     transform: scale(1);
   }
 }
+
+// Chat Page Designs
+
+.chat__container {
+  position: sticky;
+  top: 50px;
+  width: 900px;
+  margin: auto;
+  background: #fff;
+  height: 500px;
+  display: flex;
+
+  .chats {
+    width: 300px;
+    height: 100%;
+    overflow-y: auto;
+
+    .active-chat {
+      .rce-citem {
+        background: #f9f9f9 !important;
+      }
+    }
+  }
+
+  .chats_messages {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    flex: 1;
+
+    .body {
+      flex: 1;
+      overflow: auto;
+    }
+  }
+}

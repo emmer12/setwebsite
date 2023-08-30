@@ -41,3 +41,4 @@ export const resetPassword = (data: {
 
 export const topUp = (data: { amount: number }) =>
   api.post(`${END_POINT}/top-up`, data).then((res) => res.data);
+

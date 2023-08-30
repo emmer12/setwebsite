@@ -46,3 +46,32 @@ export interface IBackdropCat {
   slug: string;
   icon?: string;
 }
+
+
+export interface IConversation {
+  id: string,
+  messages: IMessage[],
+  name: string,
+  receiverId: string,
+  senderId: string
+  subtitle: string
+  createdAt: string
+  Receiver: IUser
+  User: IUser
+}
+export interface IUser {
+  id: string,
+  name: string,
+  email: string,
+  role?: string
+  image?: string
+}
+
+
+export interface IMessage {
+  text: string,
+  fileUrl: string,
+  conversationId: string
+  userId: string
+
+}
