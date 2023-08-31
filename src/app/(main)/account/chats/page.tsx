@@ -1,5 +1,5 @@
 "use client";
-import { AttachmentIcon, SendIcon } from "@/components/icons";
+import { AttachmentIcon, Close, SendIcon } from "@/components/icons";
 import React, { useState } from "react";
 import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
@@ -38,35 +38,57 @@ const ChatPage = () => {
   const [activeChat, setActiveChat] = useState<IConversation | undefined>(
     undefined
   );
+  const [attachment, setAttachment] = useState<any>(null);
 
   const handleDownload = (fileUrl: string, fileName: string) => {
     const link = document.createElement("a");
     link.href = fileUrl;
     link.download = fileName;
     link.target = "_blank";
+
+    console.log(fileUrl, "here we come");
+
+    if (!fileUrl.startsWith("http")) return;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  const handleChange = (e: any) => {
+    const file = e.target.files[0];
+    setAttachment(file);
+  };
+
   const submitMessage = async () => {
-    const data = {
+    const data: any = {
       receiverId: activeChat?.Receiver.id,
       conversationId: activeChat?.id,
       text: inputRef.current.value,
     };
+
+    let formData = new FormData();
+
+    for (var key in data) {
+      formData.append(key, data[key]);
+    }
+
+    if (attachment) {
+      formData.append("attachment", attachment);
+      data.fileName = attachment.name;
+    }
+
     pushMessage(data);
     setTimeout(() => {
       scrollToBottom();
     }, 500);
     inputRef.current.value = "";
-    await createMsg(data);
+    setAttachment(null);
+    await createMsg(formData);
     mutate();
   };
 
   const scrollToBottom = () => {
     const chatContainer: any = document.getElementById("chats_messages");
-    console.log(chatContainer.scrollHeight);
     chatContainer.scrollTop = chatContainer.scrollHeight;
   };
 
@@ -79,7 +101,7 @@ const ChatPage = () => {
           {
             text: data.text as string,
             userId: session?.user.id as string,
-            fileUrl: "",
+            fileUrl: attachment ? attachment.name : "",
             conversationId: data.conversationId,
           },
         ],
@@ -139,6 +161,9 @@ const ChatPage = () => {
             const conversation = data.find(
               (data: IConversation) => data.id == chat.id
             );
+            setTimeout(() => {
+              scrollToBottom();
+            }, 500);
             inputRef.current.value = "";
             setActiveChat(conversation);
           }}
@@ -165,16 +190,19 @@ const ChatPage = () => {
                     message.userId == session?.user.id ? "right" : "left"
                   }
                   type={message.fileUrl ? "file" : "text"}
-                  title={"Esra"}
+                  title={
+                    message.userId == session?.user.id
+                      ? "You"
+                      : activeChat.Receiver.name
+                  }
                   text={message.text}
                   onDownload={(event: any) =>
-                    onDownload(
-                      "https://www.sample-videos.com/pdf/Sample-pdf-5mb.pdf",
-                      event
-                    )
+                    onDownload(message.fileUrl, event)
                   }
                   data={{
-                    uri: "https://www.sample-videos.com/pdf/Sample-pdf-5mb.pdf",
+                    uri:
+                      message.fileUrl ||
+                      "https://www.sample-videos.com/pdf/Sample-pdf-5mb.pdf",
                     status: {
                       click: false,
                       loading: 0,
@@ -265,6 +293,17 @@ const ChatPage = () => {
           /> */}
         </div>
         <div className="foot">
+          {attachment && (
+            <div className="p-3 bg-[#f9f9f9] inline-block rounded-[5px] relative w-[200px]">
+              {attachment.name}
+              <div
+                className="cursor-pointer absolute top-2 right-2"
+                onClick={() => setAttachment(null)}
+              >
+                <Close />
+              </div>
+            </div>
+          )}
           <Input
             referance={inputRef}
             placeholder="Type here..."
@@ -283,9 +322,16 @@ const ChatPage = () => {
             }
             leftButtons={
               <div className="flex cursor-pointer px-2">
-                <div>
+                <input
+                  type="file"
+                  className="hidden"
+                  id="attachment"
+                  name="attachment"
+                  onChange={handleChange}
+                />
+                <label htmlFor="attachment" className="cursor-pointer">
                   <AttachmentIcon />
-                </div>
+                </label>
               </div>
             }
           />

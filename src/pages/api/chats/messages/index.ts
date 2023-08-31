@@ -2,22 +2,56 @@ import prisma from "@/lib/prisma";
 import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
+import formidable from "formidable";
+import path from "path";
+
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
+
+const readFile = (
+    req: NextApiRequest,
+    saveLocally?: boolean
+): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
+    const options: formidable.Options = {};
+    if (saveLocally) {
+        options.uploadDir = path.join(process.cwd(), "public/uploads/");
+        options.maxFileSize = 10 * 1024 * 1024; // 10mb
+        options.filename = (name, ext, path, form) => {
+            return Date.now().toString() + "_" + path.originalFilename;
+        };
+    }
+    const form = formidable(options);
+    return new Promise((resolve, reject) => {
+        form.parse(req, (err, fields, files) => {
+            if (err) reject(err);
+            resolve({ fields, files });
+        });
+    });
+};
 
 const Messages = async (req: NextApiRequest, res: NextApiResponse) => {
     const token = await getToken({ req });
 
-    const body = JSON.parse(req.body);
-
     if (token) {
+        const { fields, files }: any = await readFile(req, true);
         if (req.method === "POST") {
-            console.log(body, "THIs is the body")
+
+            if (files.attachment) {
+                fields.fileUrl = `${process.env.BASE_URL}/api/uploads/${files.attachment.newFilename}`;
+            }
+
             await prisma.message.create({
                 data: {
-                    receiverId: body.receiverId,
+                    receiverId: fields.receiverId,
                     senderId: token.id as string,
                     userId: token.id as string,
-                    conversationId: body.conversationId,
-                    text: body.text
+                    conversationId: fields.conversationId,
+                    text: fields.text,
+                    fileUrl: fields.fileUrl || null
                 }
             })
 
@@ -26,6 +60,7 @@ const Messages = async (req: NextApiRequest, res: NextApiResponse) => {
 
         }
         else if (req.method === "GET") {
+            const body = req.body
             try {
                 const messages = await prisma.message.findMany({
                     where: {

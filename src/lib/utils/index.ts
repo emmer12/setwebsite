@@ -720,4 +720,31 @@ export const pointPackages = {
       val: 30
     }
   ]
-} 
+}
+
+export function getContentType(fileExtension: string) {
+  const contentTypeMap: any = {
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.pdf': 'application/pdf',
+    '.txt': 'text/plain',
+    '.xml': 'application/xml',
+    '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    '.doc': 'application/msword',
+    '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    '.xls': 'pplication/vnd.ms-excel',
+    '.csv': 'text/csv'
+  };
+
+  const defaultContentType: any = 'application/octet-stream'; // Default content type for unknown extensions
+
+  const normalizedExtension: string = fileExtension.toLowerCase();
+
+  if (contentTypeMap.hasOwnProperty(normalizedExtension)) {
+    return contentTypeMap[normalizedExtension];
+  } else {
+    return defaultContentType;
+  }
+}

@@ -97,7 +97,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (hasAccount) throw new Error("Already has an account");
 
         if (files.image_1) {
-          data.image_1_path = `/uploads/images/`;
+          data.image_1_path = `/uploads/images/${files.image_1.newFilename}`;
         }
         if (files.image_2) {
           data.image_2_path = `/uploads/images/${files.image_2.newFilename}`;
