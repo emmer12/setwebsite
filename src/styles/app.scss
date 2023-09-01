@@ -1090,5 +1090,11 @@ input[type="radio"] {
       flex: 1;
       overflow: auto;
     }
+
+    .foot {
+      textarea {
+        border: 1px solid #eeab71;
+      }
+    }
   }
 }

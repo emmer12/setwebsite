@@ -10,6 +10,8 @@ import { request } from "http";
 import prisma from "@/lib/prisma";
 import { sendQuoteNotification } from "@/lib/mailer";
 import { createNotifications } from "@/lib/prisma/notifications";
+import { addHours } from "date-fns"
+import { createConversation } from "@/lib/prisma/users";
 
 export const config = {
   api: {
@@ -44,11 +46,13 @@ const readFile = (
         "docx",
         "pptx",
       ];
-      const fileExtension = getFileExtension(file.originalFilename);
-
-      if (!allowedExtensions.includes(fileExtension))
-        reject("File must be pdf");
-      if (err) reject(err);
+      console.log(file)
+      if (file) {
+        const fileExtension = getFileExtension(file.originalFilename);
+        if (!allowedExtensions.includes(fileExtension))
+          reject("File must be pdf");
+        if (err) reject(err);
+      }
       resolve({ fields, files });
     });
   });
@@ -69,31 +73,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (req.method === "POST") {
+      const currentDateTime = new Date();
       try {
         await fs.readdir(path.join(process.cwd() + "/public/uploads", "/docs"));
       } catch (error) {
         await fs.mkdir(path.join(process.cwd() + "/public/uploads", "/docs"));
       }
 
-      const { fields, files }: any = await readFile(req, true);
-      let data = { ...fields };
-
       try {
-        if (files.doc) {
-          const oldPath = `${path.join(
-            `public/uploads/docs/${files.doc.newFilename}`
-          )}`;
-          const newPath = `${path.join(
-            `src/assets/docs/${files.doc.newFilename}`
-          )}`;
-          fss.rename(oldPath, newPath, function (err) {
-            if (err) throw err;
-            console.log("Successfully renamed - AKA moved!");
-          });
-        }
+        const { fields, files }: any = await readFile(req, true);
+        let data = { ...fields };
 
         if (files.doc) {
-          data.docUrl = `docs/${files.doc.newFilename}`;
+          data.docUrl = `api/uploads/docs/${files.doc.newFilename}`;
         }
         const currentDate = new Date();
         const request: any = await prisma.requests.findUnique({
@@ -120,10 +112,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userId: token.id,
           requestId: request.id,
           attachmentUrl: data.docUrl,
+          expiredAt: data.expiredAt ? new Date(data.expiredAt) : addHours(currentDateTime, 48)
         });
 
+        if (error) throw new Error(error);
+
         const newData = {
-          rid:request.id,
+          rid: request.id,
           quote: record,
           username: request.user.name,
           email: request.user.email,
@@ -140,8 +135,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         };
 
         await createNotifications(newNotify);
+        await createConversation(token, request.user);
 
-        if (error) throw new Error(error);
         return res.status(200).json({ record });
       } catch (error: any) {
         return res.status(500).json({ error: error.message });

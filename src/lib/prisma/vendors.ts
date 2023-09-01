@@ -57,8 +57,6 @@ export async function getVendorById(id: string) {
       include: { user: true },
     });
 
-    console.log(vendor);
-
     return { vendor };
   } catch (error) {
     return { error };

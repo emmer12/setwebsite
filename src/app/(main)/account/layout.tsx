@@ -121,6 +121,12 @@ export default function RootLayout({
                     </Link>
                   </li>
 
+                   <li className={pathName == "/account/chats" ? "active" : ""}>
+                    <Link className="block" href="/account/chats">
+                      Messages
+                    </Link>
+                  </li>
+
                   {/* <li className={pathName == "/account/ai/dee" ? "active" : ""}>
                     <Link className="block" href="/account/ai/dee">
                       Quotations Recived

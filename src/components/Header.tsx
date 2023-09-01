@@ -58,6 +58,12 @@ const Header = () => {
     getNotifications
   );
 
+  const handleSignOut = () => {
+    signOut({
+      callbackUrl: `/auth/signin`,
+    });
+  };
+
   useEffect(() => {
     setOpen(false);
     setDropOpen(false);
@@ -120,7 +126,7 @@ const Header = () => {
                 </div>
                 <div className="left">
                   {status === "authenticated" && (
-                    <div onClick={() => signOut()} title="Logout">
+                    <div onClick={handleSignOut} title="Logout">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"

@@ -69,7 +69,22 @@ const Messages = async (req: NextApiRequest, res: NextApiResponse) => {
                         ]
                     },
                     include: {
-                        messages: true,
+                        messages: {
+                            include: {
+                                sender: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                    },
+                                },
+                                receiver: {
+                                    select: {
+                                        id: true,
+                                        name: true
+                                    },
+                                }
+                            }
+                        },
                         Receiver: true,
                         User: true
                     }

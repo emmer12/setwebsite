@@ -64,10 +64,11 @@ const Messages = async (req: NextApiRequest, res: NextApiResponse) => {
             try {
                 const messages = await prisma.message.findMany({
                     where: {
-                        conversationId: body.chatId
+                        conversationId: body.chatId,
                     },
                     include: {
-                        User: true
+                        User: true,
+
                     }
                 });
                 res.status(200).json(messages);

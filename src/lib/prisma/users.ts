@@ -162,3 +162,36 @@ export const debitPoint = async (amount: number, user: any, type: string) => {
     return { error };
   }
 };
+
+
+export const createConversation = async (sender: any, receiver: any) => {
+  const conversation: any = await prisma.conversation.findFirst({
+    where: {
+      OR: [
+        {
+          senderId: sender.id,
+          receiverId: receiver.id
+        },
+        {
+          receiverId: sender.id,
+          senderId: receiver.id
+        }
+      ]
+    }
+  });
+
+
+  console.log('conversation', conversation)
+
+  if (!conversation) {
+    const newConversation = await prisma.conversation.create({
+      data: {
+        senderId: sender.id,
+        receiverId: receiver.id,
+        name: sender.name + '&' + receiver.name,
+        userId: sender.id
+      },
+    });
+  }
+
+}

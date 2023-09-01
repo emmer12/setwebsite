@@ -1,5 +1,5 @@
 "use client";
-import { AttachmentIcon, Close, SendIcon } from "@/components/icons";
+import { AttachmentIcon, Close, Loading, SendIcon } from "@/components/icons";
 import React, { useState } from "react";
 import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
@@ -60,6 +60,7 @@ const ChatPage = () => {
   };
 
   const submitMessage = async () => {
+    if (inputRef.current.value.length < 1) return;
     const data: any = {
       receiverId: activeChat?.Receiver.id,
       conversationId: activeChat?.id,
@@ -153,190 +154,127 @@ const ChatPage = () => {
 
   return (
     <div className="chat__container">
-      <div className="chats">
-        <ChatList
-          className="chat-list"
-          dataSource={chats}
-          onClick={(chat: any) => {
-            const conversation = data.find(
-              (data: IConversation) => data.id == chat.id
-            );
-            setTimeout(() => {
-              scrollToBottom();
-            }, 500);
-            inputRef.current.value = "";
-            setActiveChat(conversation);
-          }}
-        />
-      </div>
-      <div className="chats_messages">
-        <div>
-          {activeChat && (
-            <Navbar left={<div>{chatUser(activeChat).name}</div>} />
-          )}
+      {isLoading ? (
+        <div className="flex w-full justify-center">
+          <Loading />
         </div>
-        <div className="body" id="chats_messages">
-          {activeChat ? (
-            activeChat.messages.map((message: IMessage, i) => (
-              <motion.div
-                variants={anim}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                key={i}
-              >
-                <MessageBox
-                  position={
-                    message.userId == session?.user.id ? "right" : "left"
-                  }
-                  type={message.fileUrl ? "file" : "text"}
-                  title={
-                    message.userId == session?.user.id
-                      ? "You"
-                      : activeChat.Receiver.name
-                  }
-                  text={message.text}
-                  onDownload={(event: any) =>
-                    onDownload(message.fileUrl, event)
-                  }
-                  data={{
-                    uri:
-                      message.fileUrl ||
-                      "https://www.sample-videos.com/pdf/Sample-pdf-5mb.pdf",
-                    status: {
-                      click: false,
-                      loading: 0,
-                    },
-                  }}
-                />
-              </motion.div>
-            ))
-          ) : (
-            <div className="p-4">No Active Chat</div>
-          )}
-
-          {/* <MessageList
-            referance={messageListReferance}
-            className="message-list"
-            lockable={true}
-            toBottomHeight={"100%"}
-            dataSource={[
-              {
-                title: "Burhan",
-                position: "right",
-                type: "text",
-                text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-                date: new Date(),
-              },
-              {
-                position: "left",
-                type: "text",
-                text: "Lorem ipsum dolor sit amet, consectetur ",
-                date: new Date(),
-              },
-              {
-                position: "left",
-                type: "text",
-                text: "Lorem ipsum dolor sit amet, consectetur ",
-                date: new Date(),
-              },
-              {
-                position: "left",
-                type: "text",
-                text: "Lorem ipsum dolor sit amet, consectetur ",
-                date: new Date(),
-              },
-              {
-                position: "left",
-                type: "text",
-                text: "Lorem ipsum dolor sit amet, consectetur ",
-                date: new Date(),
-              },
-              {
-                position: "left",
-                type: "text",
-                text: "Lorem ipsum dolor sit amet, consectetur ",
-                date: new Date(),
-              },
-              {
-                position: "left",
-                type: "text",
-                text: "Lorem ipsum dolor sit amet, consectetur ",
-                date: new Date(),
-              },
-              {
-                position: "left",
-                type: "text",
-                text: "Lorem ipsum dolor sit amet, consectetur ",
-                date: new Date(),
-              },
-              {
-                position: "left",
-                type: "text",
-                text: "Lorem ipsum dolor sit amet, consectetur ",
-                date: new Date(),
-              },
-              {
-                position: "left",
-                type: "file",
-                text: "Sample PDF",
-                date: new Date(),
-                data: {
-                  uri: "https://ia800106.us.archive.org/13/items/HowToTalkAnyone/how%20to%20talk%20anyone.pdf",
-                  status: {
-                    click: false,
-                    loading: 0,
-                  },
-                },
-              },
-            ]}
-          /> */}
-        </div>
-        <div className="foot">
-          {attachment && (
-            <div className="p-3 bg-[#f9f9f9] inline-block rounded-[5px] relative w-[200px]">
-              {attachment.name}
-              <div
-                className="cursor-pointer absolute top-2 right-2"
-                onClick={() => setAttachment(null)}
-              >
-                <Close />
-              </div>
+      ) : (
+        <>
+          <div className="chats">
+            {data?.length ? (
+              <ChatList
+                className="chat-list"
+                dataSource={chats}
+                onClick={(chat: any) => {
+                  const conversation = data.find(
+                    (data: IConversation) => data.id == chat.id
+                  );
+                  setTimeout(() => {
+                    scrollToBottom();
+                  }, 500);
+                  inputRef.current.value = "";
+                  setActiveChat(conversation);
+                }}
+              />
+            ) : (
+              <div>You have no conversation</div>
+            )}
+          </div>
+          <div className="chats_messages">
+            <div>
+              {activeChat && (
+                <Navbar left={<div>{chatUser(activeChat).name}</div>} />
+              )}
             </div>
-          )}
-          <Input
-            referance={inputRef}
-            placeholder="Type here..."
-            multiline={true}
-            value={inputValue}
-            // onChange={(e: any) => setValue(e.target.value)}
-            rightButtons={
-              <div className="flex">
-                <button
-                  onClick={submitMessage}
-                  className="cursor-pointer px-2 "
-                >
-                  <SendIcon />
-                </button>
-              </div>
-            }
-            leftButtons={
-              <div className="flex cursor-pointer px-2">
-                <input
-                  type="file"
-                  className="hidden"
-                  id="attachment"
-                  name="attachment"
-                  onChange={handleChange}
-                />
-                <label htmlFor="attachment" className="cursor-pointer">
-                  <AttachmentIcon />
-                </label>
-              </div>
-            }
-          />
-        </div>
-      </div>
+            <div className="body" id="chats_messages">
+              {activeChat ? (
+                activeChat.messages.map((message: IMessage, i) => (
+                  <motion.div
+                    variants={anim}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    key={i}
+                  >
+                    <MessageBox
+                      position={
+                        message.userId == session?.user.id ? "right" : "left"
+                      }
+                      type={message.fileUrl ? "file" : "text"}
+                      title={
+                        message.userId == session?.user.id
+                          ? "You"
+                          : message.receiver.id == session?.user.id
+                          ? message.sender.name
+                          : message.receiver.name
+                      }
+                      text={message.text}
+                      onDownload={(event: any) =>
+                        onDownload(message.fileUrl, event)
+                      }
+                      data={{
+                        uri:
+                          message.fileUrl ||
+                          "https://www.sample-videos.com/pdf/Sample-pdf-5mb.pdf",
+                        status: {
+                          click: false,
+                          loading: 0,
+                        },
+                      }}
+                    />
+                  </motion.div>
+                ))
+              ) : (
+                <div className="p-4">No Active Chat</div>
+              )}
+            </div>
+            <div className="foot">
+              {attachment && (
+                <div className="p-3 bg-[#f9f9f9] inline-block rounded-[5px] relative w-[200px]">
+                  {attachment.name}
+                  <div
+                    className="cursor-pointer absolute top-2 right-2"
+                    onClick={() => setAttachment(null)}
+                  >
+                    <Close />
+                  </div>
+                </div>
+              )}
+              <Input
+                referance={inputRef}
+                placeholder="Type here..."
+                multiline={true}
+                value={inputValue}
+                // onChange={(e: any) => setValue(e.target.value)}
+                rightButtons={
+                  <div className="flex">
+                    <button
+                      onClick={submitMessage}
+                      className="cursor-pointer px-2 "
+                    >
+                      <SendIcon />
+                    </button>
+                  </div>
+                }
+                leftButtons={
+                  <div className="flex cursor-pointer px-2">
+                    <input
+                      type="file"
+                      className="hidden"
+                      id="attachment"
+                      name="attachment"
+                      onChange={handleChange}
+                    />
+                    <label htmlFor="attachment" className="cursor-pointer">
+                      <AttachmentIcon />
+                    </label>
+                  </div>
+                }
+              />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

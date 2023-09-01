@@ -62,7 +62,11 @@ export default function RootLayout({
                       Quote Requests
                     </Link>
                   </li>
-                  <li>Messages</li>
+                  <li className={pathName == "/account/chats" ? "active" : ""}>
+                    <Link href={"/account/chats"} className="block">
+                      Messages
+                    </Link>
+                  </li>
                 </ul>
               </div>
               <div className="body flex-1">{children}</div>

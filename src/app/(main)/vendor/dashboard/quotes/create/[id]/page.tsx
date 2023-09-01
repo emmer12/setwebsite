@@ -33,6 +33,7 @@ const QuotesPage: FC<PageProps> = ({ params }) => {
     initialValues: {
       description: "",
       amount: "",
+      expiredAt: "",
     },
     onSubmit: async (data) => {
       let userData: any = { ...data };
@@ -115,6 +116,16 @@ const QuotesPage: FC<PageProps> = ({ params }) => {
                   placeholder="Description "
                   rows={3}
                 ></textarea>
+              </div>
+
+              <div className="field ">
+                <label>Offer deadline</label>
+                <input
+                  onChange={formik.handleChange}
+                  value={formik.values.expiredAt}
+                  type="datetime-local"
+                  name="expiredAt"
+                />
               </div>
 
               <div className="field">

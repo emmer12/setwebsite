@@ -42,8 +42,6 @@ export const getSubscriptions = async (id: any) => {
     },
   });
 
-  console.log(vendor, "this");
-  console.log(id, "id");
 
   return {
     subscriptions,
