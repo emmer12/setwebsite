@@ -3,6 +3,7 @@ import { AttachmentIcon, Close, Loading, SendIcon } from "@/components/icons";
 import React, { useState } from "react";
 import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
+import classnames from "classnames";
 
 import {
   MessageBox,
@@ -160,7 +161,7 @@ const ChatPage = () => {
         </div>
       ) : (
         <>
-          <div className="chats">
+          <div className={classnames("chats", { close: !!activeChat })}>
             {data?.length ? (
               <ChatList
                 className="chat-list"
@@ -180,10 +181,24 @@ const ChatPage = () => {
               <div>You have no conversation</div>
             )}
           </div>
-          <div className="chats_messages">
+          <div className={classnames("chats_messages", { open: !!activeChat })}>
             <div>
               {activeChat && (
-                <Navbar left={<div>{chatUser(activeChat).name}</div>} />
+                <Navbar
+                  left={
+                    <div className="flex justify-between">
+                      <span>{chatUser(activeChat).name}</span>
+                    </div>
+                  }
+                  right={
+                    <span
+                      className="hide-desk"
+                      onClick={() => setActiveChat(undefined)}
+                    >
+                      Back to Chat
+                    </span>
+                  }
+                />
               )}
             </div>
             <div className="body" id="chats_messages">
@@ -228,50 +243,53 @@ const ChatPage = () => {
                 <div className="p-4">No Active Chat</div>
               )}
             </div>
-            <div className="foot">
-              {attachment && (
-                <div className="p-3 bg-[#f9f9f9] inline-block rounded-[5px] relative w-[200px]">
-                  {attachment.name}
-                  <div
-                    className="cursor-pointer absolute top-2 right-2"
-                    onClick={() => setAttachment(null)}
-                  >
-                    <Close />
-                  </div>
-                </div>
-              )}
-              <Input
-                referance={inputRef}
-                placeholder="Type here..."
-                multiline={true}
-                value={inputValue}
-                // onChange={(e: any) => setValue(e.target.value)}
-                rightButtons={
-                  <div className="flex">
-                    <button
-                      onClick={submitMessage}
-                      className="cursor-pointer px-2 "
+
+            {activeChat && (
+              <div className="foot">
+                {attachment && (
+                  <div className="p-3 bg-[#f9f9f9] inline-block rounded-[5px] relative w-[200px]">
+                    {attachment.name}
+                    <div
+                      className="cursor-pointer absolute top-2 right-2"
+                      onClick={() => setAttachment(null)}
                     >
-                      <SendIcon />
-                    </button>
+                      <Close />
+                    </div>
                   </div>
-                }
-                leftButtons={
-                  <div className="flex cursor-pointer px-2">
-                    <input
-                      type="file"
-                      className="hidden"
-                      id="attachment"
-                      name="attachment"
-                      onChange={handleChange}
-                    />
-                    <label htmlFor="attachment" className="cursor-pointer">
-                      <AttachmentIcon />
-                    </label>
-                  </div>
-                }
-              />
-            </div>
+                )}
+                <Input
+                  referance={inputRef}
+                  placeholder="Type here..."
+                  multiline={true}
+                  value={inputValue}
+                  // onChange={(e: any) => setValue(e.target.value)}
+                  rightButtons={
+                    <div className="flex">
+                      <button
+                        onClick={submitMessage}
+                        className="cursor-pointer px-2 "
+                      >
+                        <SendIcon />
+                      </button>
+                    </div>
+                  }
+                  leftButtons={
+                    <div className="flex cursor-pointer px-2">
+                      <input
+                        type="file"
+                        className="hidden"
+                        id="attachment"
+                        name="attachment"
+                        onChange={handleChange}
+                      />
+                      <label htmlFor="attachment" className="cursor-pointer">
+                        <AttachmentIcon />
+                      </label>
+                    </div>
+                  }
+                />
+              </div>
+            )}
           </div>
         </>
       )}

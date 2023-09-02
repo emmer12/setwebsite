@@ -4,11 +4,11 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, Close } from "./icons";
+import { BarIcon, Bell, Close, TimesIcon } from "./icons";
 import { format } from "date-fns";
 import useSWR from "swr";
 import { getNotifications, makeNotifications } from "@/lib/api/user.api";
-
+import classnames from "classnames";
 const date = new Date("2023-07-23T09:15:00");
 const container = {
   hidden: { opacity: 0, y: 50 },
@@ -41,6 +41,22 @@ const side = {
     x: "100%",
     transition: {
       delay: 0.3,
+      ease: "easeOut",
+    },
+  },
+};
+const sideLeft = {
+  hidden: { x: "-100%" },
+  visible: {
+    x: "0%",
+    transition: {
+      delayChildren: 0.3,
+      ease: "easeOut",
+    },
+  },
+  exit: {
+    x: "100%",
+    transition: {
       ease: "easeOut",
     },
   },
@@ -320,42 +336,92 @@ const Header = () => {
                 </div>
 
                 <div className="bar mt-3" onClick={() => setOpen(!open)}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={32}
-                    height={32}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    className="feather feather-menu"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M3 12h18M3 6h18M3 18h18" />
-                  </svg>
+                  {open ? (
+                    <TimesIcon />
+                  ) : (
+                    <BarIcon />
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          {open && (
-            <div className="mobile__menu">
-              <ul>
-                <li>
-                  <a href="#">About</a>
-                </li>
-                <li>
-                  <a href="#">Event Essentials</a>
-                </li>
-                <li>
-                  <Link href="/designs">Designs and prints</Link>
-                </li>
-                <li>
-                  <Link href="/backdrops">Contact Set</Link>
-                </li>
-              </ul>
-            </div>
-          )}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                variants={sideLeft}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className={classnames("mobile__menu")}
+              >
+                <ul className="parent">
+                  <li>
+                    <a href="#">About</a>
+                  </li>
+                  <li>
+                    <div
+                      className="flex items-center p-[10px]"
+                      onClick={() => setDropOpen(!dropOpen)}
+                    >
+                      <span className="pr-2"> Event Essentials</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlnsXlink="http://www.w3.org/1999/xlink"
+                        width="10"
+                        height="6"
+                        viewBox="0 0 10 6"
+                      >
+                        <image
+                          id="downward-arrow_1_"
+                          data-name="downward-arrow (1)"
+                          width="10"
+                          height="6"
+                          xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAAaUlEQVQImX3OIRKCYBiE4QeGYLF4CE5AsGkgGb2AcjSG6gyQTAaiweMYnXG+8DsE5E27s2/YrDw0N+zwtswGnwIdhj9S4ppjRLUi1WhDDF7YL0gnPCIkMXjiOOtn3FOJj3MmXLBF/xvwBd5MDQUMYfROAAAAAElFTkSuQmCC"
+                        />
+                      </svg>
+                    </div>
+
+                    <AnimatePresence>
+                      {dropOpen && (
+                        <motion.ul
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          className="pl-2 flex-col top-[10px] block child"
+                        >
+                          <li className="py-1">
+                            <Link href="/vendor/onboard">
+                              Vendor Registration
+                            </Link>
+                          </li>
+                          <li className="py-1">
+                            <Link href="/design-services">
+                              Dee Ultra Subscription system
+                            </Link>
+                          </li>
+                          <li className="py-1">
+                            <a href=""> Design Download </a>
+                          </li>
+                          <li className="py-1">
+                            <a href="">Creative AI Studio</a>
+                          </li>
+                          <li className="py-1">
+                            <a href="">Event Connections</a>
+                          </li>
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
+                  </li>
+                  <li>
+                    <Link href="/designs">Designs and prints</Link>
+                  </li>
+                  <li>
+                    <Link href="/backdrops">Contact Set</Link>
+                  </li>
+                </ul>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
       <AnimatePresence>

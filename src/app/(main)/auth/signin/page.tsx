@@ -39,7 +39,7 @@ const SignIn = () => {
           throw new Error("Invalid credentials");
         }
       } catch (err) {
-        NotificationManager.error("Error message", "Invalid Credentials");
+        NotificationManager.error("Invalid Credentials", "Error message");
       } finally {
         setLoading(false);
       }
@@ -51,7 +51,7 @@ const SignIn = () => {
   });
 
   return (
-    <div className="flex">
+    <div className="flex bg-white ">
       <div className="hidden sm:block w-1/2 flex-1 pt-28">
         <div className="em__header center">
           <h2 className="text-[#8b5326] em__fancy__text font-extrabold text-2xl sm:text-5xl">

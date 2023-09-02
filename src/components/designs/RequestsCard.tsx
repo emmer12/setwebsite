@@ -18,7 +18,7 @@ const RequestCard = ({
 }) => {
   return (
     <div className="my-3 shadow p-2">
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
         <div className="h-[100px] sm:h-[150px] w-[100px] sm:w-[150px] display flex-shrink-0">
           <Image
             height={150}

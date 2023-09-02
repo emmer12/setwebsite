@@ -90,20 +90,23 @@
 
     .mobile__menu {
       display: block !important;
-      background: #ffffffed;
-      height: fit-content;
+      background: #ffffff;
+      height: 100svh;
       position: absolute;
       width: 100%;
       z-index: 999;
 
-      ul {
+      ul.parent {
         padding: 30px 10px;
 
         a {
-          padding: 15px 10px;
-          font-size: 20px;
+          padding: 10px 10px;
+          font-size: 15px;
           display: inline-block;
         }
+      }
+
+      ul.child {
       }
     }
 
