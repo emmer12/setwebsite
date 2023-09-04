@@ -173,7 +173,9 @@ const ChatPage = () => {
                   setTimeout(() => {
                     scrollToBottom();
                   }, 500);
-                  inputRef.current.value = "";
+                  if (inputRef.current) {
+                    inputRef.current.value = "";
+                  }
                   setActiveChat(conversation);
                 }}
               />
@@ -214,6 +216,11 @@ const ChatPage = () => {
                     <MessageBox
                       position={
                         message.userId == session?.user.id ? "right" : "left"
+                      }
+                      className={
+                        message.userId == session?.user.id
+                          ? "border-v"
+                          : "border-u"
                       }
                       type={message.fileUrl ? "file" : "text"}
                       title={

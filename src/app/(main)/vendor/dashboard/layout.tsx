@@ -79,7 +79,7 @@ export default function RootLayout({
                     className={pathName == "/vendor/dashboard" ? "active" : ""}
                   >
                     <Link href={"/vendor/dashboard"} className="block">
-                      Vendor Profile
+                      Vendor Dashboard
                     </Link>
                   </li>
 
@@ -116,7 +116,7 @@ export default function RootLayout({
                         }
                       >
                         <Link href={"/vendor/dashboard"} className="block">
-                          Vendor Profile
+                          Dashboard
                         </Link>
                       </li>
 

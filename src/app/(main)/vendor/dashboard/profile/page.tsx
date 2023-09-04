@@ -117,7 +117,25 @@ const Page = () => {
     try {
       setLoading(true);
       const res = await getLoggedInVendor();
-      setVendor(res.vendor);
+      let vendor = { ...res.vendor };
+      console.log(vendor);
+
+      vendor.coverage_cities = JSON.parse(vendor.coverage_cities);
+      setServices(vendor.services);
+
+      const initKeys = Object.keys(formik.initialValues);
+      for (let i = 0; i < initKeys.length; i++) {
+        const item = initKeys[i];
+        if (item in vendor) {
+          console.log(item);
+          formik.setFieldValue(item, vendor[item]);
+        }
+      }
+      console.log("Got here");
+
+      console.log(initKeys);
+
+      setVendor(vendor);
     } catch (err) {
     } finally {
       setLoading(false);
@@ -423,29 +441,6 @@ const Page = () => {
         </div>
 
         <div className="em__spacer" style={{ height: "10px" }}></div>
-
-        <div className="agree__info">
-          <div className="form-radio">
-            <input
-              className="mr-3"
-              type="checkbox"
-              name="bp_quote"
-              id="bp_quote"
-            />
-            <label htmlFor="bp_quote">
-              <b>Legal disclaimer -</b>
-              By clicking here, you acknowledge and agree to adhere to the
-              highest standards when serving our clients, including the
-              commitment to respond to all leads within 24 hours. Failure to
-              meet this requirement may result in the opportunity to send a
-              quotation being forfeited. Additionally, you understand that our
-              platform acts as a connection facilitator, and any transactions or
-              agreements are solely between you and the client. Please carefully
-              review and accept these terms before proceeding with your Vendor
-              Registration Subscription.
-            </label>
-          </div>
-        </div>
 
         <Button
           classNames="em__button primary"
