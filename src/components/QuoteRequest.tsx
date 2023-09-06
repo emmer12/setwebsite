@@ -12,13 +12,18 @@ import { ArrowRight } from "./icons";
 import Button from "./Button";
 import * as Yup from "yup";
 import { createRequest } from "@/lib/api/user.api";
+import { useSession, signIn } from "next-auth/react";
+import classnames from "classnames";
+import Api from "@/lib/api";
 
 const animatedComponents = makeAnimated();
 
 const RequestForm = ({ redirectUrl }: { redirectUrl?: string }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<"guest" | "customer">("guest");
   const [file, setFile] = useState(null);
   const router = useRouter();
+  const { status, data } = useSession();
 
   const { isLoading, data: formData } = useSWR(
     "/api/vendors/checkout/form-data",
@@ -32,6 +37,10 @@ const RequestForm = ({ redirectUrl }: { redirectUrl?: string }) => {
 
   const formik = useFormik({
     initialValues: {
+      full_name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
       title: "",
       people_number: "",
       event_date: "",
@@ -63,19 +72,55 @@ const RequestForm = ({ redirectUrl }: { redirectUrl?: string }) => {
       delete userData.subCategory;
 
       setLoading(true);
-      let formData = new FormData();
-
-      userData = removeEmptyValues(userData);
-
-      for (var key in userData) {
-        formData.append(key, userData[key]);
-      }
-
-      if (file) {
-        formData.append("doc", file);
-      }
 
       try {
+        // Process User Account
+
+        if (status == "unauthenticated") {
+          if (activeTab == "customer") {
+            const res: any = await signIn("credentials", {
+              email: data.email,
+              password: data.password,
+              redirect: false,
+            });
+
+            if (res.status == 200) {
+            } else {
+              setLoading(false);
+              throw new Error("Invalid credentials");
+            }
+          } else {
+            const res = await Api.post("/api/users/create", {
+              name: data.full_name,
+              email: data.email,
+              password: data.password,
+            });
+
+            if (res.status === 201) {
+              const res: any = await signIn("credentials", {
+                email: data.email,
+                password: data.password,
+                redirect: false,
+              });
+            } else {
+              setLoading(false);
+              throw new Error("Account registration failed");
+            }
+          }
+        }
+
+        let formData = new FormData();
+
+        userData = removeEmptyValues(userData);
+
+        for (var key in userData) {
+          formData.append(key, userData[key]);
+        }
+
+        if (file) {
+          formData.append("doc", file);
+        }
+
         const res = await createRequest(formData);
         NotificationManager.success("Request created!");
 
@@ -88,10 +133,12 @@ const RequestForm = ({ redirectUrl }: { redirectUrl?: string }) => {
             "Error message"
           );
         } else {
-          NotificationManager.error("Error message", "Something went wrong");
+          NotificationManager.error(
+            error.message || "Something went wrong",
+            "Error message"
+          );
         }
       } finally {
-        router.refresh();
         setLoading(false);
       }
     },
@@ -280,6 +327,123 @@ const RequestForm = ({ redirectUrl }: { redirectUrl?: string }) => {
             onChange={handleChange}
           />
         </div>
+
+        <br />
+
+        {status === "unauthenticated" && (
+          <div>
+            <div className="title font-bold">
+              <h4>Account Details</h4>
+            </div>
+
+            <div className="flex my-4 ">
+              <div
+                onClick={() => setActiveTab("guest")}
+                className={classnames(" px-3 cursor-pointer", {
+                  "font-bold border-b": activeTab == "guest",
+                })}
+              >
+                Guest
+              </div>
+              <div
+                onClick={() => setActiveTab("customer")}
+                className={classnames(" px-3 cursor-pointer", {
+                  "font-bold border-b": activeTab == "customer",
+                })}
+              >
+                Customer
+              </div>
+            </div>
+
+            {activeTab == "guest" && (
+              <div>
+                <div className="field">
+                  <input
+                    onChange={formik.handleChange}
+                    value={formik.values.full_name}
+                    placeholder="Full name *"
+                    type="text"
+                    name="full_name"
+                  />
+                  {formik.touched && formik.errors.full_name && (
+                    <span className="error">{formik.errors.full_name}</span>
+                  )}
+                </div>
+
+                <div className="field">
+                  <input
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    placeholder="Email Address*"
+                    type="email"
+                    name="email"
+                  />
+                  {formik.touched && formik.errors.email && (
+                    <span className="error">{formik.errors.email}</span>
+                  )}
+                </div>
+
+                <div className="field">
+                  <input
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    placeholder="Password*"
+                    type="password"
+                    name="password"
+                  />
+                  {formik.touched && formik.errors.password && (
+                    <span className="error">{formik.errors.password}</span>
+                  )}
+                </div>
+
+                <div className="field">
+                  <input
+                    onChange={formik.handleChange}
+                    value={formik.values.password_confirmation}
+                    placeholder="Password Confirmation*"
+                    type="password"
+                    name="password_confirmation"
+                  />
+                  {formik.touched && formik.errors.password_confirmation && (
+                    <span className="error">
+                      {formik.errors.password_confirmation}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {activeTab == "customer" && (
+              <div>
+                <div className="field">
+                  <input
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    placeholder="Email Address*"
+                    type="email"
+                    name="email"
+                  />
+                  {formik.touched && formik.errors.email && (
+                    <span className="error">{formik.errors.email}</span>
+                  )}
+                </div>
+
+                <div className="field">
+                  <input
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    placeholder="Password*"
+                    type="password"
+                    name="password"
+                  />
+                  {formik.touched && formik.errors.password && (
+                    <span className="error">{formik.errors.password}</span>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         <br />
 

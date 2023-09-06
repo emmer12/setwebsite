@@ -277,7 +277,9 @@ const Header = () => {
                                 <a href="">Creative AI Studio</a>
                               </li>
                               <li className="py-3">
-                                <a href="">Event Connections</a>
+                                <Link href="/vendor">
+                                Event Connections
+                                </Link>
                               </li>
                             </motion.ul>
                           )}

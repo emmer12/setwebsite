@@ -217,11 +217,6 @@ const ChatPage = () => {
                       position={
                         message.userId == session?.user.id ? "right" : "left"
                       }
-                      className={
-                        message.userId == session?.user.id
-                          ? "border-v"
-                          : "border-u"
-                      }
                       type={message.fileUrl ? "file" : "text"}
                       title={
                         message.userId == session?.user.id

@@ -66,7 +66,7 @@ const Backdrops = () => {
       </div>
       <div className="em__dee bg-white">
         <div className="container">
-          <div className="em__body__wrapper">
+          <div className="em__body__wrapper mb-[50px]">
             <div className="w-full sm:w-1/2 m-auto">
               <div className="quote">
                 <h2 className="font-bold p-3 text-xl">
@@ -75,12 +75,12 @@ const Backdrops = () => {
               </div>
 
               <div>
-                <Button onClick={handleQuote} text="Request Quote" />
+                {/* <Button onClick={handleQuote} text="Request Quote" /> */}
               </div>
-              {openQ && <QuoteRequest redirectUrl="vendor" />}
+              <QuoteRequest redirectUrl="/account/my-requests" />
             </div>
 
-            <div className="about__service my-5">
+            {/* <div className="about__service my-5">
               <div className="mt-5">
                 <p>
                   Easily find top-notch vendors in the event industry on our
@@ -124,14 +124,14 @@ const Backdrops = () => {
               <div className="my-4 flex items-center justify-center">
                 <Button text="Search" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="bg-[#fef9f6] pa-2 py-[50px]">
           <div className="container">
             <div className="em__body__wrapper">
-              <div className="about__service">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="m-auto max-w-full w-[900px] p-[10px]">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {categories.map((category: any, i: number) => (
                     <VendorCategory
                       key={i + "cat"}

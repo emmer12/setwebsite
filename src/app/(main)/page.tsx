@@ -27,7 +27,7 @@ export default function Home() {
                   Creative AI Studio, or discover a world of possibilities with
                   our curated Event Connections
                 </p>
-                <a href="#about" className="em__button primary">
+                <a href="#about" className="em__button primary mt-4">
                   Read More
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

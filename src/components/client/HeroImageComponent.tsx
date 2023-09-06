@@ -17,7 +17,7 @@ const HeroImageComponent = () => {
   return (
     <div className="em__hero__right">
       <Image
-        height={400}
+        height={613}
         width={600}
         alt="Hero Image"
         src="/assets/images/hero/hero-bg.png"
