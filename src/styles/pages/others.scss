@@ -291,8 +291,10 @@
     }
   }
 }
-.our__course_section {
+.our__course_section,
+.registered__vendors {
   background-image: url(/assets/images/bg7.png);
+  background-color: #fef9f6;
   background-repeat: no-repeat;
   background-size: cover;
   padding: 50px 0px;
@@ -301,7 +303,7 @@
 
 .em__course__card,
 .em__v__category__card {
-  width: 330px;
+  // width: 330px;
   max-width: 100%;
   background-color: $primary-color;
   overflow: hidden;

@@ -16,29 +16,34 @@ const Backdrops = () => {
 
   const [categories] = useState<any>([
     {
-      title: "Production Companies",
-      imageUrl: "/assets/images/c7.png",
-      link: "vendor/category/production-companies",
-    },
-    {
       title: "Event Planners",
-      imageUrl: "/assets/images/c5.png",
+      imageUrl: "/assets/images/categories/event-planners.png",
       link: "vendor/category/event-planners",
     },
     {
-      title: "Florists",
-      imageUrl: "/assets/images/c1.png",
-      link: "vendor/category/florists",
+      title: "Wedding Planners",
+      imageUrl: "/assets/images/categories/wedding-planners.png",
+      link: "vendor/category/wedding planners",
     },
     {
-      title: "Cake Bakers",
-      imageUrl: "/assets/images/c4.png",
-      link: "vendor/category/cake-bakers",
+      title: "Cake Artists",
+      imageUrl: "/assets/images/categories/cake.png",
+      link: "vendor/category/cake-artists",
+    },
+    {
+      title: "Production Companies",
+      imageUrl: "/assets/images/categories/production-company.png",
+      link: "vendor/category/production-company",
     },
     {
       title: "Venues",
-      imageUrl: "/assets/images/c8.png",
+      imageUrl: "/assets/images/categories/venues.png",
       link: "vendor/category/cake-bakers",
+    },
+    {
+      title: "Event Planning and Management",
+      imageUrl: "/assets/images/categories/event-planners.png",
+      link: "vendor/category/event-planning-and-managements",
     },
   ]);
 
@@ -127,9 +132,13 @@ const Backdrops = () => {
             </div> */}
           </div>
         </div>
-        <div className="bg-[#fef9f6] pa-2 py-[50px]">
+        <div className="pa-2 registered__vendors">
           <div className="container">
             <div className="em__body__wrapper">
+              <div className="em__header center">
+                <h1>Registered</h1>
+                <span className="em__fancy__text ">Vendors</span>
+              </div>
               <div className="m-auto max-w-full w-[900px] p-[10px]">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {categories.map((category: any, i: number) => (
