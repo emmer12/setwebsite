@@ -15,6 +15,8 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Alert from "@/components/modal/Alert";
 const animatedComponents = makeAnimated();
+import classnames from "classnames";
+import Api from "@/lib/api";
 
 const countries = [{ name: "United Arab Emirates", code: "AE" }];
 
@@ -45,6 +47,7 @@ const citiesUAE = [
 const RegisterPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<"guest" | "customer">("guest");
   const router = useRouter();
   const { status, data } = useSession();
 
@@ -134,6 +137,41 @@ const RegisterPage = () => {
 
       setLoading(true);
       try {
+        // Process User Account
+
+        if (status == "unauthenticated") {
+          if (activeTab == "customer") {
+            const res: any = await signIn("credentials", {
+              email: data.email,
+              password: data.password,
+              redirect: false,
+            });
+
+            if (res.status == 200) {
+            } else {
+              setLoading(false);
+              throw new Error("Invalid credentials");
+            }
+          } else {
+            const res = await Api.post("/api/users/create", {
+              name: data.full_name,
+              email: data.email,
+              password: data.password,
+            });
+
+            if (res.status === 201) {
+              const res: any = await signIn("credentials", {
+                email: data.email,
+                password: data.password,
+                redirect: false,
+              });
+            } else {
+              setLoading(false);
+              throw new Error("Account registration failed");
+            }
+          }
+        }
+
         const res = await createVendor(formData);
 
         if (status == "unauthenticated") {
@@ -155,7 +193,7 @@ const RegisterPage = () => {
         NotificationManager.success("Registration Successful");
       } catch (error: any) {
         const err = error?.response?.data;
-        if (error?.response?.status == 400) {
+        if ([400, 500].includes(error?.response?.status)) {
           NotificationManager.error(
             err?.msg || err?.error.errors[0].message || err.error.message,
             "Error message"
@@ -186,8 +224,10 @@ const RegisterPage = () => {
             company_name: Yup.string().required("Company Name Required"),
             company_overview: Yup.string().required("Company Brief Required"),
             legal: Yup.bool().oneOf([true], "Legal agreement must be checked"),
-            email: Yup.string().email("Invalid email").required("Required"),
-            password: Yup.string().required("Required"),
+            email: Yup.string()
+              .email("Invalid email")
+              .required("Email Required"),
+            password: Yup.string().required("Password Required"),
             password_confirmation: Yup.string().oneOf(
               [Yup.ref("password"), ""],
               "Passwords must match"
@@ -257,7 +297,20 @@ const RegisterPage = () => {
                   <div className="title ">
                     <h4>Registration Details</h4>
                   </div>
-
+                  <div>
+                    {/* {formik.dirty && (
+                      <div
+                        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                        role="alert"
+                      >
+                        <span className="block ">
+                          {Object.values(formik.errors).map((err) => (
+                            <div key={err}>{err}</div>
+                          ))}
+                        </span>
+                      </div>
+                    )} */}
+                  </div>
                   <form
                     onSubmit={formik.handleSubmit}
                     className="comment__form"
@@ -565,71 +618,129 @@ const RegisterPage = () => {
                       className="em__spacer"
                       style={{ height: "10px" }}
                     ></div>
-
                     {status === "unauthenticated" && (
                       <div>
-                        <div className="title ">
+                        <div className="title font-bold">
                           <h4>Account Details</h4>
                         </div>
 
-                        <div className="field">
-                          <input
-                            onChange={formik.handleChange}
-                            value={formik.values.full_name}
-                            placeholder="Full name *"
-                            type="text"
-                            name="full_name"
-                          />
-                          {formik.touched && formik.errors.full_name && (
-                            <span className="error">
-                              {formik.errors.full_name}
-                            </span>
-                          )}
+                        <div className="flex my-4 ">
+                          <div
+                            onClick={() => setActiveTab("guest")}
+                            className={classnames(" px-3 cursor-pointer", {
+                              "font-bold border-b": activeTab == "guest",
+                            })}
+                          >
+                            Guest
+                          </div>
+                          <div
+                            onClick={() => setActiveTab("customer")}
+                            className={classnames(" px-3 cursor-pointer", {
+                              "font-bold border-b": activeTab == "customer",
+                            })}
+                          >
+                            Customer
+                          </div>
                         </div>
 
-                        <div className="field">
-                          <input
-                            onChange={formik.handleChange}
-                            value={formik.values.email}
-                            placeholder="Email Address*"
-                            type="email"
-                            name="email"
-                          />
-                          {formik.touched && formik.errors.email && (
-                            <span className="error">{formik.errors.email}</span>
-                          )}
-                        </div>
+                        {activeTab == "guest" && (
+                          <div>
+                            <div className="field">
+                              <input
+                                onChange={formik.handleChange}
+                                value={formik.values.full_name}
+                                placeholder="Full name *"
+                                type="text"
+                                name="full_name"
+                              />
+                              {formik.touched && formik.errors.full_name && (
+                                <span className="error">
+                                  {formik.errors.full_name}
+                                </span>
+                              )}
+                            </div>
 
-                        <div className="field">
-                          <input
-                            onChange={formik.handleChange}
-                            value={formik.values.password}
-                            placeholder="Password*"
-                            type="password"
-                            name="password"
-                          />
-                          {formik.touched && formik.errors.password && (
-                            <span className="error">
-                              {formik.errors.password}
-                            </span>
-                          )}
-                        </div>
+                            <div className="field">
+                              <input
+                                onChange={formik.handleChange}
+                                value={formik.values.email}
+                                placeholder="Email Address*"
+                                type="email"
+                                name="email"
+                              />
+                              {formik.touched && formik.errors.email && (
+                                <span className="error">
+                                  {formik.errors.email}
+                                </span>
+                              )}
+                            </div>
 
-                        <div className="field">
-                          <input
-                            onChange={formik.handleChange}
-                            value={formik.values.password_confirmation}
-                            placeholder="Password Confirmation*"
-                            type="password"
-                            name="password_confirmation"
-                          />
-                          {formik.touched &&
-                            formik.errors.password_confirmation && (
-                              <span className="error">
-                                {formik.errors.password_confirmation}
-                              </span>
-                            )}
-                        </div>
+                            <div className="field">
+                              <input
+                                onChange={formik.handleChange}
+                                value={formik.values.password}
+                                placeholder="Password*"
+                                type="password"
+                                name="password"
+                              />
+                              {formik.touched && formik.errors.password && (
+                                <span className="error">
+                                  {formik.errors.password}
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="field">
+                              <input
+                                onChange={formik.handleChange}
+                                value={formik.values.password_confirmation}
+                                placeholder="Password Confirmation*"
+                                type="password"
+                                name="password_confirmation"
+                              />
+                              {formik.touched &&
+                                formik.errors.password_confirmation && (
+                                  <span className="error">
+                                    {formik.errors.password_confirmation}
+                                  </span>
+                                )}
+                            </div>
+                          </div>
+                        )}
+
+                        {activeTab == "customer" && (
+                          <div>
+                            <div className="field">
+                              <input
+                                onChange={formik.handleChange}
+                                value={formik.values.email}
+                                placeholder="Email Address*"
+                                type="email"
+                                name="email"
+                              />
+                              {formik.touched && formik.errors.email && (
+                                <span className="error">
+                                  {formik.errors.email}
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="field">
+                              <input
+                                onChange={formik.handleChange}
+                                value={formik.values.password}
+                                placeholder="Password*"
+                                type="password"
+                                name="password"
+                              />
+                              {formik.touched && formik.errors.password && (
+                                <span className="error">
+                                  {formik.errors.password}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
 

@@ -8,6 +8,8 @@ const getVendor = async (slug: string): Promise<any> => {
   });
   const vendor = await data.json();
 
+  console.log(vendor.VendorImage);
+
   return vendor;
 };
 
@@ -47,7 +49,7 @@ const VendorDetailsPage = async ({ params }: PageProps) => {
         </div>
 
         <div>
-          <RequestClient vendor={data.vendor}  />
+          <RequestClient vendor={data.vendor} />
         </div>
       </div>
       <div className="em__backdrops">
@@ -59,7 +61,8 @@ const VendorDetailsPage = async ({ params }: PageProps) => {
                   <div className="display flex-1 sm:w-full/2 w-full">
                     <Image
                       src={
-                        `/uploads${data?.vendor?.image_1_path}` ||
+                        (data?.vendor.VendorImage.length > 0 &&
+                          data?.vendor.VendorImage[0].url) ||
                         "/assets/images/d1.png"
                       }
                       height={400}
@@ -108,37 +111,17 @@ const VendorDetailsPage = async ({ params }: PageProps) => {
               </div>
 
               <div className="grid grid-cols-3 gap-3 my-4">
-                <Image
-                  src={
-                    `/uploads${data?.vendor?.image_1_path}` ||
-                    "/assets/images/d1.png"
-                  }
-                  height={200}
-                  width={300}
-                  alt="Works images 1"
-                />
-                {data?.vendor?.image_2_path && (
-                  <Image
-                    src={
-                      `/uploads${data?.vendor?.image_2_path}` ||
-                      "/assets/images/d1.png"
-                    }
-                    height={200}
-                    width={300}
-                    alt="Works images 2"
-                  />
-                )}
-                {data?.vendor?.image_3_path && (
-                  <Image
-                    src={
-                      `/uploads${data?.vendor?.image_3_path}` ||
-                      "/assets/images/d1.png"
-                    }
-                    height={200}
-                    width={300}
-                    alt="Works images 3"
-                  />
-                )}
+                {data?.vendor?.VendorImage.length > 0 &&
+                  data?.vendor?.VendorImage.map((image: any, i: number) => (
+                    <div key={i + "img"}>
+                      <Image
+                        src={`${image.url}` || "/assets/images/d1.png"}
+                        height={200}
+                        width={300}
+                        alt="Works images 1"
+                      />
+                    </div>
+                  ))}
               </div>
             </section>
 

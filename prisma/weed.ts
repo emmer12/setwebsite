@@ -1,0 +1,38 @@
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+async function main() {
+  const category1 = await prisma.backdropCategory.create({
+    data: {
+      title: "Birthday",
+      slug: "birthday",
+      description: "Birthdays",
+      icon: "svg_birthday",
+    },
+  });
+  const category2 = await prisma.backdropCategory.create({
+    data: {
+      title: "Wedding",
+      slug: "wedding",
+      description: "Weddings",
+      icon: "svg_weeding",
+    },
+  });
+
+  const category3 = await prisma.backdropCategory.create({
+    data: {
+      title: "Baby Shower",
+      slug: "baby-shower",
+      description: "Baby shower",
+      icon: "svg_baby_shower",
+    },
+  });
+}
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

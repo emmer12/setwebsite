@@ -14,7 +14,14 @@ interface IVendor {
 }
 
 const VendorCard = ({
-  vendor: { company_name, image_1_path, id, company_location, services },
+  vendor: {
+    company_name,
+    image_1_path,
+    id,
+    company_location,
+    services,
+    VendorImage,
+  },
 }: IVendor) => {
   const color = [
     { bg: "#FFE5B4", color: "#263f61" },
@@ -29,7 +36,7 @@ const VendorCard = ({
           <Image
             height={100}
             width={300}
-            src={`/uploads${image_1_path}` || "/assets/images/c1.png"}
+            src={VendorImage.length > 0 && VendorImage[0].url}
             alt="Category Image"
           />
         </Link>

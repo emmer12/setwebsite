@@ -1,16 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
-import bcrypt from "bcrypt";
 import formidable from "formidable";
 import path from "path";
 import fs from "fs/promises";
-import { createVendor, getVendors } from "@/lib/prisma/vendors";
-import { getServerSession } from "next-auth";
-import authOptions from "../auth/[...nextauth]";
+import { createVendor, storeImage } from "@/lib/prisma/vendors";
 import { getToken } from "next-auth/jwt";
 import { vendorSchema } from "@/lib/utils/validations";
-import { processUserRegistration } from "@/lib/prisma/users";
-import { allowedFiles, moveToAsset } from "@/lib/utils/filesystem";
 import constants from "@/lib/utils/constants";
 import { sendAdminNotification } from "@/lib/mailer";
 
@@ -26,7 +21,7 @@ const readFile = (
 ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   const options: formidable.Options = {};
   if (saveLocally) {
-    options.uploadDir = path.join(process.cwd(), "public/uploads/");
+    options.uploadDir = path.join(process.cwd(), "public/uploads/images");
     options.maxFileSize = 10 * 1024 * 1024; // 10mb
     options.filename = (name, ext, path, form) => {
       return Date.now().toString() + "_" + path.originalFilename;
@@ -77,37 +72,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
         }
 
-        if (token) {
-          user = token;
-          data.userId = token.id;
-        } else {
-          const userData = {
-            email: data.email,
-            name: data.full_name,
-            password: data.password,
-          };
-          user = await processUserRegistration(userData, res);
-          data.userId = user.id;
-        }
-
+        user = token;
+        data.userId = token.id;
         const hasAccount = await prisma.vendor.findFirst({
           where: { userId: user.id as string },
         });
 
-        if (hasAccount) throw new Error("Already has an account");
-
-        if (files.image_1) {
-          data.image_1_path = `/uploads/images/${files.image_1.newFilename}`;
-        }
-        if (files.image_2) {
-          data.image_2_path = `/uploads/images/${files.image_2.newFilename}`;
-        }
-        if (files.image_3) {
-          data.image_3_path = `/uploads/images/${files.image_3.newFilename}`;
-        }
-        if (files.video) {
-          data.video_1_path = `/uploads/videos/${files.video.newFilename}`;
-        }
+        if (hasAccount) throw Error('You already have a vendor account')
 
         const record = await createVendor({
           userId: data.userId,
@@ -117,10 +88,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           services: JSON.parse(data.services),
           company_email: data.company_email,
           company_location: data.company_location,
-          image_1_path: data.image_1_path,
-          image_2_path: data.image_2_path,
-          image_3_path: data.image_3_path,
-          video_path: data.video_path,
           socials: data.socials,
           country: data.country,
           city: data.city,
@@ -133,10 +100,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           vendorSubCategoryId: data.vendorSubCategoryId,
           legal_disclaimer: constants.legal.VENDOR_REG,
         });
+
         if (record.error) {
           console.log(record.error);
           res.status(500).json({ msg: "Opps, Something went wrong" });
         } else {
+
+          if (files.image_1) {
+            let path = `/api/uploads/images/${files.image_1.newFilename}`;
+            await storeImage(path, files.image_1.newFilename, record?.vendor?.id)
+          }
+          if (files.image_2) {
+            let path = `/api/uploads/images/${files.image_2.newFilename}`;
+            await storeImage(path, files.image_1.newFilename, record?.vendor?.id)
+
+          }
+          if (files.image_3) {
+            let path = `/api/uploads/images/${files.image_3.newFilename}`;
+            await storeImage(path, files.image_1.newFilename, record?.vendor?.id)
+          }
+
+
+
           // TODO Notify  Admin
 
           sendAdminNotification();

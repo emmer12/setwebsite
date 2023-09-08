@@ -13,6 +13,9 @@ export async function getVendors(page: any, limit: number) {
       where: {
         approval_status: constant.approval_status.APPROVED as any,
       },
+      include: {
+        VendorImage: true
+      }
     });
 
     const totalCount = await prisma.vendor.count();
@@ -41,7 +44,10 @@ export async function createVendor(vendor: any) {
 export async function getVendor(userId: any) {
   try {
     const vendor = await prisma.vendor.findFirst({
-      where: { userId: userId },
+      where: { userId: userId, },
+      include: {
+        VendorImage: true
+      }
     });
 
     return { vendor };
@@ -54,7 +60,7 @@ export async function getVendorById(id: string) {
   try {
     const vendor = await prisma.vendor.findUnique({
       where: { id },
-      include: { user: true },
+      include: { user: true, VendorImage: true },
     });
 
     return { vendor };
@@ -178,6 +184,24 @@ export async function getRequestQuote(id: string) {
     });
     return { quote };
   } catch (error) {
+    return { error };
+  }
+}
+
+export async function storeImage(path: string, name: string, vendor_id: string | undefined) {
+  try {
+    console.log({ path, name, vendor_id })
+    const record = await prisma.vendorImage.create({
+      data: {
+        filename: name,
+        url: path,
+        vendorId: vendor_id as string,
+
+      }
+    })
+    return { record };
+  } catch (error) {
+    console.log(error, "This is the error")
     return { error };
   }
 }

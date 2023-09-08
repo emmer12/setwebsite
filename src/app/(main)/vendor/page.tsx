@@ -41,9 +41,9 @@ const Backdrops = () => {
       link: "vendor/category/cake-bakers",
     },
     {
-      title: "Event Planning and Management",
-      imageUrl: "/assets/images/categories/event-planners.png",
-      link: "vendor/category/event-planning-and-managements",
+      title: "Photographers",
+      imageUrl: "/assets/images/categories/photographer.png",
+      link: "vendor/category/photographers",
     },
   ]);
 
