@@ -1,14 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getToken } from "next-auth/jwt";
+import { JWT, getToken } from "next-auth/jwt";
 import { getRequestQuotes } from "@/lib/prisma/users";
+import { User } from "next-auth";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const token = await getToken({ req });
+    const token: JWT | null = await getToken({ req });
     if (token) {
         if (req.method === "GET") {
             try {
                 const { id }: any = req.query;
-                const { quotes, nextPage, prevPage, totalPages, error }: any = await getRequestQuotes(id, token.id, 1, 20);
+                const { quotes, nextPage, prevPage, totalPages, error }: any = await getRequestQuotes(id, token.id as string, 1, 20);
 
                 if (error) throw new Error(error);
                 return res.status(200).json({ quotes, nextPage, prevPage, totalPages });
