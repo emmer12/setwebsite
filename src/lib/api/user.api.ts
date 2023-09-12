@@ -11,6 +11,11 @@ export const deleteUser = (id: string) =>
 export const getRequests = (data: any) =>
   api.get(`${END_POINT}/requests`).then((res) => res.data);
 
+
+export const getRequestQuotes = (id: string) =>
+  api.get(`${END_POINT}/requests/quotes/${id}`).then((res) => res.data);
+
+
 export const createRequest = (data: any) =>
   api.post(`${END_POINT}/requests`, data, {
     headers: {

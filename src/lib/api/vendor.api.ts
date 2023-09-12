@@ -26,6 +26,15 @@ export const createVendor = (data: any) =>
     },
   });
 
+
+export const updateVendor = (data: any, id: string) =>
+  api.patch(`/api/vendors/${id}/update`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+
 export const createRequest = (data: any) =>
   api.post(`/api/vendors/requests`, data, {
     headers: {

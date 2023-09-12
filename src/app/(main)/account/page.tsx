@@ -1,10 +1,10 @@
 import Button from "@/components/Button";
 import { getServerSession } from "next-auth/next";
-import Nextauth from "@/pages/api/auth/[...nextauth]";
+import NextAuth from "@/pages/api/auth/[...nextauth]";
 import TopUpClient from "@/components/TopUpClient";
 
 const DesignPage = async (): Promise<any> => {
-  const session: any = await getServerSession(Nextauth);
+  const session: any = await getServerSession(NextAuth);
 
   return (
     <div>

@@ -133,7 +133,7 @@ const TopUpClient = () => {
                     >
                       <div>
                         <h3> ${pack.price}</h3>
-                        <h2 className="text-2xl text-[#986a47] font-bold ">
+                        <h2 className="text-lg text-[#986a47] font-bold ">
                           {" "}
                           {pack.val} Designs
                         </h2>
@@ -157,7 +157,7 @@ const TopUpClient = () => {
                     >
                       <div>
                         <h3> ${pack.price}</h3>
-                        <h2 className="text-2xl text-[#986a47] font-bold ">
+                        <h2 className="text-lg text-[#986a47] font-bold ">
                           {" "}
                           {pack.val} People
                         </h2>

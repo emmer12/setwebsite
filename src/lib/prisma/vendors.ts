@@ -41,12 +41,29 @@ export async function createVendor(vendor: any) {
   }
 }
 
+
+export async function updateVendor(vendor: any, id: string) {
+  try {
+    const vendorFromDB = await prisma.vendor.update({
+      where: {
+        id: id
+      },
+      data: vendor
+    });
+    return { vendor: vendorFromDB };
+  } catch (error) {
+    return { error };
+  }
+}
+
 export async function getVendor(userId: any) {
   try {
     const vendor = await prisma.vendor.findFirst({
       where: { userId: userId, },
       include: {
-        VendorImage: true
+        VendorImage: true,
+        VendorCategory: true,
+        VendorSubCategory: true
       }
     });
 

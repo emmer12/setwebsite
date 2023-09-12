@@ -1,5 +1,6 @@
 import * as uuid from "uuid";
 import { NotificationManager } from "react-notifications";
+import { format } from "date-fns"
 
 export function serialize(obj: any) {
   return JSON.parse(JSON.stringify(obj));
@@ -748,3 +749,6 @@ export function getContentType(fileExtension: string) {
     return defaultContentType;
   }
 }
+
+
+export const formatDate = (date:string)=> format(new Date(date),'yyyy-MM-dd HH:mm:ss')

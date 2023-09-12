@@ -14,11 +14,11 @@ import { signIn } from "next-auth/react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Alert from "@/components/modal/Alert";
-const animatedComponents = makeAnimated();
 import classnames from "classnames";
 import Api from "@/lib/api";
 
 const countries = [{ name: "United Arab Emirates", code: "AE" }];
+const animatedComponents = makeAnimated();
 
 const citiesUAE = [
   { name: "Abu Dhabi" },

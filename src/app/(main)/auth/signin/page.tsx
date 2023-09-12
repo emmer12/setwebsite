@@ -8,11 +8,15 @@ import { NotificationManager } from "react-notifications";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
 import { ArrowRight } from "@/components/icons";
+import { useSearchParams } from "next/navigation";
+
 const SignIn = () => {
   const router = useRouter();
   const { status } = useSession();
-
   const [loading, setLoading] = useState<boolean>(false);
+
+  const searchParams: any = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
 
   if (status === "authenticated") {
     router.push("/account");
@@ -29,7 +33,7 @@ const SignIn = () => {
         const res: any = await signIn("credentials", {
           email: email,
           password: password,
-          redirect: false,
+          redirect: callbackUrl ? true : false,
         });
 
         if (res.status == 200) {

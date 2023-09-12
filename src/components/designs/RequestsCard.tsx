@@ -41,7 +41,11 @@ const RequestCard = ({
               to={`vendor/dashboard/quotes/create/${request.id}`}
             />
           ) : (
-            <button className="em__button"> View Quotes</button>
+            <Button
+              classNames="em__button sm"
+              to={`account/my-requests/${request.id}/quotes`}
+              text="View Quotes"
+            />
           )}
         </div>
       </div>

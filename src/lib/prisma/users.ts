@@ -195,3 +195,44 @@ export const createConversation = async (sender: any, receiver: any) => {
   }
 
 }
+
+
+export async function getRequestQuotes(id: string, userId: string, page: any, limit: number) {
+  const offset = (page - 1) * limit;
+
+  try {
+    const quotes = await prisma.quote.findMany({
+      where: {
+        requestId: id,
+        userId
+      },
+      skip: offset,
+      take: limit,
+      include: {
+        user: {
+          include: {
+            Vendor: {
+              select: {
+                company_name: true,
+              },
+            }
+          }
+        }
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    const totalCount = await prisma.quote.count();
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const nextPage = page < totalPages ? parseInt(page) + 1 : null;
+    const prevPage = page > 1 ? parseInt(page) - 1 : null;
+
+    return { quotes, nextPage, prevPage, totalPages };
+  } catch (error) {
+    return { error };
+  }
+}

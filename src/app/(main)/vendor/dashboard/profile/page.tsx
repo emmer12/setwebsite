@@ -1,8 +1,12 @@
 "use client";
 
 import Button from "@/components/Button";
-import { ArrowRight, TimesCircle } from "@/components/icons";
-import { getLoggedInVendor } from "@/lib/api/vendor.api";
+import { ArrowRight, Close, TimesCircle } from "@/components/icons";
+import {
+  getFormData,
+  getLoggedInVendor,
+  updateVendor,
+} from "@/lib/api/vendor.api";
 import { useFormik } from "formik";
 import Image from "next/image";
 import * as Yup from "yup";
@@ -10,12 +14,22 @@ import React, { useEffect, useState } from "react";
 import { NotificationManager } from "react-notifications";
 import { citiesUAE, countries, vendorCategories } from "@/lib/utils";
 import FileUploader from "@/components/FileUploader";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import useSWR from "swr";
+
+const animatedComponents = makeAnimated();
 
 const Page = () => {
   const [vendor, setVendor] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [services, setServices] = useState<string[]>([]);
   const [sinput, setSInput] = useState("");
+
+  const { isLoading, data: formData } = useSWR(
+    "/api/vendors/checkout/form-data",
+    getFormData
+  );
 
   const [files, setFiles] = useState({
     image_1: null,
@@ -31,6 +45,17 @@ const Page = () => {
       company_location: "",
       country: "",
       city: "",
+      category: {
+        value: "",
+        label: "",
+        services: [],
+      },
+      subCategory: {
+        value: "",
+        label: "",
+        services: [],
+      },
+      services: [],
       license_number: "",
       coverage_cities: [],
       whatsapp_number: "",
@@ -41,8 +66,19 @@ const Page = () => {
     },
     onSubmit: async (data) => {
       const userData: any = { ...data };
-      userData.services = JSON.stringify(services);
       userData.coverage_cities = JSON.stringify(data.coverage_cities);
+
+      userData.vendorCategoryId = data.category.value;
+      userData.vendorSubCategoryId = data.subCategory.value;
+
+      userData.services = userData.services.map(
+        (service: any) => service.label
+      );
+
+      userData.services = JSON.stringify(userData.services);
+
+      delete userData.category;
+      delete userData.subCategory;
 
       let formData = new FormData();
 
@@ -50,20 +86,10 @@ const Page = () => {
         formData.append(key, userData[key]);
       }
 
-      if (files.image_1) {
-        formData.append("image_1", files.image_1);
-      }
-      if (files.image_2) {
-        formData.append("image_2", files.image_2);
-      }
-      if (files.image_3) {
-        formData.append("image_3", files.image_3);
-      }
-
       setLoading(true);
       try {
-        // const res = await updateVendorOrder(formData);
-        // NotificationManager  .success("Order Created");
+        const res = await updateVendor(formData, vendor.id);
+        NotificationManager.success("Updated Successfully");
         // const id = res.data.record.id;
         // if (typeof window !== "undefined") localStorage.removeItem("vSub");
       } catch (error: any) {
@@ -82,16 +108,8 @@ const Page = () => {
       setLoading(false);
     },
     validationSchema: Yup.object().shape({
-      full_name: Yup.string().required("Name is Required"),
       company_name: Yup.string().required("Company Name Required"),
       company_overview: Yup.string().required("Company Brief Required"),
-      vendor_category: Yup.string().required("Category is Required"),
-      email: Yup.string().email("Invalid email").required("Required"),
-      password: Yup.string().required("Required"),
-      password_confirmation: Yup.string().oneOf(
-        [Yup.ref("password"), ""],
-        "Passwords must match"
-      ),
     }),
   });
 
@@ -118,8 +136,6 @@ const Page = () => {
       setLoading(true);
       const res = await getLoggedInVendor();
       let vendor = { ...res.vendor };
-      console.log(vendor);
-
       vendor.coverage_cities = JSON.parse(vendor.coverage_cities);
       setServices(vendor.services);
 
@@ -127,14 +143,32 @@ const Page = () => {
       for (let i = 0; i < initKeys.length; i++) {
         const item = initKeys[i];
         if (item in vendor) {
-          console.log(item);
           formik.setFieldValue(item, vendor[item]);
         }
       }
-      console.log("Got here");
+      formik.setFieldValue("category", {
+        value: vendor.VendorCategory.id,
+        label: vendor.VendorCategory.title,
+        services: vendor.VendorCategory.services,
+      });
 
-      console.log(initKeys);
+      if (vendor.vendorSubCategoryId) {
+        formik.setFieldValue("subCategory", {
+          value: vendor.VendorSubCategory.id,
+          label: vendor.VendorSubCategory.title,
+          services: vendor.VendorSubCategory.services,
+        });
+      }
 
+      if (vendor.services) {
+        const services = vendor.services.map((service: string) => {
+          return {
+            value: service,
+            label: service,
+          };
+        });
+        formik.setFieldValue("services", services);
+      }
       setVendor(vendor);
     } catch (err) {
     } finally {
@@ -152,6 +186,35 @@ const Page = () => {
 
   const removeService = (i: number) => {
     setServices((prev) => prev.filter((s, idx) => idx !== i));
+  };
+
+  const filterCategories = formData?.categories
+    ?.filter((cat: any) => cat.parent_id == null)
+    .map((cat: any) => {
+      return { value: cat.id, label: cat.title, services: cat.services };
+    });
+
+  const subCategories = formData?.subCategories
+    ?.filter((cat: any) => cat.parent_id == formik.values.category.value)
+    .map((cat: any) => {
+      return { value: cat.id, label: cat.title, services: cat.services };
+    });
+  const getServices = (cats: string[], subCats: string[]) => {
+    if (cats.length > 0) {
+      return cats.map((cat) => {
+        return {
+          value: cat,
+          label: cat,
+        };
+      });
+    } else {
+      return subCats.map((cat) => {
+        return {
+          value: cat,
+          label: cat,
+        };
+      });
+    }
   };
 
   return (
@@ -209,24 +272,59 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="field">
-          <select
-            onChange={formik.handleChange}
-            value={formik.values.vendor_category}
-            name="vendor_category"
-          >
-            <option value="">Select category</option>
+        <div className=" my-4">
+          <label htmlFor="category">Select Category</label>
 
-            {vendorCategories.map((category, i) => (
-              <option key={i} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-          {formik.touched && formik.errors.vendor_category && (
-            <span className="error">{formik.errors.vendor_category}</span>
-          )}
+          <Select
+            components={animatedComponents}
+            options={filterCategories as any}
+            onChange={(selectedOption: any) => {
+              formik.setFieldValue("category", selectedOption);
+            }}
+            placeholder="Select Category"
+            value={formik.values.category}
+            name="category"
+          />
         </div>
+
+        {formik.values.category.value.length > 0 &&
+          subCategories.length > 0 && (
+            <div className=" my-4">
+              <label htmlFor="category">Select Category</label>
+              <Select
+                id="category"
+                components={animatedComponents}
+                onChange={(selectedOption: any) => {
+                  formik.setFieldValue("subCategory", selectedOption);
+                }}
+                placeholder="Select Sub Category"
+                options={subCategories}
+                value={formik.values.subCategory}
+                name="subCategory"
+              />
+            </div>
+          )}
+
+        {formik.values.category.value.length > 0 && (
+          <div className=" my-4">
+            <label htmlFor="category">Select Services</label>
+
+            <Select
+              closeMenuOnSelect={false}
+              components={animatedComponents}
+              onChange={(selectedOptions: any) => {
+                formik.setFieldValue("services", selectedOptions);
+              }}
+              value={formik.values.services}
+              isMulti
+              placeholder="Select Services"
+              options={getServices(
+                formik.values.category.services,
+                formik.values.subCategory.services
+              )}
+            />
+          </div>
+        )}
 
         <div className="field">
           <input
@@ -409,11 +507,22 @@ const Page = () => {
         <div className="em__spacer" style={{ height: "10px" }}></div>
 
         <div>
-          <h4>Upload Your Work Images</h4>
+          <h4>Work Images</h4>
 
           <div className="my-4">
             <div className="flex gap-3">
-              <FileUploader
+              {vendor?.VendorImage.map((img: any, i: number) => (
+                <div key={i + "img"} className="bg-gray-50 rounded relative">
+                  {i !== 0 && (
+                    <div className="absolute top-0 right-0  z-50">
+                      <Close />
+                    </div>
+                  )}
+                  <Image height={130} width={130} src={img.url} alt="Images" />
+                </div>
+              ))}
+
+              {/* <FileUploader
                 handleChange={(e) => handleChange(e)}
                 placeholder="Image 1"
                 name="image_1"
@@ -435,8 +544,11 @@ const Page = () => {
                 name="image_3"
                 file={files.image_3}
                 handleRemove={handleRemove}
-              />
+              /> */}
             </div>
+            {/* <button className="add_button" type="button">
+              Add Image
+            </button> */}
           </div>
         </div>
 
