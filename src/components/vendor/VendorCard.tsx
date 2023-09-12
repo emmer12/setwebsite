@@ -10,6 +10,7 @@ interface IVendor {
     id: string;
     company_location: string;
     services: string;
+    VendorImage: any[];
   };
 }
 
