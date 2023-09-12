@@ -22,15 +22,15 @@ const handlebarOptions = {
 
 const transporter = nodemailer.createTransport({
   port: process.env.MAIL_PORT,
-  secure: false,
+  // secure: false,
   host: process.env.MAIL_HOST,
   auth: {
     user: process.env.MAIL_USERNAME,
     pass: process.env.MAIL_PASSWORD,
   },
-  tls: {
-    ciphers: "SSLv3",
-  },
+  // tls: {
+  //   ciphers: "SSLv3",
+  // },
   //   tls: { rejectUnauthorized: false },
 });
 transporter.use("compile", hbs(handlebarOptions));
@@ -106,20 +106,25 @@ export const sendTestEmail = async () => {
 };
 
 export const sendAdminNotification = async () => {
-  await transporter.sendMail({
-    from: `${process.env.ADMIN_EMAIL}`,
-    to: process.env.ADMIN_EMAIL,
-    subject: `New Vendor Notification`,
-    // @ts-ignore-next-line
-    template: "new.vendor", //
-    context: {
-      ...assets,
-      message:
-        "A new vendor has just registered. Please be informed that a new vendor has joined our platform and may require verification and approval. Kindly review their registration details and proceed with the necessary steps. Thank you.",
-    },
-  });
+  try {
+    await transporter.sendMail({
+      from: `${process.env.ADMIN_EMAIL}`,
+      to: process.env.ADMIN_EMAIL,
+      subject: `New Vendor Notification`,
+      // @ts-ignore-next-line
+      template: "new.vendor", //
+      context: {
+        ...assets,
+        message:
+          "A new vendor has just registered. Please be informed that a new vendor has joined our platform and may require verification and approval. Kindly review their registration details and proceed with the necessary steps. Thank you.",
+      },
+    });
+    return true;
+  } catch (err) {
+    console.log(err, 'Error')
+    return true
+  }
 
-  return true;
 };
 
 export const sendQuoteNotification = async (data: any) => {

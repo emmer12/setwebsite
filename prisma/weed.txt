@@ -1,6 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 async function main() {
+
+  
   const category1 = await prisma.backdropCategory.create({
     data: {
       title: "Birthday",
