@@ -1,6 +1,6 @@
 
 const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+let prisma = new PrismaClient();
 
 
 const generateSlug = (str: string) => {
