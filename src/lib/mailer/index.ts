@@ -23,12 +23,10 @@ const handlebarOptions = {
 const transporter = nodemailer.createTransport({
   port: process.env.MAIL_PORT,
   // secure: false,
-  secure: true,
   host: process.env.MAIL_HOST,
   auth: {
     user: process.env.MAIL_USERNAME,
     pass: process.env.MAIL_PASSWORD,
-    // authentication: 'login',
     domain: 'setevents.co'
   },
   // tls: {
