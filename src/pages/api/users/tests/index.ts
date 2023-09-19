@@ -5,7 +5,7 @@ import {
 } from "@/lib/prisma/notifications";
 import { getToken } from "next-auth/jwt";
 import {
-  sendAdminNotification,
+  testNotification,
   sendQuoteRequestEmail,
   sendTestEmail,
 } from "@/lib/mailer";
@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({ req });
   if (req.method === "GET") {
     try {
-      sendAdminNotification();
+      testNotification();
       // const { notifications, error }: any = await getNotifications();
       return res.status(200).json({ msg: "yoo" });
     } catch (error: any) {
