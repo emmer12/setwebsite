@@ -1157,3 +1157,28 @@ input[type="radio"] {
 .hide-desk {
   display: none !important;
 }
+
+.star__con {
+  .star__item {
+    svg {
+      stroke: #df9453;
+    }
+    &.filled {
+      svg {
+        fill: #eeab71;
+        stroke: #df9453;
+      }
+    }
+    // &:hover ~ .star__item svg,
+    &:hover svg {
+      fill: #eeab71;
+    }
+
+    &.sm {
+      svg {
+        height: 16px;
+        width: 16px;
+      }
+    }
+  }
+}

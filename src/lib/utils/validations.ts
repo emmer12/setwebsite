@@ -116,3 +116,11 @@ export const passwordResetSchema = z.object({
 export const topUpSchema = z.object({
   amount: z.number().min(10, { message: "Amount cannot be less than $10" }),
 });
+
+
+export const ratingSchema = z.object({
+  full_name: props.full_name,
+  email: props.email,
+  message: z.string().min(1, { message: "Message is required" }),
+  rate: z.number().min(0, { message: "Rating is required" }),
+});

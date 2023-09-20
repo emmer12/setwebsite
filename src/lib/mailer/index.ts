@@ -131,8 +131,8 @@ export const sendAdminNotification = async () => {
 export const testNotification = async () => {
   try {
     await transporter.sendMail({
-      from: `${process.env.ADMIN_EMAIL}`,
-      to: 'taiwoemmanuel0011@gmail.com',
+      from: `info@setevents.co`,
+      to: 'info@setevents.co',
       subject: `New Vendor Notification`,
       // @ts-ignore-next-line
       template: "new.vendor", //

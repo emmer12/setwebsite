@@ -63,7 +63,13 @@ export async function getVendor(userId: any) {
       include: {
         VendorImage: true,
         VendorCategory: true,
-        VendorSubCategory: true
+        VendorSubCategory: true,
+        Reviews: {
+          take: 5,
+          orderBy: {
+            createdAt: 'desc'
+          }
+        }
       }
     });
 
@@ -77,7 +83,16 @@ export async function getVendorById(id: string) {
   try {
     const vendor = await prisma.vendor.findUnique({
       where: { id },
-      include: { user: true, VendorImage: true },
+      include: {
+        user: true, 
+        VendorImage: true, 
+        Reviews: {
+          take: 5,
+          orderBy: {
+            createdAt: 'desc'
+          }
+        }
+      },
     });
 
     return { vendor };
@@ -219,6 +234,45 @@ export async function storeImage(path: string, name: string, vendor_id: string |
     return { record };
   } catch (error) {
     console.log(error, "This is the error")
+    return { error };
+  }
+}
+
+export async function storeReview(vendor_id: string, data: any) {
+  try {
+    const rate = await prisma.reviews.findFirst({
+      where: {
+        vendorId: vendor_id,
+        email: data.email
+      }
+    })
+
+    if (rate) throw Error('You have already rated.')
+    const record = await prisma.reviews.create({
+      data: {
+        email: data.email,
+        full_name: data.full_name,
+        message: data.message,
+        vendorId: vendor_id,
+        userId: data.userId || null,
+        rate: data.rate
+      }
+    });
+    return { record };
+  } catch (error) {
+    return { error };
+  }
+}
+
+
+export async function getReviews(id: string) {
+  try {
+    const reviews = await prisma.reviews.findFirst({
+      where: { vendorId: id },
+      take: 5
+    });
+    return { reviews };
+  } catch (error) {
     return { error };
   }
 }

@@ -60,3 +60,10 @@ export const getRequests = () =>
 
 export const getRequestQuote = (id: string) =>
   api.get(`/api/vendors/quotes/${id}`).then((res) => res.data);
+
+
+export const createReview = (id: string, data: any) =>
+  api.post(`/api/vendors/${id}/review`, data);
+
+export const getReviews = (id: string) =>
+  api.get(`/api/vendors/${id}/review`);

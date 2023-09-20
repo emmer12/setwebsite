@@ -1,14 +1,15 @@
 import Button from "@/components/Button";
 import Image from "next/image";
 import RequestClient from "./RequestClient";
+import ReviewForm from "./ReviewForm";
+import { Star } from "@/components/icons";
+import classNames from "classnames";
 
 const getVendor = async (slug: string): Promise<any> => {
   const data = await fetch(`${process.env.BASE_URL}/api/vendors/${slug}`, {
     next: { revalidate: 10 },
   });
   const vendor = await data.json();
-
-  console.log(vendor.VendorImage);
 
   return vendor;
 };
@@ -19,24 +20,6 @@ interface PageProps {
 
 const VendorDetailsPage = async ({ params }: PageProps) => {
   const data = await getVendor(params.slug);
-
-  const reviews = [
-    {
-      content:
-        "My employee consistently delivers exceptional performance, demonstrating attention to detail, problem-solving skills, and effective collaboration. Their professionalism, reliability, and positive attitude make them a valuable asset to our organization. Highly recommended.",
-      name: "Joe Stone",
-    },
-    {
-      content:
-        "Outstanding employee. Exceptional work. Reliable, detail-oriented, and collaborative. Valuable asset.",
-      name: "Joe Stone",
-    },
-    {
-      content:
-        "Exceptional employee. Consistently delivers high-quality work with attention to detail. Strong problem-solving skills and effective team collaboration. Reliable, professional, and a valuable asset.",
-      name: "Joe Stone",
-    },
-  ];
 
   return (
     <div>
@@ -164,44 +147,8 @@ const VendorDetailsPage = async ({ params }: PageProps) => {
 
             <section>
               <div className="flex flex-col-reverse sm:flex-row  gap-4">
-                <div>
-                  <div className="em__comment__form">
-                    <div
-                      style={{ lineHeight: "20px" }}
-                      className="em__header_2"
-                    >
-                      <h1 style={{ lineHeight: "20px", fontSize: "32px" }}>
-                        Post A
-                      </h1>
-                      <span
-                        style={{ lineHeight: "20px", fontSize: "52px" }}
-                        className="em__fancy__text"
-                      >
-                        Review
-                      </span>
-                    </div>
-
-                    <form action="" className="comment__form">
-                      <div className="field textarea">
-                        <textarea placeholder="" rows={3}></textarea>
-                      </div>
-                      <div className="field">
-                        <input placeholder="Email Address" type="email" />
-                      </div>
-                      <div className="field">
-                        <input placeholder="Fullname" type="text" />
-                      </div>
-
-                      <div
-                        className="em__spacer"
-                        style={{ height: "10px" }}
-                      ></div>
-
-                      <Button text="Submit" />
-                    </form>
-                  </div>
-                </div>
-                <div className="feedbacks">
+                <ReviewForm id={data?.vendor?.id} />
+                <div className="feedbacks w-full">
                   <div style={{ lineHeight: "20px" }} className="em__header_2">
                     <span
                       style={{ lineHeight: "20px", fontSize: "52px" }}
@@ -210,14 +157,36 @@ const VendorDetailsPage = async ({ params }: PageProps) => {
                       Reviews
                     </span>
                   </div>
-                  {reviews.map((review, i) => (
-                    <div key={i} className="em__related__blog__card">
-                      <div>
-                        <h4 className="font-bold my-2">{review.name}</h4>
-                        <p>{review.content}</p>
+
+                  {data?.vendor?.Reviews.length < 1 ? (
+                    <div>The vendor has no reviews.</div>
+                  ) : (
+                    data?.vendor?.Reviews.map((review: any, i: number) => (
+                      <div key={i} className="em__related__blog__card w-full">
+                        <div className="w-full">
+                          <div className="flex justify-between">
+                            <h4 className="font-bold my-2">
+                              {review.full_name}
+                            </h4>
+
+                            <div className="star__con  flex gap-2">
+                              {Array.from(Array(5)).map((_, i) => (
+                                <div
+                                  key={i}
+                                  className={classNames(" star__item sm", {
+                                    filled: i + 1 <= review.rate,
+                                  })}
+                                >
+                                  <Star />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          <p>{review.message}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </div>
             </section>
