@@ -47,28 +47,6 @@ export default function RootLayout({
     getSubscriptions
   );
 
-  const safSub =
-    data?.subscriptions.filter(
-      (sub: any) => sub.service == constants.subscription_type.SAF_BASIC
-    ) || [];
-  const safProSub =
-    data?.subscriptions.filter(
-      (sub: any) => sub.service == constants.subscription_type.SAF_PRO
-    ) || [];
-  const vendorSub =
-    data?.subscriptions.filter(
-      (sub: any) => sub.service == constants.subscription_type.VENDOR_BASIC
-    ) || [];
-
-  const aiSub =
-    data?.subscriptions.filter(
-      (sub: any) => sub.service == constants.subscription_type.DEE_AI_BASIC
-    ) || [];
-  const aiProSub =
-    data?.subscriptions.filter(
-      (sub: any) => sub.service == constants.subscription_type.DEE_AI_PRO
-    ) || [];
-
   if (status === "loading") {
     return (
       <div className="flex justify-center items-center h-[300px]">

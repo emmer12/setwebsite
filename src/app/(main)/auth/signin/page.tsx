@@ -33,8 +33,10 @@ const SignIn = () => {
         const res: any = await signIn("credentials", {
           email: email,
           password: password,
-          redirect: callbackUrl ? true : false,
+          redirect: false,
         });
+
+        // redirect: callbackUrl ? true : false, callbackUrl;
 
         if (res.status == 200) {
           NotificationManager.success("Welcome back!");

@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import { getServerSession } from "next-auth/next";
 import NextAuth from "@/pages/api/auth/[...nextauth]";
 import TopUpClient from "@/components/TopUpClient";
+import Link from "next/link";
 
 const DesignPage = async (): Promise<any> => {
   const session: any = await getServerSession(NextAuth);
@@ -12,7 +13,9 @@ const DesignPage = async (): Promise<any> => {
         <div className="container">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className=" bg-gray-50 p-4 rounded-[18px] rounded-br-[8px] relative">
-              <div className="absolute top-4 right-4 cursor-pointer">Edit</div>
+              <div className="absolute top-4 right-4 cursor-pointer">
+                <Link href="/account/edit">Edit</Link>
+              </div>
               <h1 className="text-xl font-bold">My Profile</h1>
 
               <div className="py-4 w-[300px] max-w-full">

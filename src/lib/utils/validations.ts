@@ -113,6 +113,13 @@ export const passwordResetSchema = z.object({
     .min(6, { message: "Password Confirmation is required" }),
 });
 
+export const passwordUpdateSchema = z.object({
+  password: z.string().min(6, { message: "Password is required" }),
+  password_confirmation: z
+    .string()
+    .min(6, { message: "Password Confirmation is required" }),
+});
+
 export const topUpSchema = z.object({
   amount: z.number().min(10, { message: "Amount cannot be less than $10" }),
 });

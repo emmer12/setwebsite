@@ -91,7 +91,8 @@ const Header = () => {
     }
     setOpenNotif(true);
   };
-  const count = data?.notifications.filter((n: any) => !n.isRead).length;
+  const count =
+    (data && data?.notifications.filter((n: any) => !n.isRead).length) || 0;
 
   return (
     <div className="em__main">
@@ -277,9 +278,7 @@ const Header = () => {
                                 <a href="">Creative AI Studio</a>
                               </li>
                               <li className="py-3">
-                                <Link href="/vendor">
-                                Event Connections
-                                </Link>
+                                <Link href="/vendor">Event Connections</Link>
                               </li>
                             </motion.ul>
                           )}
@@ -338,11 +337,7 @@ const Header = () => {
                 </div>
 
                 <div className="bar mt-3" onClick={() => setOpen(!open)}>
-                  {open ? (
-                    <TimesIcon />
-                  ) : (
-                    <BarIcon />
-                  )}
+                  {open ? <TimesIcon /> : <BarIcon />}
                 </div>
               </div>
             </div>

@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
-
-const saltRounds = 10;
-const myPlaintextPassword = "s0//P4$$w0rD";
+import { getToken } from "next-auth/jwt";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -36,7 +34,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } finally {
       await prisma.$disconnect();
     }
-  } else {
+  }
+  else if (req.method === "PATCH") {
+    const userData = JSON.parse(req.body);
+    const token = await getToken({ req });
+
+    if (token) {
+      try {
+        const updatedUser = await prisma.user.update({
+          where: {
+            id: token.id as string
+          },
+          data: {
+            name: userData.name,
+          },
+        });
+
+        res.status(201).json({ user: updatedUser });
+      } catch (error) {
+        res.status(500).json({ error });
+      }
+    } else {
+      res.status(401).end(`UnAuthorized`);
+    }
+
+
+
+  }
+  else {
     res.status(425).end(`Method ${req.method} is not allowed.`);
     res.setHeader("Allow", ["GET"]);
   }

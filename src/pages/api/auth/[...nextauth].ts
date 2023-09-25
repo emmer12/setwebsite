@@ -45,7 +45,7 @@ export default NextAuth({
     signIn: "/auth/signin",
   },
   callbacks: {
-    session: async ({ session, token, user }) => {
+    session: async ({ session, trigger, token, user }) => {
       if (token) {
         const newUser = await prisma.user.findFirst({
           where: {
@@ -59,14 +59,22 @@ export default NextAuth({
         session.user.saf_points = newUser?.saf_points as any;
       }
 
+      if (trigger === 'update' && session.user.name) {
+        console.log(session, "this is the new session")
+        session.user.name = session.user.name
+      }
+
       return Promise.resolve(session);
     },
-    jwt: ({ token, user }) => {
+    jwt: ({ token, user, trigger }) => {
       if (user) {
         token.id = user.id;
         token.role = user.role;
         token.ai_points = user.ai_points;
         token.saf_points = user.saf_points;
+      }
+      if (trigger === 'update') {
+        token.name = user.name
       }
       return token;
     },
