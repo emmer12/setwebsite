@@ -1,7 +1,6 @@
 
 const { PrismaClient } = require("@prisma/client");
-let prisma = new PrismaClient();
-
+import prisma from "@/lib/prisma";
 
 const generateSlug = (str: string) => {
   return str
@@ -307,7 +306,7 @@ const categories = [
 const uploadCategory = async () => {
   categories.forEach(async (cat) => {
     const slug = generateSlug(cat.category)
-    await prisma.VendorCategory.create({
+    await prisma.vendorCategory.create({
       data: {
         title: cat.category,
         slug: slug,
@@ -318,14 +317,14 @@ const uploadCategory = async () => {
       },
     });
     if (cat.subcategories) {
-      const parent = await prisma.VendorCategory.findFirst({
+      const parent = await prisma.vendorCategory.findFirst({
         where: {
           slug: slug
         }
       });
 
       cat.subcategories.forEach(async (sub) => {
-        await prisma.VendorCategory.create({
+        await prisma.vendorCategory.create({
           data: {
             title: sub.name,
             slug: generateSlug(sub.name),
@@ -333,7 +332,7 @@ const uploadCategory = async () => {
             icon: "icon",
             hasServices: true,
             services: sub.services,
-            parent_id: parent.id
+            // parent_id: parent.id
           },
         });
       })

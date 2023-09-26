@@ -20,3 +20,4 @@ declare module "next-auth" {
     ai_points: string;
   }
 }
+

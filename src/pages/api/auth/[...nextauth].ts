@@ -59,14 +59,15 @@ export default NextAuth({
         session.user.saf_points = newUser?.saf_points as any;
       }
 
-      if (trigger === 'update' && session.user.name) {
+      if (trigger === 'update' && session) {
         console.log(session, "this is the new session")
+
         session.user.name = session.user.name
       }
 
       return Promise.resolve(session);
     },
-    jwt: ({ token, user, trigger }) => {
+    jwt: ({ token, user, trigger, session }) => {
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -74,7 +75,7 @@ export default NextAuth({
         token.saf_points = user.saf_points;
       }
       if (trigger === 'update') {
-        token.name = user.name
+        token.name = session.user.name
       }
       return token;
     },

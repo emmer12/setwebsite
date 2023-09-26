@@ -33,7 +33,7 @@ const SignUp = () => {
 
       try {
         const res = await Api.patch("/api/users/create", data);
-        update({
+        await update({
           ...data,
           user: {
             name: data.name,
