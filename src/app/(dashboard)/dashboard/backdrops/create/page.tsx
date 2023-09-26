@@ -12,10 +12,7 @@ import { IBackdropCat } from "@/types";
 
 const CreateBackdropPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const { data, error, isLoading } = useSWR(
-    "/api/backdrops/admin/form-data",
-    getFormData
-  );
+  const { data } = useSWR("/api/backdrops/admin/form-data", getFormData);
 
   const [files, setFiles] = useState({
     preview: null,

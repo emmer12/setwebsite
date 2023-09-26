@@ -2,7 +2,7 @@
 import SideBar from "@/components/dashboard/SideBar";
 import Header from "@/components/dashboard/Header";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { NotificationContainer } from "react-notifications";
 
 type Props = {
@@ -10,12 +10,14 @@ type Props = {
 };
 
 export const ContentWrapper = ({ children }: Props) => {
-  const { data: session } = useSession();
-  const router = useRouter();
+  // const { data: session } = useSession();
+  // const router = useRouter();
 
-  if (session?.user.role !== "ADMIN") {
-    router.push("/");
-  }
+  // if (session?.user?.role !== "ADMIN") {
+  //   router.push("/");
+
+  //   return <></>;
+  // }
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900 false">

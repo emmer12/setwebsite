@@ -9,7 +9,7 @@ import React from "react";
 import useSWR from "swr";
 import { NotificationManager } from "react-notifications";
 
-const Page = () => {
+const UserPage = () => {
   const { data, error, isLoading } = useSWR("/api/users/admin", getAllUsers);
 
   const handleDelete = async (id: string) => {
@@ -81,4 +81,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default UserPage;
