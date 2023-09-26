@@ -1,3 +1,4 @@
+"use client";
 import "@/styles/app.scss";
 import "@/styles/globals.css";
 import "react-notifications/lib/notifications.css";
