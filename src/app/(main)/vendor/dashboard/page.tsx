@@ -2,7 +2,7 @@
 
 import Button from "@/components/Button";
 import { ArrowRight, TimesCircle } from "@/components/icons";
-import { getLoggedInVendor } from "@/lib/api/vendor.api";
+import { connectToStripe, getLoggedInVendor } from "@/lib/api/vendor.api";
 import { useFormik } from "formik";
 import Image from "next/image";
 import * as Yup from "yup";
@@ -36,6 +36,11 @@ const Page = () => {
     }
   };
 
+  const connect = async () => {
+    const data: any = await connectToStripe();
+    window.location.href = data.url;
+  };
+
   const removeService = (i: number) => {
     setServices((prev) => prev.filter((s, idx) => idx !== i));
   };
@@ -59,6 +64,15 @@ const Page = () => {
                 <strong>Approval Status</strong>
                 <span>{vendor?.approval_status}</span>
               </div>
+
+              {vendor?.stripe_connected ? (
+                <div>Your Account has connected to stripe</div>
+              ) : (
+                <div>
+                  <p>Your accont has not been connected to stripe</p>
+                  <Button onClick={connect} text="Connect" classNames="sm" />
+                </div>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-1 gap-3">

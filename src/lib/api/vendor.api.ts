@@ -67,3 +67,6 @@ export const createReview = (id: string, data: any) =>
 
 export const getReviews = (id: string) =>
   api.get(`/api/vendors/${id}/review`);
+
+export const connectToStripe = () =>
+  api.post(`/api/vendors/stripe/create`);

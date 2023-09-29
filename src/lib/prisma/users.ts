@@ -140,16 +140,16 @@ export const debitPoint = async (amount: number, user: any, type: string) => {
       throw new Error("You have enough funds to set users");
     }
 
-    let data: any;
+    let data: any = {};
 
-
-    if (type == constants.payment_type.AI_TOP_UP) {
+    if (type == constants.payment_type.AI_DEBIT) {
       const points = Number(user?.ai_points) - Number(amount);
       data.ai_points = points;
     } else {
-      const points = Number(user?.saf_points) - Number(amount);
+      const points = user?.saf_points - Number(amount);
       data.saf_points = points;
     }
+
 
     const record = await prisma.user.update({
       where: {

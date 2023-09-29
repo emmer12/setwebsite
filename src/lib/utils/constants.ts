@@ -7,6 +7,8 @@ const constants = {
     VENDOR_SUB: "vendor_subscription",
     SAF_TOP_UP: "saf_top_up",
     AI_TOP_UP: "ai_top_up",
+    SAF_DEBIT: "saf_debit",
+    AI_DEBIT: "ai_debit",
   },
   payment_status: {
     PAID: "PAID",
@@ -54,8 +56,8 @@ const constants = {
   },
 
   points: {
-    SAF: 100,
-    AI: 100,
+    SAF: 1,
+    AI: 2,
   },
 
 

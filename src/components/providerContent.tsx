@@ -15,6 +15,7 @@ export const ContentWrapper = ({ children }: Props) => {
 
   // if (session?.user?.role !== "ADMIN") {
   //   router.push("/");
+  // router.back();
 
   //   return <></>;
   // }

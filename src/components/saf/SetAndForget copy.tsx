@@ -8,36 +8,18 @@ import { createUser } from "@/lib/api/saf.api";
 import { useRouter } from "next/navigation";
 import { parseError } from "@/lib/utils";
 
-const categories = [
-  "Graduation",
-  "Wedding",
-  "Retirement",
-  "Birthday",
-  "Anniversary",
-  "Engagement",
-  "Baby shower",
-  "Gender revel",
-  "Father’s Day",
-  "Mother’s Day",
-  "Team gathering",
-  "Welcome back",
-  "Housewarming",
-  "Promotion",
-  "Job Promotion",
-  "Bon Voyage (Farewell)",
-  "Friendship Day",
-];
-
 const initialValues = {
   users: [
     {
-      prompt: "",
-      date: "",
-      category: "",
+      name: "",
+      gender: "",
+      location: "",
+      relation: "",
+      dob: "",
     },
   ],
 };
-const init = { prompt: "", date: "", category: "" };
+const init = { name: "", gender: "", location: "", relation: "", dob: "" };
 
 const SetAndForget = ({
   close,
@@ -93,9 +75,10 @@ const SetAndForget = ({
           validationSchema={Yup.object({
             users: Yup.array(
               Yup.object({
-                prompt: Yup.string().required("Prompt is Required").min(3),
-                category: Yup.string().required("Category is Required"),
-                date: Yup.string().required("Date is Required"),
+                name: Yup.string().required().min(3).max(20),
+                gender: Yup.string().required(),
+                relation: Yup.string().required(),
+                dob: Yup.string().required(),
               })
             )
               .min(1)
@@ -127,21 +110,18 @@ const SetAndForget = ({
                     {values.users.length > 0 &&
                       values.users.map((user, index) => (
                         <div className="form-con" key={index}>
-                          <Field name={`users.${index}.category`}>
+                          <Field name={`users.${index}.name`}>
                             {({
                               field,
                               form: { touched, errors },
                               meta,
                             }: any) => (
                               <div className="field">
-                                <select {...field}>
-                                  <option>Select Category</option>
-                                  {categories.map((category) => (
-                                    <option value={category} key={category}>
-                                      {category}
-                                    </option>
-                                  ))}
-                                </select>
+                                <input
+                                  type="text"
+                                  placeholder="Name"
+                                  {...field}
+                                />
                                 {meta.touched && meta.error && (
                                   <span className="error">{meta.error}</span>
                                 )}
@@ -149,7 +129,64 @@ const SetAndForget = ({
                             )}
                           </Field>
 
-                          <Field name={`users.${index}.date`}>
+                          <Field name={`users.${index}.gender`}>
+                            {({
+                              field,
+                              form: { touched, errors },
+                              meta,
+                            }: any) => (
+                              <div className="field">
+                                <input
+                                  type="text"
+                                  placeholder="Gender"
+                                  {...field}
+                                />
+                                {meta.touched && meta.error && (
+                                  <span className="error">{meta.error}</span>
+                                )}
+                              </div>
+                            )}
+                          </Field>
+
+                          <Field name={`users.${index}.location`}>
+                            {({
+                              field,
+                              form: { touched, errors },
+                              meta,
+                            }: any) => (
+                              <div className="field">
+                                <input
+                                  type="text"
+                                  placeholder="Location"
+                                  {...field}
+                                />
+                                {meta.touched && meta.error && (
+                                  <span className="error">{meta.error}</span>
+                                )}
+                              </div>
+                            )}
+                          </Field>
+
+                          <Field name={`users.${index}.relation`}>
+                            {({
+                              field,
+                              form: { touched, errors },
+                              meta,
+                            }: any) => (
+                              <div className="field">
+                                <input
+                                  type="text"
+                                  placeholder="Relation"
+                                  {...field}
+                                />
+                                {meta.touched && meta.error && (
+                                  <span className="error">{meta.error}</span>
+                                )}
+                              </div>
+                            )}
+                          </Field>
+
+                          <Field name={`users.${index}.dob`}>
                             {({
                               field,
                               form: { touched, errors },
@@ -161,24 +198,6 @@ const SetAndForget = ({
                                   placeholder="Date of Birth"
                                   {...field}
                                 />
-                                {meta.touched && meta.error && (
-                                  <span className="error">{meta.error}</span>
-                                )}
-                              </div>
-                            )}
-                          </Field>
-
-                          <Field name={`users.${index}.prompt`}>
-                            {({
-                              field,
-                              form: { touched, errors },
-                              meta,
-                            }: any) => (
-                              <div className="field textarea">
-                                <textarea
-                                  placeholder="Prompt"
-                                  {...field}
-                                ></textarea>
                                 {meta.touched && meta.error && (
                                   <span className="error">{meta.error}</span>
                                 )}
@@ -206,13 +225,13 @@ const SetAndForget = ({
                       disabled={loading}
                     />
 
-                    {/* <button
+                    <button
                       className="em__button primary"
                       onClick={() => addField(init)}
                       type="button"
                     >
                       Add more
-                    </button> */}
+                    </button>
                   </div>
                 </React.Fragment>
               </Form>

@@ -244,6 +244,8 @@ model Vendor {
     updatedAt           DateTime        @updatedAt
     VendorImage         VendorImage[]
     Reviews             Reviews[]
+    stripe_account_id   String?
+    stripe_connected    Boolean         @default(false)
 }
 
 enum RequestType {
