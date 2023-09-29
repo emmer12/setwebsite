@@ -24,11 +24,11 @@ export async function generate(data: any, user: any) {
 
     const res = await genRes.json();
 
-    // const { error }: any = await debitPoint(amount, user, constants.payment_type.AI_DEBIT);
+    const { error }: any = await debitPoint(amount, user, constants.payment_type.AI_DEBIT);
 
-    // if (error) {
-    //   throw new Error(error.message);
-    // }
+    if (error) {
+      throw new Error(error.message);
+    }
     return { id: res.id };
   } catch (error) {
     return { error };
