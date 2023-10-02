@@ -6,8 +6,8 @@ export async function generate(data: any, user: any) {
   try {
     const amount = constants.points.AI
 
-    if (user.saf_points < amount) {
-      throw new Error("You have enough funds to set users");
+    if (user.ai_points < amount) {
+      throw new Error("You don't have enough funds");
     }
 
     const genRes: any = await fetch(`${process.env.AI_BASE_URL}/image/create`, {
@@ -29,8 +29,65 @@ export async function generate(data: any, user: any) {
     if (error) {
       throw new Error(error.message);
     }
-    return { id: res.id };
+    return { id: res.id, };
+    // return { id: "qvqgpdJgOu3pqH" };
   } catch (error) {
+    return { error };
+  }
+}
+
+
+export async function save(data: any, id: string) {
+  try {
+
+    const saved = await prisma.savedImages.findFirst({
+      where: {
+        url: data.url
+      }
+    })
+
+    if (saved) throw new Error("Image has already been saved")
+
+    const record = await prisma.savedImages.create({
+      data: {
+        userId: id,
+        collection_id: data.collection_id,
+        url: data.url
+      },
+    });
+    return { record };
+  }
+  catch (error) {
+    return { error };
+  }
+}
+
+
+export async function getAll(userId: string) {
+  try {
+    const images = await prisma.savedImages.findMany({
+      where: {
+        userId: userId
+      }
+    });
+    return { images };
+  }
+  catch (error) {
+    return { error };
+  }
+}
+
+
+export async function remove(id: string) {
+  try {
+    await prisma.savedImages.delete({
+      where: {
+        id: id
+      }
+    });
+    return { record: true };
+  }
+  catch (error) {
     return { error };
   }
 }

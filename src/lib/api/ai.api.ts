@@ -9,6 +9,12 @@ export const getImage = (id: string) => axios.post(`${process.env.NEXT_PUBLIC_AI
     { id: id }
 );
 
+export const saveImage = (data: any) => api.post(`${endpoint}/save`,
+    data);
+
+export const savedImages = () => api.get(`${endpoint}`).then((res) => res.data);
+export const removeImage = (id: string) => api.delete(`${endpoint}/${id}`);
+
 export const downloadImage = async (url: string) => {
     try {
         const response = await axios.get(url, { responseType: 'blob' });

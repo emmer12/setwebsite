@@ -181,8 +181,6 @@ export const createConversation = async (sender: any, receiver: any) => {
   });
 
 
-  console.log('conversation', conversation)
-
   if (!conversation) {
     const newConversation = await prisma.conversation.create({
       data: {

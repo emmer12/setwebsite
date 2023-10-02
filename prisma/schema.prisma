@@ -74,6 +74,7 @@ model User {
     Conversation         Conversation[]
     receiverConversation Conversation[] @relation("c_receiver")
     Reviews              Reviews[]
+    SavedImages          SavedImages[]
 }
 
 model VerificationRequest {
@@ -393,4 +394,13 @@ model Reviews {
     userId     String?    @db.ObjectId
     vendor     Vendor?    @relation(fields: [vendorId], references: [id])
     createdAt  DateTime   @default(now())
+}
+
+model SavedImages {
+    id            String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId        String?  @db.ObjectId
+    user          User?    @relation(fields: [userId], references: [id])
+    collection_id String
+    url           String
+    createdAt     DateTime @default(now())
 }

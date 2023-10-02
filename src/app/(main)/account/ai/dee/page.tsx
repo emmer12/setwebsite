@@ -7,8 +7,10 @@ import { useSession } from "next-auth/react";
 import { generateImage, getImage } from "@/lib/api/ai.api";
 import Image from "next/image";
 import AiImages from "@/components/AiImages";
-import { Close } from "@/components/icons";
+import { ArrowRight, Close } from "@/components/icons";
 import { NotificationManager } from "react-notifications";
+import { parseError } from "@/lib/utils";
+import Link from "next/link";
 
 enum ImgGenStatus {
   CREATING = "Creating",
@@ -22,7 +24,7 @@ const Page = () => {
   const [uri, setUri] = useState<string>("");
   const [images, setImages] = useState<string[] | undefined>(undefined);
   const [status, setStatus] = useState<ImgGenStatus | null>(null);
-
+  const [collection, setCollection] = useState<string>("");
   const promptRef = useRef<HTMLDivElement>(null);
   const promptBoxRef = useRef<HTMLDivElement>(null);
 
@@ -71,10 +73,10 @@ const Page = () => {
       setStatus(ImgGenStatus.CREATING);
       const resG = await generateImage(data);
       setStatus(ImgGenStatus.GENERATING);
-
+      setCollection(resG.data.id);
       const images: any = await fetchData(resG.data.id);
       if (!data) {
-        throw new Error("Image not retrived");
+        throw new Error("Image not retrieve");
       }
 
       setStatus(ImgGenStatus.COMPLETED);
@@ -90,8 +92,8 @@ const Page = () => {
       setTimeout(() => {
         setStatus(null);
       }, 5000);
-    } catch (err) {
-      alert(JSON.stringify(err));
+    } catch (err: any) {
+      parseError(err.response);
     } finally {
       setLoading(false);
     }
@@ -138,8 +140,13 @@ const Page = () => {
 
   return (
     <div>
-      <div className="header">
+      <div className="header flex justify-between">
         <h4 className="text-xl font-black">Write and get Designs Ai</h4>
+
+        <Link href="account/ai/saved" className="flex gap-2 items-center">
+          <span>Saved Images</span>
+          <ArrowRight />
+        </Link>
       </div>
 
       <div className="inline-flex bg-red-50 p-2 rounded my-4">
@@ -156,7 +163,12 @@ const Page = () => {
         <div className="ai__box">
           <div className="grid grid-cols-2 gap-3" ref={promptBoxRef}>
             {images.map((image, i) => (
-              <AiImages uri={image} setEdit={setEdit} key={i} />
+              <AiImages
+                uri={image}
+                setEdit={setEdit}
+                collection={collection}
+                key={i}
+              />
             ))}
           </div>
         </div>
