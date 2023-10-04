@@ -9,7 +9,7 @@ const Page = () => {
       </div>
 
       <div className="w-full sm:w-1/2">
-        <QuoteRequest close={() => null} />
+        <QuoteRequest />
       </div>
     </div>
   );

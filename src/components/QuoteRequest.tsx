@@ -27,7 +27,7 @@ const RequestForm = ({
   redirectUrl?: string;
   imageUrl?: string;
   isPopup?: boolean;
-  close:()=> void;
+  close?: () => void;
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<"guest" | "customer">("guest");
@@ -139,7 +139,7 @@ const RequestForm = ({
         NotificationManager.success("Request created!");
 
         if (isPopup) {
-          close();
+          if (close !== undefined) close();
         } else {
           router.push(redirectUrl || "/account/my-requests");
         }
