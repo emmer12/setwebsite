@@ -82,7 +82,10 @@ const Backdrops = () => {
               <div>
                 {/* <Button onClick={handleQuote} text="Request Quote" /> */}
               </div>
-              <QuoteRequest redirectUrl="/account/my-requests" />
+              <QuoteRequest
+                redirectUrl="/account/my-requests"
+                close={() => null}
+              />
             </div>
 
             {/* <div className="about__service my-5">
