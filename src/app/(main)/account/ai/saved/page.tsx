@@ -31,6 +31,7 @@ const Page = () => {
                 key={i}
                 saved={true}
                 setEdit={() => null}
+                setRequest={() => null}
               />
             ))}
           </div>
