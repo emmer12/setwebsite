@@ -32,22 +32,24 @@ const readFile = (
     form.parse(req, (err, fields, files) => {
       const file: any = files.doc;
 
-      const allowedExtensions = [
-        "pdf",
-        "img",
-        "png",
-        "jpg",
-        "jpeg",
-        "ppt",
-        "doc",
-        "docx",
-        "pptx",
-      ];
-      const fileExtension = getFileExtension(file.originalFilename);
+      if (file) {
+        const allowedExtensions = [
+          "pdf",
+          "img",
+          "png",
+          "jpg",
+          "jpeg",
+          "ppt",
+          "doc",
+          "docx",
+          "pptx",
+        ];
+        const fileExtension = getFileExtension(file.originalFilename);
 
-      if (!allowedExtensions.includes(fileExtension))
-        reject("File must be pdf");
-      if (err) reject(err);
+        if (!allowedExtensions.includes(fileExtension))
+          reject("File must be pdf");
+        if (err) reject(err);
+      }
       resolve({ fields, files });
     });
   });
@@ -124,6 +126,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           location: data.location,
           additional_request: data.additional_request,
           docUrl: data.docUrl,
+          imageUrl: data.imageUrl,
           userId: token.id,
           vendorsIds: {
             connect: [...vendors.map((vendor: any) => vendor.id)].map(

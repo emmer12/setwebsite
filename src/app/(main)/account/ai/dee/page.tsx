@@ -11,6 +11,8 @@ import { ArrowRight, Close } from "@/components/icons";
 import { NotificationManager } from "react-notifications";
 import { parseError } from "@/lib/utils";
 import Link from "next/link";
+import Modal from "@/components/modal";
+import QuoteRequest from "@/components/QuoteRequest";
 
 enum ImgGenStatus {
   CREATING = "Creating",
@@ -25,6 +27,8 @@ const Page = () => {
   const [images, setImages] = useState<string[] | undefined>(undefined);
   const [status, setStatus] = useState<ImgGenStatus | null>(null);
   const [collection, setCollection] = useState<string>("");
+  const [open, setOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
   const promptRef = useRef<HTMLDivElement>(null);
   const promptBoxRef = useRef<HTMLDivElement>(null);
 
@@ -75,8 +79,12 @@ const Page = () => {
       setStatus(ImgGenStatus.GENERATING);
       setCollection(resG.data.id);
       const images: any = await fetchData(resG.data.id);
-      if (!data) {
-        throw new Error("Image not retrieve");
+      if (!images) {
+        NotificationManager.error(
+          "Sorry, we couldn't generate the images",
+          "Not Found"
+        );
+        return;
       }
 
       setStatus(ImgGenStatus.COMPLETED);
@@ -100,7 +108,6 @@ const Page = () => {
   };
 
   const clearData = () => {
-    setCategory("");
     setPrompt("");
     setMode("create");
     setUri("");
@@ -168,6 +175,10 @@ const Page = () => {
                 setEdit={setEdit}
                 collection={collection}
                 key={i}
+                setRequest={(uri) => {
+                  setOpen(true);
+                  setImageUrl(uri);
+                }}
               />
             ))}
           </div>
@@ -229,6 +240,14 @@ const Page = () => {
           />
         </div>
       </div>
+
+      <Modal size="small" open={open} close={() => setOpen(false)}>
+        <QuoteRequest
+          imageUrl={imageUrl}
+          isPopup={true}
+          close={() => setOpen(false)}
+        />
+      </Modal>
     </div>
   );
 };

@@ -128,6 +128,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           services: vendor.services,
           docUrl: data.docUrl,
           userId: token.id,
+          additional_request: data.additional_request,
+          imageUrl: data.imageUrl,
+          occasion: data.occasion
         });
 
         // TODO Notify vendor

@@ -680,7 +680,6 @@ export function parseError(errorRes: any) {
     );
   } else {
     NotificationManager.error(
-
       "Opps, something went wrong",
       "Error Message"
     );
@@ -751,4 +750,4 @@ export function getContentType(fileExtension: string) {
 }
 
 
-export const formatDate = (date:string)=> format(new Date(date),'yyyy-MM-dd HH:mm:ss')
+export const formatDate = (date: string) => format(new Date(date), 'yyyy-MM-dd HH:mm:ss')

@@ -17,24 +17,24 @@ const RequestCard = ({
   isVendor: boolean;
 }) => {
   return (
-    <div className="my-3 shadow p-2">
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="h-[100px] sm:h-[150px] w-[100px] sm:w-[150px] display flex-shrink-0">
+    <div className="my-3 shadow-sm  p-2">
+      <div className="flex flex-col sm:flex-row gap-3 items-center">
+        <div className="h-[100px] sm:h-[120px] w-[100px] sm:w-[120px] display flex-shrink-0">
           <Image
-            height={150}
-            width={140}
+            height={120}
+            width={120}
             src={request.imageUrl || "/assets/images/designs.jpg"}
             alt="Designs"
           />
         </div>
         <div className="flex-1">
-          <h4 className="text-xl">{request.title}</h4>
-          <div className="bg-red-200 text-red-800 inline-block rounded-full px-3 py-1">
+          <h4 className="text-xl my-1">{request.title}</h4>
+          <div className="text-red-800 inline-block py-1 text-base">
             <strong>Deadline: </strong>
             {format(new Date(request.deadline), "yyyy-MM-dd HH:mm:ss")}
           </div>
         </div>
-        <div className="self-center">
+        <div className="self-end">
           {isVendor ? (
             <Button
               text="Submit Quote"

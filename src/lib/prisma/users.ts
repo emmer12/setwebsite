@@ -108,6 +108,9 @@ export async function getRequests(page: any, limit: number, id: any) {
       where: {
         userId: id,
       },
+      orderBy: {
+        createdAt: 'desc'
+      }
     });
 
     const totalCount = await prisma.requests.count();

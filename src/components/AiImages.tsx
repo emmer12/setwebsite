@@ -1,22 +1,26 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Download, EditIcon, Save } from "./icons";
 import { downloadImage, downloadPdf, saveImage } from "@/lib/api/ai.api";
 import { parseError, parseSuccess } from "@/lib/utils";
+import Button from "./Button";
 
 const AiImages = ({
   uri,
-  setEdit,
   collection,
   saved = false,
+  setEdit,
+  setRequest,
 }: {
   uri: string;
-  setEdit: (uri: string) => void;
   collection?: string;
   saved?: boolean;
+  setEdit: (uri: string) => void;
+  setRequest: (uri: string) => void;
 }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(document.createElement("img"));
 
   const handleSave = async (url: string) => {
     if (loading) return;
@@ -37,7 +41,7 @@ const AiImages = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative min-h-[200px]">
       <div className="actions absolute top-1 flex gap-2 right-1">
         {!saved && (
           <div
@@ -72,13 +76,28 @@ const AiImages = ({
           )}
         </div>
       </div>
-      <img src={uri} alt="Generated Image" />
+      <img
+        ref={imageRef}
+        src={uri}
+        alt="Generated Image"
+        style={{ display: "none" }}
+        onLoad={() => (imageRef.current.style.display = "block")}
+      />
       {!saved && (
-        <div
-          onClick={() => setEdit(uri)}
-          className="bg-white p-2 rounded cursor-pointer absolute bottom-1 flex gap-2 right-1"
-        >
-          <EditIcon />
+        <div className="absolute bottom-1 flex gap-2 right-1 left-1 justify-between">
+          <div
+            onClick={() => setEdit(uri)}
+            className="bg-white p-2 rounded cursor-pointer bottom-1 flex gap-2 right-1"
+          >
+            <EditIcon />
+          </div>
+          <div className="position">
+            <Button
+              onClick={() => setRequest(uri)}
+              classNames="sm"
+              text="Request Quote"
+            />
+          </div>
         </div>
       )}
     </div>

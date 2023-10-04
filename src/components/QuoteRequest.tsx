@@ -18,7 +18,17 @@ import Api from "@/lib/api";
 
 const animatedComponents = makeAnimated();
 
-const RequestForm = ({ redirectUrl }: { redirectUrl?: string }) => {
+const RequestForm = ({
+  redirectUrl,
+  imageUrl,
+  isPopup,
+  close,
+}: {
+  redirectUrl?: string;
+  imageUrl?: string;
+  isPopup?: boolean;
+  close:()=> void;
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<"guest" | "customer">("guest");
   const [file, setFile] = useState(null);
@@ -121,10 +131,18 @@ const RequestForm = ({ redirectUrl }: { redirectUrl?: string }) => {
           formData.append("doc", file);
         }
 
+        if (imageUrl) {
+          formData.append("imageUrl", imageUrl);
+        }
+
         const res = await createRequest(formData);
         NotificationManager.success("Request created!");
 
-        router.push(redirectUrl || "/account/my-requests");
+        if (isPopup) {
+          close();
+        } else {
+          router.push(redirectUrl || "/account/my-requests");
+        }
       } catch (error: any) {
         if (error?.response?.status == 400) {
           const err = error?.response?.data;
@@ -184,6 +202,15 @@ const RequestForm = ({ redirectUrl }: { redirectUrl?: string }) => {
   return (
     <section>
       <form onSubmit={formik.handleSubmit}>
+        {imageUrl && (
+          <div className="h-[80px] w-[80px] my-2 relative">
+            <img
+              src={imageUrl}
+              alt="Generated Image"
+              className="rounded object-cover h-full w-full"
+            />
+          </div>
+        )}
         <div className="field">
           <input
             onChange={formik.handleChange}
