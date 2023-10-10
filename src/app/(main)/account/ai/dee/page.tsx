@@ -48,11 +48,11 @@ const Page = () => {
     },
     {
       label: "Exhibition Stand Design",
-      value: "wedding",
+      value: "exhibition",
     },
     {
       label: "Wedding Stage Design",
-      value: "weddings-exhibitio",
+      value: "wedding",
     },
   ]);
   const [category, setCategory] = useState("");
@@ -168,7 +168,10 @@ const Page = () => {
 
       {images && (
         <div className="ai__box">
-          <div className="grid grid-cols-2 gap-3" ref={promptBoxRef}>
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2  gap-3"
+            ref={promptBoxRef}
+          >
             {images.map((image, i) => (
               <AiImages
                 uri={image}
@@ -190,7 +193,7 @@ const Page = () => {
           <h4>Select your design category and fill in your theme details</h4>
         </div>
 
-        <div className="flex">
+        <div className="flex flex-wrap gap-3">
           {categories.map((cat) => (
             <div
               className={classNames("em__badge", {

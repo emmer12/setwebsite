@@ -202,7 +202,7 @@ export default function RootLayout({
                   </motion.div>
                 )}
               </AnimatePresence>
-              <div className="body flex-1">{children}</div>
+              <div className="body flex-1 w-full">{children}</div>
             </div>
           </div>
         </div>

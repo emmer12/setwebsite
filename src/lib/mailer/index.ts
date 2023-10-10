@@ -38,7 +38,7 @@ transporter.use("compile", hbs(handlebarOptions));
 
 export const sendBackdropPurchaseEmail = async (data: any) => {
   await transporter.sendMail({
-    from: `${process.env.ADMIN_EMAIL} ${"set@mail.com"}`,
+    from: `SetEvents <${process.env.ADMIN_EMAIL}>`,
     to: data.email,
     subject: `Backdrop Purchase  File`,
     // @ts-ignore-next-line
@@ -56,7 +56,7 @@ export const sendBackdropPurchaseEmail = async (data: any) => {
 
 export const sendQuoteRequestEmail = async (data: any) => {
   await transporter.sendMail({
-    from: `${process.env.ADMIN_EMAIL} ${"set@mail.com"}`,
+    from: `SetEvents <${process.env.ADMIN_EMAIL}>`,
     to: data.company_email,
     subject: `New Quote Requests`,
     // @ts-ignore-next-line
@@ -74,7 +74,7 @@ export const sendQuoteRequestEmail = async (data: any) => {
 
 export const sendEventQuoteRequestEmail = async (data: any, id: string) => {
   await transporter.sendMail({
-    from: `${process.env.ADMIN_EMAIL} ${"set@mail.com"}`,
+    from: `SetEvents <${process.env.ADMIN_EMAIL}>`,
     to: data.company_email,
     subject: `Event Quote Request`,
     // @ts-ignore-next-line
@@ -92,7 +92,7 @@ export const sendEventQuoteRequestEmail = async (data: any, id: string) => {
 
 export const sendTestEmail = async () => {
   await transporter.sendMail({
-    from: `${process.env.ADMIN_EMAIL}`,
+    from: `SetEvents <${process.env.ADMIN_EMAIL}>`,
     to: "example@mail.com",
     subject: `Email test `,
     // @ts-ignore-next-line
@@ -109,7 +109,7 @@ export const sendTestEmail = async () => {
 export const sendAdminNotification = async () => {
   try {
     await transporter.sendMail({
-      from: `${process.env.ADMIN_EMAIL}`,
+      from: `SetEvents <${process.env.ADMIN_EMAIL}>`,
       to: process.env.ADMIN_EMAIL,
       subject: `New Vendor Notification`,
       // @ts-ignore-next-line
@@ -131,7 +131,7 @@ export const sendAdminNotification = async () => {
 export const testNotification = async () => {
   try {
     await transporter.sendMail({
-      from: `info@setevents.co`,
+      from: `SetEvents <info@setevents.co>`,
       to: 'info@setevents.co',
       subject: `New Vendor Notification`,
       // @ts-ignore-next-line
@@ -152,7 +152,7 @@ export const testNotification = async () => {
 
 export const sendQuoteNotification = async (data: any) => {
   await transporter.sendMail({
-    from: `${process.env.ADMIN_EMAIL}`,
+    from: `SetEvents <${process.env.ADMIN_EMAIL}>`,
     to: data.email,
     subject: `New Quote Notification`,
     // @ts-ignore-next-line
@@ -171,7 +171,7 @@ export const sendQuoteNotification = async (data: any) => {
 
 export const sendResetPasswordEmail = async (data: any, token: string) => {
   await transporter.sendMail({
-    from: `${process.env.ADMIN_EMAIL}`,
+    from: `SetEvents <${process.env.ADMIN_EMAIL}>`,
     to: data.email,
     subject: `Reset Password Notification`,
     // @ts-ignore-next-line
@@ -179,6 +179,24 @@ export const sendResetPasswordEmail = async (data: any, token: string) => {
     context: {
       ...assets,
       link: generatePasswordResetLink(token),
+    },
+  });
+
+  return true;
+};
+
+
+export const sendSetEmail = async (data: any) => {
+  await transporter.sendMail({
+    from: `SetEvents <${process.env.ADMIN_EMAIL}>`,
+    to: data.email,
+    subject: `Set and Forget Notification`,
+    // @ts-ignore-next-line
+    template: "saf", //
+    context: {
+      ...assets,
+      message: "You have a new text request",
+      ...data
     },
   });
 

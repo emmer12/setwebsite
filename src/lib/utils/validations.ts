@@ -131,3 +131,9 @@ export const ratingSchema = z.object({
   message: z.string().min(1, { message: "Message is required" }),
   rate: z.number().min(0, { message: "Rating is required" }),
 });
+
+
+export const safPushSchema = z.object({
+  user: z.string().min(1, { message: "user is required" }),
+  category: z.string().min(1, { message: "Category is required" }),
+});
