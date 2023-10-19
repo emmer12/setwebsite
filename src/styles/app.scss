@@ -184,6 +184,10 @@ input[type="number"] {
   font-family: "infinity";
   color: #986a47;
   white-space: nowrap;
+
+  &.pitch {
+    color: #f7b595;
+  }
 }
 
 .em__body__wrapper {

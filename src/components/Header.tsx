@@ -102,7 +102,7 @@ const Header = () => {
             <div className="inner">
               <div className="em__side">
                 <div className="right">
-                  <div className="flex items-center gap-2">
+                  {/* <div className="flex items-center gap-2">
                     <span>EN</span>
 
                     <svg
@@ -120,7 +120,7 @@ const Header = () => {
                         xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAAaUlEQVQImX3OIRKCYBiE4QeGYLF4CE5AsGkgGb2AcjSG6gyQTAaiweMYnXG+8DsE5E27s2/YrDw0N+zwtswGnwIdhj9S4ppjRLUi1WhDDF7YL0gnPCIkMXjiOOtn3FOJj3MmXLBF/xvwBd5MDQUMYfROAAAAAElFTkSuQmCC"
                       />
                     </svg>
-                  </div>
+                  </div> */}
                   <div className="flex items-center gap-2">
                     <span>USD</span>
 
@@ -225,10 +225,10 @@ const Header = () => {
             <div className="flex em__align__center">
               <div className="em__body__wrapper">
                 <div className="em__inner">
-                  <div className="em__right">
+                  <div className="em__right flex-1">
                     <ul>
                       <li>
-                        <a href="#about">About</a>
+                        <Link href="/vendor/onboard">Vendor Registration</Link>
                       </li>
                       <li className="relative">
                         <div
@@ -266,11 +266,7 @@ const Header = () => {
                                   Vendor Registration
                                 </Link>
                               </li>
-                              <li className="py-3">
-                                <Link href="/design-services">
-                                  Dee Ultra Subscription system
-                                </Link>
-                              </li>
+
                               <li className="py-3">
                                 <a href=""> Design Download </a>
                               </li>
@@ -280,13 +276,16 @@ const Header = () => {
                               <li className="py-3">
                                 <Link href="/vendor">Event Connections</Link>
                               </li>
+                              <li className="py-3">
+                                <Link href="/auth/login">Login</Link>
+                              </li>
                             </motion.ul>
                           )}
                         </AnimatePresence>
                       </li>
                     </ul>
                   </div>
-                  <Link href="/" className="em__logo">
+                  <Link href="/" className="em__logo ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -302,7 +301,7 @@ const Header = () => {
                       />
                     </svg>
                   </Link>
-                  <div className="em__left">
+                  <div className="em__left flex-1 flex justify-end">
                     <ul>
                       {status === "unauthenticated" && (
                         <li>
@@ -391,11 +390,7 @@ const Header = () => {
                               Vendor Registration
                             </Link>
                           </li>
-                          <li className="py-1">
-                            <Link href="/design-services">
-                              Dee Ultra Subscription system
-                            </Link>
-                          </li>
+
                           <li className="py-1">
                             <a href=""> Design Download </a>
                           </li>
@@ -404,6 +399,9 @@ const Header = () => {
                           </li>
                           <li className="py-1">
                             <a href="">Event Connections</a>
+                          </li>
+                          <li className="py-3">
+                            <Link href="/auth/login">Login</Link>
                           </li>
                         </motion.ul>
                       )}

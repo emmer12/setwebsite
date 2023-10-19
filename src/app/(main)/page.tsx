@@ -1,6 +1,8 @@
+import Button from "@/components/Button";
 import { BackdropRentals, Backdrops } from "@/components/backdrops";
 import SBackdrops from "@/components/backdrops/BackdropSlide";
 import HeroImageComponent from "@/components/client/HeroImageComponent";
+import { ArrowRight } from "@/components/icons";
 import { Testimonies } from "@/components/testimonies";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,20 +14,19 @@ export default function Home() {
         <div className="container">
           <div className="em__body__wrapper">
             <div className="em__flex">
-              <div className="em__hero__left">
+              <div className="em__hero__left pr-4">
                 <h2>
-                  <span className="em__fancy__text">Welcome</span> to
+                  <span className="em__fancy__text">We</span> are a
                   <br />
                   <span className="em__fancy__text sp">
-                    Set Events{" "}
+                    Premier Event Platform{" "}
                     <span className="font-['acaslonpro-regular']">,</span>
                   </span>{" "}
                 </h2>
                 <p>
-                  where imagination meets elegance. Explore our Design Downloads
-                  for stunning design files, unleash the creativity of our
-                  Creative AI Studio, or discover a world of possibilities with
-                  our curated Event Connections
+                  providing Design Downloads for stunning backdrops, Creative AI
+                  Studio for personalized designs, and Event Connections with
+                  top vendors and planners.
                 </p>
                 <a href="#about" className="em__button primary mt-4">
                   Read More
@@ -64,22 +65,21 @@ export default function Home() {
           <div className="em__inner">
             <div className="em__header">
               <h1>About</h1>
-              <span className="em__fancy__text">Set Events</span>
+              <span className="em__fancy__text pitch">Set Events</span>
             </div>
 
-            <p>
-              We are a premier event platform, offering a seamless and
-              unforgettable experience. With our diverse range of services,
-              including Design Downloads for breathtaking backdrops and stands,
-              a Creative AI Studio for personalized event designs, and Event
-              Connections to connect you with top-notch vendors and planners, we
-              have all you need to make your event exceptional. Experience the
-              convenience of our &apos;Set and Forget&apos; feature, where you
-              can subscribe and provide us with your family and friends&apos;
-              birthdays, and let our advanced AI technology generate a variety
-              of celebratory options, from captivating backdrops to delectable
-              cakes. Let Set Events transform your event into a cherished memory
-              that will last a lifetime.
+            <p className="pb-4">
+              Set Events is your premier event platform, dedicated to delivering
+              unforgettable experiences. With us, you gain access to a curated
+              selection of services that set your events apart. Explore our
+              Design Downloads, where you can discover stunning backdrops and
+              stands to transform your event space. Get creative with our
+              innovative Creative AI Studio, allowing you to craft personalized
+              event designs that reflect your unique vision. And when it comes
+              to connecting with the best in the industry, our Event Connections
+              feature links you with top vendors, venues and expert planners who
+              can bring your event to life. At Set Events, we&lsquo;re here to
+              elevate your gatherings to the extraordinary.
             </p>
             <div className="bottom__about">
               <i>
@@ -206,34 +206,21 @@ export default function Home() {
                     Experience the power of creativity. Meet Dee, your Digital
                     Designer, who will amaze you with stunning event backdrops,
                     exhibition stand concepts, and captivating wedding stage
-                    designs. Say goodbye to the hassle of searching for the
-                    perfect design and let Dee provide you with a variety of
-                    options at an affordable cost. Whether you&apos;re planning
-                    a birthday, engagement, baby shower, or any special event,
-                    Dee will bring your vision to life. Subscribe now and unlock
-                    a world of endless inspiration and remarkable design.
+                    designs as well as cake designs. Say goodbye to the hassle
+                    of searching for the perfect design and let Dee provide you
+                    with a variety of options at an affordable cost. Whether
+                    you&lsquo;re planning a birthday, engagement, baby shower,
+                    or any special event, Dee will bring your vision to life.
+                    Register now and get 10 designs free.
                   </p>
                 </div>
                 <div className="em__spacer" style={{ height: "20px" }}></div>
                 <div className="em__our__action">
-                  <button className="em__button primary">
-                    Order Now
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      width="19"
-                      height="5"
-                      viewBox="0 0 19 5"
-                    >
-                      <image
-                        id="right-arrow_35_copy_2"
-                        data-name="right-arrow (35) copy 2"
-                        width="19"
-                        height="5"
-                        xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
-                      />
-                    </svg>
-                  </button>
+                  <Button
+                    to="/auth/register"
+                    text="Register"
+                    RightIcon={<ArrowRight />}
+                  />
                 </div>
               </div>
             </div>
@@ -251,36 +238,21 @@ export default function Home() {
 
             <p>
               Unlock the convenience of our Set and Forget Feature! Simply
-              subscribe and input your friends and family&apos;s details to
+              register and input your friends and family&lsquo;s details to
               receive personalized event reminders and backdrop designs that
               match their preferences. Enjoy efficient and affordable design
               solutions and create unforgettable events effortlessly.
             </p>
-            <p>
-              Subscribe today and start designing your perfect event
-              hassle-free.
+            <p className="pb-4">
+              Register 7 people today for free backdrop designs and special
+              celebratory packages from our partners.
             </p>
 
-            <Link href="/set-and-forget">
-              <button className="em__button primary">
-                Subscribe
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                  width="19"
-                  height="5"
-                  viewBox="0 0 19 5"
-                >
-                  <image
-                    id="right-arrow_35_copy_2"
-                    data-name="right-arrow (35) copy 2"
-                    width="19"
-                    height="5"
-                    xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAFCAYAAACn39dKAAAAVElEQVQYla3QsQ1AUBhF4U+oTaFSSERjBBYxicQCljCJCaxhAQX5V3jPTW5zi5OTKzMbLhSBqVCiTmQ2aHFijmHH+0OP0BvQJZotGPFgyv1sxY0ePoJ2GONIaxKpAAAAAElFTkSuQmCC"
-                  />
-                </svg>
-              </button>
-            </Link>
+            <Button
+              text="Register"
+              to="auth/register"
+              RightIcon={<ArrowRight />}
+            />
           </div>
         </div>
       </div>
