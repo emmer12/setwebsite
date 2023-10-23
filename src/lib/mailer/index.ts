@@ -202,3 +202,22 @@ export const sendSetEmail = async (data: any) => {
 
   return true;
 };
+
+
+
+export const sendContactMail = async (data: any) => {
+  await transporter.sendMail({
+    from: `SetEvents <${process.env.ADMIN_EMAIL}>`,
+    to: `${process.env.ADMIN_EMAIL}`,
+    subject: `Contact Form Notification`,
+    // @ts-ignore-next-line
+    template: "contact", //
+    context: {
+      ...assets,
+      ...data,
+      date: Date.now()
+    },
+  });
+
+  return true;
+};

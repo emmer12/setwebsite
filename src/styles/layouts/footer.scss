@@ -91,7 +91,7 @@
   }
 
   .em__conversion {
-    position: fixed;
+    // position: fixed;
     left: 50px;
     bottom: 50px;
     background: url(/assets/images/bg6.png);
@@ -110,6 +110,14 @@
     &.hidden {
       opacity: 0;
       pointer-events: none;
+    }
+
+    @media (max-width: 640px) {
+      width: 100px;
+      height: 50px;
+      background-size: 100px 50px;
+      left: 20px;
+      bottom: 20px;
     }
   }
 }

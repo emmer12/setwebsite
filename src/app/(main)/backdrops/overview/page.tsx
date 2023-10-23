@@ -19,8 +19,11 @@ const Backdrops = () => {
       <div className="em__banner">
         <div className="inner">
           <h1>
-            Unleash Your Event&#39;s
-            <span>Creativity with Our Captivating Downloadable Designs</span>
+            Unleash Your Event&#39;s <br />
+            <p className="mt-3 text-center leading-10">
+              Creativity with Our Captivating Downloadable
+              <span>Designs</span>
+            </p>{" "}
           </h1>
           {/* 
           <div className="em__breadcrome">

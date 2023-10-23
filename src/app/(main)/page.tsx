@@ -18,8 +18,9 @@ export default function Home() {
                 <h2>
                   <span className="em__fancy__text">We</span> are a
                   <br />
+                  <span> Premier Event </span>
                   <span className="em__fancy__text sp">
-                    Premier Event Platform{" "}
+                    Platform{" "}
                     <span className="font-['acaslonpro-regular']">,</span>
                   </span>{" "}
                 </h2>
@@ -65,7 +66,7 @@ export default function Home() {
           <div className="em__inner">
             <div className="em__header">
               <h1>About</h1>
-              <span className="em__fancy__text pitch">Set Events</span>
+              <span className="em__fancy__text ">Set Events</span>
             </div>
 
             <p className="pb-4">
@@ -96,7 +97,7 @@ export default function Home() {
             <div className="em__inner">
               <div className="em__header h-b">
                 <h1>Our</h1>
-                <span className="em__fancy__text">Design Downloads</span>
+                <span className="em__fancy__text pitch">Design Downloads</span>
               </div>
 
               <SBackdrops />
@@ -196,7 +197,10 @@ export default function Home() {
               <div className="details">
                 <div className="em__header left mb-[40px]">
                   <h1>Our</h1>
-                  <span className="em__fancy__text ai" style={{ top: "-10px" }}>
+                  <span
+                    className="em__fancy__text ai top-[45px] sm:top-[-10px]"
+                    style={{ top: "-10px" }}
+                  >
                     Creative AI studio
                   </span>
                 </div>
