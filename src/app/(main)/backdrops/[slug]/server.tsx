@@ -186,7 +186,7 @@ const Page = async ({ params }: PageProps) => {
                   <hr className="details" />
                   <div className="em__spacer" style={{ height: "20px" }}></div>
 
-                  <AddCardComponent backdrop={data.backdrop} />
+                  {/* <AddCardComponent backdrop={data.backdrop} /> */}
 
                   <div style={{ textAlign: "center" }}>
                     <strong>100% secure online checkout</strong>
