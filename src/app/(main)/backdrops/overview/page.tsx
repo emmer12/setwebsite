@@ -1,17 +1,10 @@
-"use client";
 import Button from "@/components/Button";
-import ServiceCard from "@/components/ServicePrice";
-import Backdrop from "@/components/backdrops/Backdrop";
 import { ArrowRight } from "@/components/icons";
-import { getBackdrops } from "@/lib/api/backdrop.api";
-import { IBackdrop } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useMemo } from "react";
-import useSWR from "swr";
 
 const Backdrops = () => {
-  const { data, error, isLoading } = useSWR("/api/backdrops", getBackdrops);
+  // const { data, error, isLoading } = useSWR("/api/backdrops", getBackdrops);
 
   return (
     <div>
@@ -19,41 +12,19 @@ const Backdrops = () => {
       <div className="em__banner">
         <div className="inner">
           <h1>
-            Unleash Your Event&#39;s <br />
+            {/* Unleash Your Event&#39;s <br /> */}
             <p className="mt-3 text-center leading-10">
-              Creativity with Our Captivating Downloadable
-              <span>Designs</span>
+              Design
+              <span>Downloads</span>
             </p>{" "}
           </h1>
-          {/* 
-          <div className="em__breadcrome">
-            <Link href="/">Home</Link>
-
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              width="8"
-              height="5"
-              viewBox="0 0 8 5"
-            >
-              <image
-                id="right-arrow_34_copy"
-                data-name="right-arrow (34) copy"
-                width="8"
-                height="5"
-                xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAZElEQVQImVXNwQmCAByF8V/ivS081ghSl6QtnMFLIwQ5kAQ5gN1qjVxAAuUfCvkd3/ceb5Pl5QdX1NZUuCTocMPxzx/mwTPFGQ0e2GJEi3u4KAQFXujnwhunEHGxsMOAL/a/EBP9gRHwPbUJlQAAAABJRU5ErkJggg=="
-              />
-            </svg>
-
-            <span>Dee Digital Designer</span>
-          </div> */}
         </div>
       </div>
       <div className="em__dee bg-white">
         <div className="container">
           <div className="em__body__wrapper">
             <div className="em__main__body em_backdrop__grid">
-              {isLoading ? (
+              {/* {isLoading ? (
                 <span>Loading..</span>
               ) : (
                 data?.backdrops
@@ -68,7 +39,33 @@ const Backdrops = () => {
                       />
                     </div>
                   ))
-              )}
+              )} */}
+
+              <div className="backdrop__image">
+                <Image
+                  src={"/assets/images/Picture1.png"}
+                  height={240}
+                  width={300}
+                  alt="Backdrop Image"
+                />
+              </div>
+              <div className="backdrop__image">
+                <Image
+                  src={"/assets/images/Picture2.png"}
+                  height={240}
+                  width={300}
+                  alt="Backdrop Image"
+                />
+              </div>
+
+              <div className="backdrop__image">
+                <Image
+                  src={"/assets/images/Picture3.png"}
+                  height={240}
+                  width={300}
+                  alt="Backdrop Image"
+                />
+              </div>
             </div>
             <div className="text-center my-6">
               <Link href="/backdrops">

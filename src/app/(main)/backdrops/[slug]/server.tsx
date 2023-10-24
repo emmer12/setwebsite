@@ -71,38 +71,40 @@ const Page = async ({ params }: PageProps) => {
 
                   <div className="price">
                     <strong>LICENSE</strong>
-                    <div className="flex items-center">
-                      <span>Personal:</span>
-                      <span className="c-price">
-                        {formattedMoney(data?.backdrop?.personal_price)}
-                      </span>
-
-                      {data?.backdrop?.discount > 0 && (
-                        <span className="o-price">
-                          AED{" "}
-                          {getDiscount(
-                            data?.backdrop?.personal_price,
-                            data?.backdrop?.discount
-                          )}
+                    <div className="flex gap-3">
+                      <button className="em__button flex items-center">
+                        <span>Personal:</span>
+                        <span className="c-price">
+                          {formattedMoney(data?.backdrop?.personal_price)}
                         </span>
-                      )}
-                    </div>
 
-                    <div className="flex items-center">
-                      <span>Commercial:</span>
-                      <span className="c-price">
-                        {formattedMoney(data?.backdrop?.commercial_price)}
-                      </span>
+                        {data?.backdrop?.discount > 0 && (
+                          <span className="o-price">
+                            AED{" "}
+                            {getDiscount(
+                              data?.backdrop?.personal_price,
+                              data?.backdrop?.discount
+                            )}
+                          </span>
+                        )}
+                      </button>
 
-                      {data?.backdrop?.discount > 0 && (
-                        <span className="o-price">
-                          AED{" "}
-                          {getDiscount(
-                            data?.backdrop?.commercial_price,
-                            data?.backdrop?.discount
-                          )}
+                      <div className="flex items-center">
+                        <span>Commercial:</span>
+                        <span className="c-price">
+                          {formattedMoney(data?.backdrop?.commercial_price)}
                         </span>
-                      )}
+
+                        {data?.backdrop?.discount > 0 && (
+                          <span className="o-price">
+                            AED{" "}
+                            {getDiscount(
+                              data?.backdrop?.commercial_price,
+                              data?.backdrop?.discount
+                            )}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -133,7 +135,7 @@ const Page = async ({ params }: PageProps) => {
 
                   <div className="d_items">
                     <h1>Available Status:</h1>
-                    <span>Available digital file</span>
+                    <span>Available Digital Production File</span>
                   </div>
                   <div className="em__spacer" style={{ height: "10px" }}></div>
 

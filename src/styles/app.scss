@@ -406,6 +406,33 @@ a {
   }
 }
 
+.em__button__price {
+  border: 1px solid #f8b79a;
+  color: #000;
+  padding: 4px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 18px;
+  border-bottom-left-radius: 8px;
+  transition: background 6s ease;
+  font-weight: 700;
+  font-family: "acaslonpro-regular";
+  text-transform: uppercase;
+  position: relative;
+
+  &:hover,
+  &.active {
+    background: linear-gradient(to bottom, #f8b79a, #eeab6f);
+  }
+}
+
 .swiper {
   width: 100% !important;
   // height: 300px;

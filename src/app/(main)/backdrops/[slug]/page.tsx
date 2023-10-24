@@ -1,6 +1,6 @@
 "use client";
 import { DetailsSlide } from "@/components/backdrops";
-import { IBackdropDetails } from "@/types";
+import { IBackdropDetails, IBackdropFileType } from "@/types";
 import { formattedMoney, getDiscount } from "@/lib/utils";
 import { Instagram, LinkedIn, Twitter } from "@/components/icons";
 import BackdropDetails from "@/components/backdrops/clients/BackdropDetails";
@@ -8,6 +8,9 @@ import AddCardComponent from "@/components/backdrops/clients/AddCardComponent";
 import Backdrop from "@/components/backdrops/Backdrop";
 import useSWR from "swr";
 import { getBackdrop } from "@/lib/api/backdrop.api";
+import { useState } from "react";
+import classnames from "classnames";
+
 interface PageProps {
   params: { slug: string };
 }
@@ -23,6 +26,9 @@ interface PageProps {
 
 const Page = ({ params }: PageProps) => {
   const { data, error, isLoading } = useSWR(`${params.slug}`, getBackdrop);
+  const [license, setLicense] = useState<IBackdropFileType>(
+    IBackdropFileType.personal_price
+  );
 
   // const data = await getBackdrop(params.slug);
 
@@ -62,38 +68,61 @@ const Page = ({ params }: PageProps) => {
 
                   <div className="price">
                     <strong>LICENSE</strong>
-                    <div className="flex items-center">
-                      <span>Personal:</span>
-                      <span className="c-price">
-                        {formattedMoney(data?.backdrop?.personal_price)}
-                      </span>
-
-                      {data?.backdrop?.discount > 0 && (
-                        <span className="o-price">
-                          AED{" "}
-                          {getDiscount(
-                            data?.backdrop?.personal_price,
-                            data?.backdrop?.discount
-                          )}
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() =>
+                          setLicense(IBackdropFileType.personal_price)
+                        }
+                        className={classnames(
+                          "flex items-center em__button__price",
+                          {
+                            active: license == IBackdropFileType.personal_price,
+                          }
+                        )}
+                      >
+                        <span>Personal:</span>
+                        <span className="c-price">
+                          {formattedMoney(data?.backdrop?.personal_price)}
                         </span>
-                      )}
-                    </div>
 
-                    <div className="flex items-center">
-                      <span>Commercial:</span>
-                      <span className="c-price">
-                        {formattedMoney(data?.backdrop?.commercial_price)}
-                      </span>
+                        {data?.backdrop?.discount > 0 && (
+                          <span className="o-price">
+                            AED{" "}
+                            {getDiscount(
+                              data?.backdrop?.personal_price,
+                              data?.backdrop?.discount
+                            )}
+                          </span>
+                        )}
+                      </button>
 
-                      {data?.backdrop?.discount > 0 && (
-                        <span className="o-price">
-                          AED{" "}
-                          {getDiscount(
-                            data?.backdrop?.commercial_price,
-                            data?.backdrop?.discount
-                          )}
+                      <button
+                        onClick={() =>
+                          setLicense(IBackdropFileType.commercial_price)
+                        }
+                        className={classnames(
+                          "flex items-center em__button__price",
+                          {
+                            active:
+                              license == IBackdropFileType.commercial_price,
+                          }
+                        )}
+                      >
+                        <span>Commercial:</span>
+                        <span className="c-price">
+                          {formattedMoney(data?.backdrop?.commercial_price)}
                         </span>
-                      )}
+
+                        {data?.backdrop?.discount > 0 && (
+                          <span className="o-price">
+                            AED{" "}
+                            {getDiscount(
+                              data?.backdrop?.commercial_price,
+                              data?.backdrop?.discount
+                            )}
+                          </span>
+                        )}
+                      </button>
                     </div>
                   </div>
 
@@ -124,7 +153,7 @@ const Page = ({ params }: PageProps) => {
 
                   <div className="d_items">
                     <h1>Available Status:</h1>
-                    <span>Available digital file</span>
+                    <span>Available Digital Production File</span>
                   </div>
                   <div className="em__spacer" style={{ height: "10px" }}></div>
 
@@ -175,7 +204,11 @@ const Page = ({ params }: PageProps) => {
                   <hr className="details" />
                   <div className="em__spacer" style={{ height: "20px" }}></div>
 
-                  <AddCardComponent backdrop={data.backdrop} />
+                  <AddCardComponent
+                    backdrop={data.backdrop}
+                    license={license}
+                    setLicense={(li) => setLicense(li)}
+                  />
 
                   <div style={{ textAlign: "center" }}>
                     <strong>100% secure online checkout</strong>

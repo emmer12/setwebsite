@@ -73,6 +73,7 @@ const Header = () => {
     status == "authenticated" ? "/api/users/notifications" : null,
     getNotifications
   );
+  
 
   const handleSignOut = () => {
     signOut({
@@ -227,9 +228,14 @@ const Header = () => {
                 <div className="em__inner">
                   <div className="em__right flex-1">
                     <ul>
-                      <li>
+                      {
+                        path == '/' ? ( <li>
                         <Link href="/vendor/onboard">Vendor Registration</Link>
-                      </li>
+                      </li>) : ( <li>
+                        <Link href="/">Home</Link>
+                      </li>)
+                      }
+                     
                       <li className="relative">
                         <div
                           onClick={() => setDropOpen(!dropOpen)}

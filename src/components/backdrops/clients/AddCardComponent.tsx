@@ -7,12 +7,17 @@ import { IBackdrop, IBackdropFileType } from "@/types";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const AddCardComponent = ({ backdrop }: { backdrop: IBackdrop }) => {
+const AddCardComponent = ({
+  backdrop,
+  license,
+  setLicense,
+}: {
+  backdrop: IBackdrop;
+  license: IBackdropFileType;
+  setLicense: (arg: IBackdropFileType) => void;
+}) => {
   const { addToCart } = useCart();
   const router = useRouter();
-  const [license, setLicense] = useState<IBackdropFileType>(
-    IBackdropFileType.personal_price
-  );
 
   const addCart = (backdrop: IBackdrop) => {
     const { id, title, imageUrl, personal_price, commercial_price, discount } =
