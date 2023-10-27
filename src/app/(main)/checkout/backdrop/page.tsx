@@ -43,6 +43,8 @@ const Checkout = () => {
       password_confirmation: "",
       password: "",
       country: "",
+      mobile: "",
+      city: "",
       address: "",
       ep_quote: false,
       bp_quote: false,
@@ -54,40 +56,13 @@ const Checkout = () => {
       vendorCategoryId: "",
     },
     enableReinitialize: true,
-    onSubmit: async ({
-      full_name,
-      email,
-      country,
-      address,
-      ep_quote,
-      bp_quote,
-      people_number,
-      event_date,
-      occasion,
-      location,
-      additional_request,
-      password,
-      password_confirmation,
-    }) => {
+    onSubmit: async (data) => {
+      let newData: any = { ...data };
       setLoading(true);
+      newData.items = JSON.stringify(cart);
+      newData.total = subTotal();
       try {
-        const res = await createBackdropOrder({
-          full_name,
-          email,
-          country,
-          address,
-          items: JSON.stringify(cart),
-          total: subTotal(),
-          ep_quote,
-          bp_quote,
-          people_number,
-          event_date,
-          occasion,
-          location,
-          additional_request,
-          password,
-          password_confirmation,
-        });
+        const res = await createBackdropOrder(newData);
 
         NotificationManager.success("Order Created");
         const id = res.data.newOrder.id;
@@ -113,12 +88,16 @@ const Checkout = () => {
       status == "authenticated"
         ? Yup.object().shape({
             full_name: Yup.string().required("Name is Required"),
-            country: Yup.string().required("Country Required"),
+            country: Yup.string().required("City Required"),
+            city: Yup.string().required("Country Required"),
+            mobile: Yup.string().required("Mobile Required"),
             email: Yup.string().email("Invalid email").required("Required"),
           })
         : Yup.object().shape({
             full_name: Yup.string().required("Name is Required"),
             country: Yup.string().required("Country Required"),
+            city: Yup.string().required("City Required"),
+            mobile: Yup.string().required("Mobile Required"),
             email: Yup.string().email("Invalid email").required("Required"),
             password: Yup.string().required("Required"),
             password_confirmation: Yup.string().oneOf(
@@ -223,24 +202,37 @@ const Checkout = () => {
                     <div className="field">
                       <input
                         onChange={formik.handleChange}
-                        value={formik.values.address}
-                        name="address"
-                        placeholder="Street address*"
+                        value={formik.values.city}
+                        placeholder="City*"
+                        name="city"
                         type="text"
                       />
+                      {formik.touched && formik.errors.city && (
+                        <span className="error">{formik.errors.city}</span>
+                      )}
                     </div>
 
                     <div className="field">
                       <input
                         onChange={formik.handleChange}
-                        value={formik.values.email}
-                        placeholder="Full name*"
-                        name="email"
+                        value={formik.values.mobile}
+                        placeholder="Mobile*"
+                        name="mobile"
                         type="text"
                       />
-                      {formik.touched && formik.errors.email && (
-                        <span className="error">{formik.errors.email}</span>
+                      {formik.touched && formik.errors.mobile && (
+                        <span className="error">{formik.errors.mobile}</span>
                       )}
+                    </div>
+
+                    <div className="field">
+                      <input
+                        onChange={formik.handleChange}
+                        value={formik.values.address}
+                        name="address"
+                        placeholder="Street address*"
+                        type="text"
+                      />
                     </div>
 
                     {status === "unauthenticated" && (

@@ -56,6 +56,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           email: data.email,
           code: shortid.generate(),
           country: data.country,
+          city: data.city,
+          mobile: data.mobile,
           address: data.address,
           totalPrice: totalPrice,
           bp_quote: data.bp_quote,

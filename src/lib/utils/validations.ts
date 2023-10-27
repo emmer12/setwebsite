@@ -11,7 +11,9 @@ const defaultBOSchema = z.object({
   address: z.string(),
   ep_quote: z.boolean(),
   bp_quote: z.boolean(),
-  country: z.string().max(20),
+  country: z.string().max(50),
+  mobile: z.string().max(20),
+  city: z.string().max(50),
   items: z.string().min(5),
 });
 

@@ -166,6 +166,8 @@ model BackdropOrder {
     email         String
     address       String?
     country       String
+    city          String
+    mobile        String
     items         BackdropOrderItem[]
     Requests      Requests[]
     ep_quote      Boolean             @default(false)
