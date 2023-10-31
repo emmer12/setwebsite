@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { useFormik } from "formik";
 import Api from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { NotificationManager } from "react-notifications";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -34,7 +34,7 @@ const SignUp = () => {
           password,
         });
         NotificationManager.success("Your account was successfully created!");
-        router.push("/auth/signin");
+        router.push("/account");
       } catch (error: any) {
         if (error?.response?.status == 400) {
           NotificationManager.error(
