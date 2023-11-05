@@ -26,6 +26,7 @@ export async function createUser(data: any, user: any) {
         credentials: "same-origin", // include, *same-origin, omit
         headers: {
           "Content-Type": "application/json",
+          "authorization": process.env.NEXT_PUBLIC_KEY as string
           // 'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: JSON.stringify(users[i])

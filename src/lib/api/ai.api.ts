@@ -6,7 +6,12 @@ const endpoint = '/api/ai'
 
 export const generateImage = (data: any) => api.post(`${endpoint}/generate`, data);
 export const getImage = (id: string) => axios.post(`${process.env.NEXT_PUBLIC_AI_BASE_URL}/image/get`,
-    { id: id }
+    { id: id },
+    {
+        headers: {
+            "authorization": process.env.NEXT_PUBLIC_KEY as string
+        }
+    }
 );
 
 export const saveImage = (data: any) => api.post(`${endpoint}/save`,
@@ -33,7 +38,11 @@ export const downloadImage = async (url: string) => {
 
 export const downloadPdf = async (url: string) => {
     try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_AI_BASE_URL}/image/pdf?url=${url}`, { responseType: 'blob' });
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_AI_BASE_URL}/image/pdf?url=${url}`, {
+            responseType: 'blob', headers: {
+                "authorization": process.env.NEXT_PUBLIC_KEY as string
+            }
+        });
         // Create a Blob from the image data
         const blob = new Blob([response.data], { type: response.data.type });
 

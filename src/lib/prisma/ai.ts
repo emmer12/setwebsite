@@ -17,6 +17,7 @@ export async function generate(data: any, user: any) {
       credentials: "same-origin", // include, *same-origin, omit
       headers: {
         "Content-Type": "application/json",
+        "authorization": process.env.KEY as string
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: JSON.stringify(data)
