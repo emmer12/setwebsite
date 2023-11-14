@@ -6,7 +6,7 @@ export async function generate(data: any, user: any) {
   try {
     const amount = constants.points.AI
 
-    if (user.ai_points < amount) {
+    if (user.ai_points < amount && user.role !== constants.roles.ADMIN) {
       throw new Error("You don't have enough funds");
     }
 

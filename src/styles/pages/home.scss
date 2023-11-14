@@ -296,6 +296,13 @@
         background-color: #eeab71;
         z-index: 0;
         border-radius: 50%;
+
+        @media (max-width: 600px) {
+          height: 15px;
+          width: 15px;
+
+          top: 10px;
+        }
       }
     }
 
@@ -432,6 +439,11 @@
     max-width: 90%;
     background: #fef7f1;
     border-radius: 10px;
+
+    @media (max-width: 640px) {
+      width: 100% !important;
+      max-width: 100%;
+    }
 
     .inner {
       padding-right: 40px;
@@ -709,6 +721,10 @@
 
   .em__backdrop_card {
     width: 100%;
+
+    .display {
+      height: 215px;
+    }
   }
 
   .em__backdrop_card.grid {
@@ -718,7 +734,7 @@
   }
 
   .em__hero__bottom {
-    transform: translateY(-25px);
+    transform: translateY(-70px);
   }
   // Forget Sections
   .em__forget__section {

@@ -6,9 +6,9 @@ import ContactFormClient from "./ContactFormClient";
 
 const Contact = () => {
   return (
-    <div className="container">
+    <div className="container bg-white">
       <div className="em__body__wrapper">
-        <div className="w-full sm:w-[80%] m-auto my-4">
+        <div className="w-full sm:w-[80%] m-auto">
           <div className="flex flex-wrap gap-[20px] sm:gap-[100px]">
             <div className=" sm:block">
               <div className="sm:bg-[#ffe3cd] w-full sm:w-[350px] p-3 sm:p-6  sm:min-h-[400px]">

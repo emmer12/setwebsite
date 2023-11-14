@@ -11,7 +11,7 @@ export async function createUser(data: any, user: any) {
     const amount = constants.points.SAF * users.length
 
 
-    if (user.saf_points < amount) {
+    if (user.saf_points < amount && user.role !== constants.roles.ADMIN) {
       throw new Error("You have enough funds to set users");
     }
 

@@ -73,7 +73,6 @@ const Header = () => {
     status == "authenticated" ? "/api/users/notifications" : null,
     getNotifications
   );
-  
 
   const handleSignOut = () => {
     signOut({
@@ -228,14 +227,18 @@ const Header = () => {
                 <div className="em__inner">
                   <div className="em__right flex-1">
                     <ul>
-                      {
-                        path == '/' ? ( <li>
-                        <Link href="/vendor/onboard">Vendor Registration</Link>
-                      </li>) : ( <li>
-                        <Link href="/">Home</Link>
-                      </li>)
-                      }
-                     
+                      {path == "/" ? (
+                        <li>
+                          <Link href="/vendor/onboard">
+                            Vendor Registration
+                          </Link>
+                        </li>
+                      ) : (
+                        <li>
+                          <Link href="/">Home</Link>
+                        </li>
+                      )}
+
                       <li className="relative">
                         <div
                           onClick={() => setDropOpen(!dropOpen)}
@@ -316,7 +319,7 @@ const Header = () => {
                       )}
 
                       <li>
-                        <Link href="/backdrops">Contact Set</Link>
+                        <Link href="/contact">Contact Set</Link>
                       </li>
                     </ul>
                   </div>
@@ -361,63 +364,35 @@ const Header = () => {
                     <a href="#">About</a>
                   </li>
                   <li>
-                    <div
-                      className="flex items-center p-[10px]"
-                      onClick={() => setDropOpen(!dropOpen)}
+                    <motion.ul
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="pl-0 flex-col top-[10px] block child"
                     >
-                      <span className="pr-2"> Event Essentials</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        xmlnsXlink="http://www.w3.org/1999/xlink"
-                        width="10"
-                        height="6"
-                        viewBox="0 0 10 6"
-                      >
-                        <image
-                          id="downward-arrow_1_"
-                          data-name="downward-arrow (1)"
-                          width="10"
-                          height="6"
-                          xlinkHref="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAAaUlEQVQImX3OIRKCYBiE4QeGYLF4CE5AsGkgGb2AcjSG6gyQTAaiweMYnXG+8DsE5E27s2/YrDw0N+zwtswGnwIdhj9S4ppjRLUi1WhDDF7YL0gnPCIkMXjiOOtn3FOJj3MmXLBF/xvwBd5MDQUMYfROAAAAAElFTkSuQmCC"
-                        />
-                      </svg>
-                    </div>
+                      <li className="py-1">
+                        <Link href="/vendor/onboard">Vendor Registration</Link>
+                      </li>
 
-                    <AnimatePresence>
-                      {dropOpen && (
-                        <motion.ul
-                          initial="hidden"
-                          animate="visible"
-                          exit="exit"
-                          className="pl-2 flex-col top-[10px] block child"
-                        >
-                          <li className="py-1">
-                            <Link href="/vendor/onboard">
-                              Vendor Registration
-                            </Link>
-                          </li>
-
-                          <li className="py-1">
-                            <a href=""> Design Download </a>
-                          </li>
-                          <li className="py-1">
-                            <a href="">Creative AI Studio</a>
-                          </li>
-                          <li className="py-1">
-                            <a href="">Event Connections</a>
-                          </li>
-                          <li className="py-3">
-                            <Link href="/auth/login">Login</Link>
-                          </li>
-                        </motion.ul>
-                      )}
-                    </AnimatePresence>
+                      <li className="py-1">
+                        <a href=""> Design Download </a>
+                      </li>
+                      <li className="py-1">
+                        <a href="">Creative AI Studio</a>
+                      </li>
+                      <li className="py-1">
+                        <a href="">Event Connections</a>
+                      </li>
+                      <li className="py-3">
+                        <Link href="/auth/login">Login</Link>
+                      </li>
+                    </motion.ul>
                   </li>
                   <li>
                     <Link href="/designs">Designs and prints</Link>
                   </li>
                   <li>
-                    <Link href="/backdrops">Contact Set</Link>
+                    <Link href="/contact">Contact Set</Link>
                   </li>
                 </ul>
               </motion.div>

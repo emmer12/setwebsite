@@ -19,7 +19,7 @@ export default function Home() {
                   <span className="em__fancy__text">We</span> are a
                   <br />
                   <span> Premier Event </span>
-                  <span className="em__fancy__text sp">
+                  <span className="em__fancy__text sp mt-2">
                     Platform{" "}
                     <span className="font-['acaslonpro-regular']">,</span>
                   </span>{" "}
@@ -197,10 +197,7 @@ export default function Home() {
               <div className="details">
                 <div className="em__header left mb-[40px]">
                   <h1>Our</h1>
-                  <span
-                    className="em__fancy__text ai top-[45px] sm:top-[32px]"
-                    
-                  >
+                  <span className="em__fancy__text ai top-[45px] sm:top-[32px]">
                     Creative AI studio
                   </span>
                 </div>

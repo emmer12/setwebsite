@@ -28,14 +28,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 }
                 if (vendor.stripe_connected) return res.status(200).end(`You Account as already been connected`);
                 const account = await stripe.accounts.create({
-                    type: "custom",
+                    type: "standard",
                     country: "AE",
                     email: token.email,
                     // external_account: token,
-                    capabilities: {
-                        card_payments: { requested: true },
-                        transfers: { requested: true },
-                    },
+                    // capabilities: {
+                    //     card_payments: { requested: true },
+                    //     transfers: { requested: true },
+                    // },
 
                     metadata: {
                         vendorId: vendor.id,
