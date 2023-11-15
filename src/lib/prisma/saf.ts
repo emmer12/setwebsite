@@ -33,11 +33,11 @@ export async function createUser(data: any, user: any) {
       });
     }
 
-
-    const { error }: any = await debitPoint(amount, user, constants.payment_type.SAF_DEBIT);
-
-    if (error) {
-      throw new Error(error.message);
+    if (user.role !== constants.roles.ADMIN) {
+      const { error }: any = await debitPoint(amount, user, constants.payment_type.SAF_DEBIT);
+      if (error) {
+        throw new Error(error.message);
+      }
     }
     // const userFromDB = await prisma.user.create({ data: user });
     return { user: true };
