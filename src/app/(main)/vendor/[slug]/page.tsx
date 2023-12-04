@@ -40,7 +40,7 @@ const VendorDetailsPage = async ({ params }: PageProps) => {
           <div className="em__body__wrapper">
             <div className="">
               <section>
-                <div className="flex">
+                <div className="flex sm:flex-row flex-col">
                   <div className="display flex-1 sm:w-full/2 w-full">
                     <Image
                       src={
@@ -74,7 +74,7 @@ const VendorDetailsPage = async ({ params }: PageProps) => {
                 <h2 className="text-2xl font-bold">Services</h2>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 my-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 my-4">
                 {data?.vendor?.services.map((service: string, i: number) => (
                   <div className="bg-white p-4" key={i + "services"}>
                     <h1 className="text-center text-4xl font-bold">{i + 1}</h1>
@@ -93,7 +93,7 @@ const VendorDetailsPage = async ({ params }: PageProps) => {
                 <h2 className="text-2xl font-bold">Our Work</h2>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 my-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-4">
                 {data?.vendor?.VendorImage.length > 0 &&
                   data?.vendor?.VendorImage.map((image: any, i: number) => (
                     <div key={i + "img"}>
