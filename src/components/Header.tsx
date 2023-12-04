@@ -277,10 +277,12 @@ const Header = () => {
                               </li>
 
                               <li className="py-3">
-                                <a href=""> Design Download </a>
+                                <Link href="/backdops">Design Download </Link>
                               </li>
                               <li className="py-3">
-                                <a href="">Creative AI Studio</a>
+                                <Link href="/creative-ai-studio">
+                                  Creative AI Studio
+                                </Link>
                               </li>
                               <li className="py-3">
                                 <Link href="/vendor">Event Connections</Link>
@@ -375,13 +377,15 @@ const Header = () => {
                       </li>
 
                       <li className="py-1">
-                        <a href=""> Design Download </a>
+                        <Link href="/backdrops"> Design Download </Link>
                       </li>
                       <li className="py-1">
-                        <a href="">Creative AI Studio</a>
+                        <Link href="/creative-ai-studio">
+                          Creative AI Studio
+                        </Link>
                       </li>
                       <li className="py-1">
-                        <a href="">Event Connections</a>
+                        <Link href="/vendor">Event Connections</Link>
                       </li>
                       <li className="py-3">
                         <Link href="/auth/login">Login</Link>

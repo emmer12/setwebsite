@@ -69,13 +69,13 @@ const Backdrops = () => {
           </h1>
         </div>
       </div>
-      <div className="em__dee bg-white">
+      <div className="em__dee bg-white vendor">
         <div className="container">
           <div className="em__body__wrapper mb-[50px]">
             <div className="w-full sm:w-1/2 m-auto">
               <div className="quote">
                 <h2 className="font-bold p-3 text-xl">
-                  Fill form to get quote{" "}
+                  Complete the form for instance quotes and seamless payments{" "}
                 </h2>
               </div>
 

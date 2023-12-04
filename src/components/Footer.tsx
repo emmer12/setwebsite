@@ -61,7 +61,7 @@ const Footer = () => {
                   </li>
                   <li className="d-flex">
                     <img src="/assets/icons/envilop.svg" alt="Envelope Icon" />
-                    <a>support@mail.com</a>
+                    <a href="mailto:info@setevents.co">info@setevents.co</a>
                   </li>
                 </ul>
               </div>

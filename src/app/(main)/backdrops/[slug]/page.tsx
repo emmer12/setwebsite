@@ -66,7 +66,7 @@ const Page = ({ params }: PageProps) => {
                     <span className="ml-2">5 reviews</span>
                   </div>
 
-                  <div className="price">
+                  {/* <div className="price">
                     <strong>LICENSE</strong>
                     <div className="flex gap-3">
                       <button
@@ -124,7 +124,7 @@ const Page = ({ params }: PageProps) => {
                         )}
                       </button>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* 
                     <div className="date">
@@ -203,6 +203,8 @@ const Page = ({ params }: PageProps) => {
 
                   <hr className="details" />
                   <div className="em__spacer" style={{ height: "20px" }}></div>
+
+                  <strong>LICENSE</strong>
 
                   <AddCardComponent
                     backdrop={data.backdrop}

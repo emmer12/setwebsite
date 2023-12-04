@@ -51,7 +51,7 @@ const RequestForm = ({
       email: "",
       password: "",
       password_confirmation: "",
-      title: "",
+      title: "Quote Request",
       people_number: "",
       event_date: "",
       occasion: "",
@@ -211,18 +211,18 @@ const RequestForm = ({
             />
           </div>
         )}
-        <div className="field">
-          <input
+        {/* <div className="field"> */}
+        {/* <input
             onChange={formik.handleChange}
             value={formik.values.title}
             placeholder="Request Title"
             type="text"
             name="title"
-          />
-          {formik.touched && formik.errors.title && (
+          /> */}
+        {/* {formik.touched && formik.errors.title && (
             <span className="error">{formik.errors.title}</span>
-          )}
-        </div>
+          )} */}
+        {/* </div> */}
 
         <div className=" my-4">
           <label htmlFor="category">Select Category</label>
@@ -296,7 +296,9 @@ const RequestForm = ({
                 onChange={formik.handleChange}
                 value={formik.values.event_date}
                 placeholder="Event date"
-                type="date"
+                type="text"
+                onFocus={(e) => (e.target.type = "date")}
+                onBlur={(e) => (e.target.type = "text")}
                 name="event_date"
               />
               {formik.touched && formik.errors.event_date && (

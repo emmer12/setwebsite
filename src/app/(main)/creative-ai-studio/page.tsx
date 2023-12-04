@@ -82,8 +82,10 @@ const OnboardPage = () => {
         <div className="inner">
           <h1>
             Experience
-            <span> Dee</span>
+            <span className="!inline">Dee</span>
           </h1>
+          <br />
+          <h1> your digital designer</h1>
         </div>
       </div>
       <div className="em__dee bg-white">

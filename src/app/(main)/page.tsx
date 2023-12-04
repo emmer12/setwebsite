@@ -218,7 +218,7 @@ export default function Home() {
                 <div className="em__spacer" style={{ height: "20px" }}></div>
                 <div className="em__our__action">
                   <Button
-                    to="/auth/register"
+                    to="/auth/signup"
                     text="Register"
                     RightIcon={<ArrowRight />}
                   />
