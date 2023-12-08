@@ -38,9 +38,8 @@ const OnboardPage = () => {
       {" "}
       <div className="em__banner__2">
         <div className="inner">
-          <h1>
-            Join Our Vendor Network & Expand Your
-            <span> Business</span>
+          <h1 style={{ lineHeight: "40px" }}>
+            Join Our Vendor Network & Expand Your <span> Business</span>
           </h1>
         </div>
       </div>
@@ -54,22 +53,22 @@ const OnboardPage = () => {
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="w-full sm:w-1/2">
                   <ul>
-                    <li className="text-white bg-[#263f61] p-3 rounded mb-2">
+                    <li className="text-white bg-[#263f61] text-center p-3 rounded mb-2">
                       Cake Bakery Artist
                     </li>
-                    <li className="text-white bg-[#263f61] p-3 rounded mb-2">
+                    <li className="text-white bg-[#263f61] text-center p-3 rounded mb-2">
                       Event Planners
                     </li>
-                    <li className="text-white bg-[#263f61] p-3 rounded mb-2">
+                    <li className="text-white bg-[#263f61] text-center p-3 rounded mb-2">
                       Wedding Planners
                     </li>
-                    <li className="text-white bg-[#263f61] p-3 rounded mb-2">
+                    <li className="text-white bg-[#263f61] text-center p-3 rounded mb-2">
                       5 Star Hotels & Venues with Event Halls{" "}
                     </li>
-                    <li className="text-white bg-[#263f61] p-3 rounded my-2">
+                    <li className="text-white bg-[#263f61] text-center p-3 rounded my-2">
                       Production Companies{" "}
                     </li>
-                    <li className="text-white bg-[#263f61] p-3 rounded my-2">
+                    <li className="text-white bg-[#263f61] text-center p-3 rounded my-2">
                       Event Photographers
                     </li>
                   </ul>

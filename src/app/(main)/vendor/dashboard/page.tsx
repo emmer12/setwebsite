@@ -16,6 +16,7 @@ import Link from "next/link";
 const Page = () => {
   const [vendor, setVendor] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [connecting, setConnecting] = useState<boolean>(false);
   const [services, setServices] = useState<string[]>([]);
   const [sinput, setSInput] = useState("");
   const { data: session } = useSession();
@@ -37,8 +38,14 @@ const Page = () => {
   };
 
   const connect = async () => {
-    const data: any = await connectToStripe();
-    window.location.href = data.url;
+    try {
+      setConnecting(true);
+      const res: any = await connectToStripe();
+      setConnecting(false);
+      window.location.href = res.data.url;
+    } catch (err) {
+      setConnecting(false);
+    }
   };
 
   const removeService = (i: number) => {
@@ -69,8 +76,16 @@ const Page = () => {
                 <div>Your Account has connected to stripe</div>
               ) : (
                 <div>
-                  <p>Your accont has not been connected to stripe</p>
-                  <Button onClick={connect} text="Connect" classNames="sm" />
+                  <p>Your account has not been connected to stripe</p>
+                  <br />
+                  <Button
+                    onClick={connect}
+                    text={
+                      vendor?.stripe_account_id ? "Continue Setup" : "Connect"
+                    }
+                    classNames="sm"
+                    loading={connecting}
+                  />
                 </div>
               )}
             </div>

@@ -64,8 +64,8 @@ const Backdrops = () => {
       <div className="em__banner__2">
         <div className="inner">
           <h1>
-            Discover
-            <span> the Ultimate Event Connections Worldwide </span>
+            Event Planning in Minutes
+            <span>Minutes </span>
           </h1>
         </div>
       </div>

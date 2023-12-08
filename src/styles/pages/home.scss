@@ -40,6 +40,10 @@
       top: 0px;
     }
   }
+
+  @media (max-width: 640px) {
+    height: 520px;
+  }
 }
 
 .em__hero__bottom {
@@ -556,7 +560,7 @@
       line-height: 25px;
       margin-top: 0px;
       span {
-        display: block;
+        display: inline;
       }
     }
   }
@@ -716,7 +720,7 @@
   }
 
   .em_backdrop__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 
   .em__backdrop_card {
@@ -874,7 +878,7 @@
         margin-top: 0px;
         line-height: 25px;
         span {
-          font-size: 36px;
+          font-size: 42px;
           top: 26px;
           line-height: 36px;
           left: 0px;

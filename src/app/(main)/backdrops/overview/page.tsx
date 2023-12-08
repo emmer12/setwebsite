@@ -23,8 +23,9 @@ const Backdrops = () => {
       <div className="em__dee bg-white">
         <div className="container">
           <div className="em__body__wrapper">
-            <div className="em__main__body em_backdrop__grid">
-              {/* {isLoading ? (
+            <div className="overflow-auto">
+              <div className="em__main__body flex gap-3 justify-between">
+                {/* {isLoading ? (
                 <span>Loading..</span>
               ) : (
                 data?.backdrops
@@ -41,30 +42,37 @@ const Backdrops = () => {
                   ))
               )} */}
 
-              <div className="backdrop__image">
-                <Image
-                  src={"/assets/images/Picture1.png"}
-                  height={240}
-                  width={300}
-                  alt="Backdrop Image"
-                />
-              </div>
-              <div className="backdrop__image">
-                <Image
-                  src={"/assets/images/Picture2.png"}
-                  height={240}
-                  width={300}
-                  alt="Backdrop Image"
-                />
-              </div>
+                <div className="h-[200px] sm:h-[300px] w-[200px] sm:w-[300px] flex-shrink-0">
+                  <Image
+                    className="h-full w-full object-cover"
+                    src={"/assets/images/Picture1.png"}
+                    height={0}
+                    width={0}
+                    sizes="100vw"
+                    alt="Backdrop Image"
+                  />
+                </div>
+                <div className="h-[200px] sm:h-[300px] w-[200px] sm:w-[300px] flex-shrink-0">
+                  <Image
+                    className="h-full w-full object-cover"
+                    src={"/assets/images/Picture2.png"}
+                    height={0}
+                    width={0}
+                    sizes="100vw"
+                    alt="Backdrop Image"
+                  />
+                </div>
 
-              <div className="backdrop__image">
-                <Image
-                  src={"/assets/images/Picture3.png"}
-                  height={240}
-                  width={300}
-                  alt="Backdrop Image"
-                />
+                <div className="h-[200px] sm:h-[300px] w-[200px] sm:w-[300px] flex-shrink-0">
+                  <Image
+                    className="h-full w-full object-cover"
+                    src={"/assets/images/Picture3.png"}
+                    height={0}
+                    width={0}
+                    sizes="100vw"
+                    alt="Backdrop Image"
+                  />
+                </div>
               </div>
             </div>
             <div className="text-center my-6">
