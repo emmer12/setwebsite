@@ -109,7 +109,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const { record, error }: any = await createQuote({
           description: data.description,
           amount: data.amount,
-          userId: token.id,
+          userId: request.user.id,
           requestId: request.id,
           attachmentUrl: data.docUrl,
           expiredAt: data.expiredAt ? new Date(data.expiredAt) : addHours(currentDateTime, 48)

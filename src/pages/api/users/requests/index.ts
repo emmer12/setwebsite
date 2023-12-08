@@ -104,16 +104,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         //added 3 days to currentDate
         const deadline = new Date(currentDate.getTime() + 72 * 60 * 60 * 1000);
 
+
+        const services: string[] = data.services;
+
         const vendors = await prisma.vendor.findMany({
           where: {
             approval_status: "Approved",
-            OR: {
-              vendorCategoryId: data.categoryId,
-              vendorSubCategoryId: data.subCategoryId,
-            },
+            OR: [
+              { vendorCategoryId: data.categoryId },
+              { vendorSubCategoryId: data.subCategoryId },
+              {
+                services: {
+                  hasSome: services
+                }
+              }
+            ]
           },
         });
-
         const { record, error }: any = await createRequest({
           title: data.title,
           deadline: deadline,
