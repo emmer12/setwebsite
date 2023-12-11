@@ -249,6 +249,7 @@ model Vendor {
     Reviews             Reviews[]
     stripe_account_id   String?
     stripe_connected    Boolean         @default(false)
+    Quote               Quote[]
 }
 
 enum RequestType {
@@ -315,6 +316,8 @@ model Quote {
     request         Requests?      @relation(fields: [requestId], references: [id])
     user            User           @relation(fields: [userId], references: [id])
     description     String?
+    vendorId        String         @db.ObjectId
+    vendor          Vendor         @relation(fields: [vendorId], references: [id])
     amount          String
     attachmentUrl   String?
     backdropOrderId String?        @db.ObjectId

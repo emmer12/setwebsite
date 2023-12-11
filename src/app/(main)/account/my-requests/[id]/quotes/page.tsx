@@ -33,7 +33,7 @@ const Page: FC<PageProps> = ({ params }) => {
                         <div className="avatar h-[50px] w-[50px] bg-gray-100 flex-shrink-0 rounded-full"></div>
                         <div className="avatar">
                           <h4 className="font-medium ">
-                            {quote?.user?.Vendor[0].company_name}
+                            {quote?.vendor.company_name}
                           </h4>
                           {/* rating */}
                         </div>

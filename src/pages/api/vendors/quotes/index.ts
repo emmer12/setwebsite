@@ -110,6 +110,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           description: data.description,
           amount: data.amount,
           userId: request.user.id,
+          vendorId: vendor.id,
           requestId: request.id,
           attachmentUrl: data.docUrl,
           expiredAt: data.expiredAt ? new Date(data.expiredAt) : addHours(currentDateTime, 48)

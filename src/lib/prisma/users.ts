@@ -210,13 +210,9 @@ export async function getRequestQuotes(id: string, userId: string, page: any, li
       skip: offset,
       take: limit,
       include: {
-        user: {
-          include: {
-            Vendor: {
-              select: {
-                company_name: true,
-              },
-            }
+        vendor: {
+          select: {
+            company_name:true
           }
         }
       },
