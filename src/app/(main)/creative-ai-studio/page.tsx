@@ -111,6 +111,18 @@ const OnboardPage = () => {
                         Sign Up to try Dee for Free
                       </h2>
                     </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-1 ">
+                      {features.map((feature, i) => (
+                        <FeatureList key={feature} text={feature} />
+                      ))}
+                    </div>
+
+                    <div className="about__service text-center ">
+                      <p className="py-5  font-bold">
+                        Journey with ten Free designs
+                      </p>
+                    </div>
                     <div className="field">
                       <input
                         type="type"
@@ -200,24 +212,6 @@ const OnboardPage = () => {
                   src="/assets/images/vendor.png"
                   alt="World Image"
                 /> */}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-1 ">
-              {features.map((feature, i) => (
-                <FeatureList key={feature} text={feature} />
-              ))}
-            </div>
-
-            <div className="about__service text-center ">
-              <p className="py-5  font-bold">Journey with ten Free designs</p>
-
-              <div className="text-center">
-                <Button
-                  to="/auth/signup"
-                  text="Register"
-                  RightIcon={<ArrowRight />}
-                />
               </div>
             </div>
           </div>
