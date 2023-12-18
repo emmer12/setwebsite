@@ -197,7 +197,7 @@ export default function Home() {
               <div className="details">
                 <div className="em__header left mb-[40px]">
                   <h1>Our</h1>
-                  <span className="em__fancy__text ai top-[14px] sm:top-[32px]">
+                  <span className="em__fancy__text ai !top-[14px] sm:top-[32px]">
                     Creative AI studio
                   </span>
                 </div>
