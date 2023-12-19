@@ -277,7 +277,7 @@ const Header = () => {
                               </li>
 
                               <li className="py-3">
-                                <Link href="/backdops">Design Download </Link>
+                                <Link href="/backdrops">Design Download </Link>
                               </li>
                               <li className="py-3">
                                 <Link href="/creative-ai-studio">
