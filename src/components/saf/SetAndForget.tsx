@@ -67,8 +67,8 @@ const SetAndForget = ({
   };
 
   return (
-    <div className="flex gap-5">
-      <div className="w-1/2 flex-1">
+    <div className="flex gap-5 flex-col sm:flex-row">
+      <div className="sm:w-1/2 flex-1 w-full">
         <div className="em__header_2">
           <h1>Set &</h1>
           <span className="em__fancy__text">Forget</span>
@@ -84,7 +84,7 @@ const SetAndForget = ({
           </p>
         </div>
       </div>
-      <div className="w-1/2 flex-1 overflow-y-auto saf_form">
+      <div className="sm:w-1/2 w-full flex-1 overflow-y-auto saf_form">
         <Formik
           initialValues={initialValues}
           onSubmit={async (values) => {
