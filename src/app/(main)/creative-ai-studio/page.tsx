@@ -107,22 +107,24 @@ const OnboardPage = () => {
                 <div className="w-full sm:w-1/2">
                   <form onSubmit={formik.handleSubmit}>
                     <div className="title">
-                      <h2 className="font-bold text-2xl">
+                      <h2 className="font-bold text-2xl text-center">
                         Sign Up to try Dee for Free
                       </h2>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-1 ">
-                      {features.map((feature, i) => (
-                        <FeatureList key={feature} text={feature} />
-                      ))}
+                      <div className="flex gap-4 align-center text-base py-3 f__items">
+                        <span>
+                          Begin designing your backdrops, wedding stages,
+                          exhibition stands, and cakes for free! Register to
+                          kickstart your creative journey with ten Free designs
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="about__service text-center ">
-                      <p className="py-5  font-bold">
-                        Journey with ten Free designs
-                      </p>
-                    </div>
+                    {/* <div className="about__service text-center ">
+                      <p className="py-5  font-bold"></p>
+                    </div> */}
                     <div className="field">
                       <input
                         type="type"

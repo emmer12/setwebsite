@@ -288,7 +288,7 @@ const Header = () => {
                                 <Link href="/vendor">Event Connections</Link>
                               </li>
                               <li className="py-3">
-                                <Link href="/auth/login">Login</Link>
+                                <Link href="/auth/signin">Login</Link>
                               </li>
                             </motion.ul>
                           )}

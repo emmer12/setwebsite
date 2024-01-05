@@ -97,7 +97,8 @@ const RegisterPage = () => {
     },
     onSubmit: async (data) => {
       const userData: any = { ...data };
-      userData.coverage_cities = JSON.stringify(data.coverage_cities);
+      const c_c = data.coverage_cities.map((c:any) => c.value);
+      userData.coverage_cities = JSON.stringify(c_c);
 
       userData.vendorCategoryId = data.category.value;
       userData.vendorSubCategoryId = data.subCategory.value;
@@ -469,20 +470,25 @@ const RegisterPage = () => {
                         Kindly include the cities you service cover in uae
                       </span>
                       <div className="field multiple">
-                        <select
-                          onChange={formik.handleChange}
-                          value={formik.values.coverage_cities}
-                          name="coverage_cities"
-                          multiple
-                        >
-                          <option value="">Select Coverage country</option>
+                        <Select
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          onChange={(selectedOptions: any) => {
+                            formik.setFieldValue(
+                              "coverage_cities",
+                              selectedOptions
+                            );
+                          }}
+                          isMulti
+                          placeholder="Select Services"
+                          options={citiesUAE.map((city: any) => {
+                            return {
+                              label: city.name,
+                              value: city.name,
+                            };
+                          })}
+                        />
 
-                          {citiesUAE.map((city, i) => (
-                            <option key={i} value={city.name}>
-                              {city.name}
-                            </option>
-                          ))}
-                        </select>
                         {formik.touched && formik.errors.coverage_cities && (
                           <span className="error">
                             {formik.errors.coverage_cities}
@@ -491,16 +497,6 @@ const RegisterPage = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap max-w-full">
-                      {formik.values.coverage_cities.map((city, i) => (
-                        <div
-                          key={i + "coverage"}
-                          className="px-2 py-1 text-xs whitespace-nowrap bg-gray-200 rounded-lg inline-block mx-1 my-1"
-                        >
-                          {city}
-                        </div>
-                      ))}
-                    </div>
                     {/* <div className="field_wrapper">
                       <span className="hint">
                         Kindly include services you provide

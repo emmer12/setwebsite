@@ -64,7 +64,7 @@ const Backdrops = () => {
       <div className="em__banner__2">
         <div className="inner">
           <h1>
-            Event Planning in Minutes
+            Event Planning in
             <span>Minutes </span>
           </h1>
         </div>

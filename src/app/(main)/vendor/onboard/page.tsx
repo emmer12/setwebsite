@@ -74,12 +74,15 @@ const OnboardPage = () => {
                   </ul>
                 </div>
                 <div className="w-full sm:w-1/2">
-                  <video
-                    autoPlay={true}
-                    loop
-                    controls
-                    src="https://static.vecteezy.com/system/resources/previews/023/607/690/mp4/vdo-mp4-helix-human-dna-3-d-rendering-video.mp4"
-                  ></video>
+                  <div className="h-auto sm:h-[328px]">
+                    <video
+                      autoPlay={true}
+                      loop
+                      controls
+                      className="h-full object-cover"
+                      src="https://static.vecteezy.com/system/resources/previews/023/607/690/mp4/vdo-mp4-helix-human-dna-3-d-rendering-video.mp4"
+                    ></video>
+                  </div>
 
                   <div className="f__items">
                     Watch this informative video to learn how joining our Vendor

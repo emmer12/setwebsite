@@ -31,7 +31,7 @@ const SignIn = () => {
       try {
         setLoading(true);
         const res: any = await signIn("credentials", {
-          email: email,
+          email: email.toLowerCase(),
           password: password,
           redirect: false,
         });
@@ -64,7 +64,7 @@ const SignIn = () => {
             Welcome Back
           </h2>
           {/* <span className="em__fancy__text">Courses</span> */}
-          <p>kindly select the account you would like to log into. options</p>
+          {/* <p>kindly select the account you would like to log into. options</p> */}
         </div>
       </div>
       <div className="w-full sm:w-1/2 flex-1">
