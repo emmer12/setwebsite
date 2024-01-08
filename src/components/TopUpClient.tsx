@@ -50,7 +50,7 @@ const TopUpClient = () => {
 
   return (
     <div>
-      <div className=" p-4 bg-red-50 rounded-[18px] rounded-br-[8px] relative h-[160px]">
+      <div className=" p-4  rounded-[18px] rounded-br-[8px] relative h-[160px]">
         <h2 className="text-xl font-bold ">My Points</h2>
         <div className="flex py-4 items-center gap-2">
           Set and Forget:

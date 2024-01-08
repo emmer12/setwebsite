@@ -12,7 +12,7 @@ const DesignPage = async (): Promise<any> => {
       <div className="bg-white">
         <div className="container">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className=" bg-gray-50 p-4 rounded-[18px] rounded-br-[8px] relative">
+            <div className=" p-4 rounded-[18px] rounded-br-[8px] relative">
               <div className="absolute top-4 right-4 cursor-pointer">
                 <Link href="/account/edit">Edit</Link>
               </div>
@@ -36,7 +36,7 @@ const DesignPage = async (): Promise<any> => {
             </div>
             <div className="grid grid-cols-1 gap-3">
               <TopUpClient />
-              <div className="p-4 rounded-[18px] rounded-br-[8px] bg-blue-200">
+              <div className="p-4 rounded-[18px] rounded-br-[8px]">
                 <h1 className="text-xl font-bold">My Requests</h1>
 
                 <div>You have no request</div>
