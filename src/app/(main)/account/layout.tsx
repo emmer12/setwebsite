@@ -134,12 +134,27 @@ export default function RootLayout({
                           animate="visible"
                           exit="exit"
                         >
-                          <li className="menu-item">Dee Saved Designs</li>
+                          <li
+                            className={classNames("menu-item", {
+                              active: pathName == "/account/ai/dee/saved",
+                            })}
+                          >
+                            <Link href="/account/ai/dee/saved">
+                              Dee Saved Designs
+                            </Link>
+                          </li>
+
                           <li className="menu-item">
                             Set and forget Saved Images
                           </li>
-                          <li className="menu-item">
-                            Request Quotation with form
+                          <li
+                            className={classNames("menu-item", {
+                              active: pathName == "/account/my-requests/create",
+                            })}
+                          >
+                            <Link href="/account/my-requests/create">
+                              Request Quotation with form
+                            </Link>
                           </li>
                           <li className="menu-item">Quotes received</li>
                         </motion.ul>
@@ -233,12 +248,27 @@ export default function RootLayout({
                               animate="visible"
                               exit="exit"
                             >
-                              <li className="menu-item">Dee Saved Designs</li>
+                              <li
+                                className={classNames("menu-item", {
+                                  active: pathName == "/account/ai/dee/saved",
+                                })}
+                              >
+                                <Link href="/account/ai/dee/saved">
+                                  Dee Saved Designs
+                                </Link>
+                              </li>
                               <li className="menu-item">
                                 Set and forget Saved Images
                               </li>
-                              <li className="menu-item">
-                                Request Quotation with form
+                              <li
+                                className={classNames("menu-item", {
+                                  active:
+                                    pathName == "/account/my-requests/create",
+                                })}
+                              >
+                                <Link href="/account/my-requests/create">
+                                  Request Quotation with form
+                                </Link>
                               </li>
                               <li className="menu-item">Quotes received</li>
                             </motion.ul>
